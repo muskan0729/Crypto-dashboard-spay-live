@@ -727,7 +727,7 @@ const Table = ({
         <table className="w-full text-sm text-left text-gray-700 border-collapse">
 
           <thead className="uppercase text-white tracking-wide"
-            style={{ background: "linear-gradient(90deg, #007BFF, #00C8FF)" }}
+            style={{ background: "linear-gradient(90deg, #D4AF37, #C5A23E)" }}
           >
             <tr>
               {columns.map((column, index) => (
@@ -755,9 +755,9 @@ const Table = ({
                   <tr
                     key={row.id}
                     className={`${rowIndex % 2 === 0
-                        ? "bg-[#f1f7ff]"
-                        : "bg-white"
-                      } hover:bg-[#e0f0ff] transition-all duration-150 border-b border-gray-200`}
+                        ? "bg-[#FFF7E0]"
+                        : "bg-[#FFFAF0]"
+                      } hover:bg-[#F5E1A4] transition-all duration-150 border-b border-[#C5A23E]`}
                   >
                     {columns.map((column, colIndex) => (
                       <td

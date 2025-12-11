@@ -1,0 +1,55 @@
+.bg-dashboard-items {
+  background-color: #000411;
+  color: #F9B707; 
+}
+
+.dashboard-text {
+  color:#F9B707;
+}
+
+.card {
+  box-shadow:none;
+  margin-bottom: 0;
+  border-radius: 0.3rem!important;
+}
+
+.card .card-header {
+  margin-bottom: 0;
+  border: 0;
+  padding-bottom: 0;
+}
+
+.card .card-header .header-title .card-title {
+  margin-bottom: 0;
+}
+
+.card-header .card-title {
+  margin-bottom: 0;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Title */
+.card-header h4 {
+  color: #F9B707;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* checkbox buttons */
+.card-header .btn-group .btn {
+  background-color: #02030a;
+  color: #F9B707;
+  border: 1px solid rgba(249, 183, 7, 0.25);
+  padding: 4px 10px;
+}
+
+/* active */
+.card-header .btn.active {
+  background-color: #F9B707;
+  color: #000; /* black text for contrast */
+}
