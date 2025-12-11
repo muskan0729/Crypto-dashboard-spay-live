@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom"; // ✅ add us
 import { usePost } from "../hooks/usePost";
 import useAutoFetch from "../hooks/useAutoFetch";
 import { useGet } from "../hooks/useGet";
+import "../css/header.css";
 
 export const Header = ({ onMenuClick }) => {
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ export const Header = ({ onMenuClick }) => {
   };
 
   return (
-    <nav className="flex items-center justify-between w-full px-4 py-3 bg-white shadow-lg shadow-indigo-500/50">
+    <nav className="flex items-center justify-between w-full px-4 py-3 bg-sidebarbg bg-sidebarbtm">
       <div className="flex items-center gap-4">
         <button onClick={onMenuClick} className="md:hidden text-2xl text-blue-600">☰</button>
 
@@ -71,7 +72,7 @@ export const Header = ({ onMenuClick }) => {
         {showButton && (
           <button
             onClick={handleToggleRole}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-medium"
+            className="bg-switchbtn text-black px-3 py-1 rounded-lg text-sm font-medium"
           >
             Switch Role: {role === "admin" ? "admin" : "crypto"}
           </button>
@@ -112,7 +113,6 @@ export const Header = ({ onMenuClick }) => {
           </>
         )}
       </div>
-
       {/* Profile Dropdown */}
       <div className="relative" ref={dropdownRef}>
         <button onClick={() => setOpen(!open)} className="flex items-center focus:outline-none">

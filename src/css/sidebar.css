@@ -11,3 +11,22 @@
   background: #f3f4f6;
 }
 
+.bg-sidebarbg {
+  background-color: #10182F;  
+}
+
+.bg-sidebarbtm {
+  background-color: #10182F;  
+}
+
+.bg-sidebarmenu {
+  background-color: #000411;
+  color: #F9B707; 
+}
+
+.bg-sidebarmenuhvr:hover {
+  background:#000411 !important;
+  color:#F9B707 !important;
+}
+
+

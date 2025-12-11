@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { Outlet } from "react-router-dom";
+import "../css/layout.css";
 
 const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex bg-gray-100 relative">
+    <div className="min-h-screen flex bg-mainbg relative">
       {/* Sidebar — visible fixed on desktop, overlay on mobile */}
       <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
 
@@ -23,7 +24,7 @@ const Layout = () => {
 
         {/* Main Body */}
         <main className="flex-1 px-6 py-6 fixed md:relative top-[80px] w-full h-[calc(100vh-80px)] md:h-auto md:static md:overflow-y-visible overflow-y-auto overflow-x-hidden md:overflow-x-visible">
-          <div className="bg-white shadow-md rounded-lg w-full max-w-5xl  mx-auto">
+          <div className="bg-mainlyt shadow-md rounded-lg w-full max-w-5xl  mx-auto">
             <Outlet />
           </div>
         </main>
