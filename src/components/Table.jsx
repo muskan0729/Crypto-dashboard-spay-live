@@ -7,7 +7,6 @@
 // import "react-datepicker/dist/react-datepicker.css";
 // import { CustomSelect } from "./CustomSelect";
 
-
 // const Table = ({
 //   columns,
 //   data,
@@ -104,12 +103,11 @@
 //       const matchesSearch = Object.values(row).some((val) =>
 //         String(val).toLowerCase().includes(search.toLowerCase())
 //       );
-      
+
 //       const matchesStatus =
 //         !statusFilter ||
 //         statusFilter === "all" ||
 //         String(row.status).toLowerCase() === statusFilter.toLowerCase();
-      
 
 //         const rawDate = row.date;
 //         const rowDate = new Date(row.date?.split("-")[0]);        //topup settlement
@@ -117,7 +115,7 @@
 //       const matchesDate =
 //         (!startDate || rowDate >= startDate) &&
 //         (!endDate || rowDate <= endDate);
-      
+
 //         const matchesMerchant =
 //         !selectedMerchant || row.user_id === selectedMerchant.value;
 
@@ -126,12 +124,9 @@
 //     });
 //   }, [search, statusFilter, startDate, endDate, selectedMerchant, data]);
 
-
-
-
 //   const totalSuccessAmount = useMemo(() => {
 //     if (!filteredData?.length) return 0;
-  
+
 //     return filteredData
 //       .filter((row) => String(row.status).toLowerCase() === "success")
 //       .reduce((sum, row) => sum + (isNaN(row.numericAmount) ? 0 : row.numericAmount), 0);
@@ -189,7 +184,7 @@
 //   // ✅ Months/Years for custom header in DatePicker
 //   const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 //   const years = Array.from({ length: 20 }, (_, i) => 2020 + i);
-  
+
 //   const customHeader = ({ date, changeMonth, changeYear }) => (
 //     <div className="flex justify-between items-center px-2 py-1 bg-gradient-to-r from-sky-200 to-indigo-200 rounded-t-lg">
 //       <select
@@ -199,7 +194,7 @@
 //       >
 //         {months.map((month) => <option key={month}>{month}</option>)}
 //       </select>
-  
+
 //       <select
 //         value={date.getFullYear()}
 //         onChange={(e) => changeYear(Number(e.target.value))}
@@ -209,8 +204,6 @@
 //       </select>
 //     </div>
 //   );
-
-  
 
 //   return (
 //     <div className="w-full">
@@ -307,7 +300,7 @@
 //                   )}
 //                 </div>
 //               )}
-              
+
 //               <Button
 //                 className="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg shadow-md transition"
 //                 onClick={() => {
@@ -330,7 +323,7 @@
 //                 <span>Total Successful: ₹{totalSuccessAmount.toFixed(2)}</span>
 //               </div>
 //             )}
-            
+
 //           </div>
 
 //         </div>
@@ -397,7 +390,7 @@
 //           {/* Pagination */}
 //           {showPagination && (
 //             <div className="flex flex-col md:flex-row justify-between items-center bg-white px-4 py-3 rounded-b-lg border-t border-sky-200 mt-3">
-    
+
 //               <div className="flex items-center gap-2 text-sm text-gray-700">
 //                 <span>Show</span>
 //                 <select value={entriesPerPage} onChange={(e) => { setEntriesPerPage(Number(e.target.value)); setCurrentPage(1); }} className="border border-gray-300 rounded-md px-2 py-1 text-sm focus:ring-1 focus:ring-sky-400 focus:outline-none">
@@ -408,7 +401,7 @@
 //                 </select>
 //                 <span>entries</span>
 //               </div>
-    
+
 //               <div className="flex items-center gap-2 mt-2 md:mt-0">
 //                 <Button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1} className={`px-3 py-1 text-sm rounded-md font-medium transition ${currentPage === 1 ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-gradient-to-r from-sky-200 to-indigo-200 text-sky-900 hover:from-sky-300 hover:to-indigo-300"}`}>Prev</Button>
 //                 <span className="text-sm text-gray-700">Page <span className="font-semibold">{currentPage}</span></span>
@@ -434,7 +427,6 @@
 // };
 
 // export default Table;
-
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import Button from "./Button";
@@ -501,7 +493,8 @@ const Table = ({
     setShowConfirmModal(true);
   };
 
-  const modifiedEndpoint = endPoint && recordId ? `${endPoint}/${recordId}` : null;
+  const modifiedEndpoint =
+    endPoint && recordId ? `${endPoint}/${recordId}` : null;
   const { execute: deleteRecord } = usePost(modifiedEndpoint || "");
 
   const handleDelete = async (e) => {
@@ -544,12 +537,7 @@ const Table = ({
         !selectedMerchant || row.user_id === selectedMerchant.value;
 
       setCurrentPage(1);
-      return (
-        matchesSearch &&
-        matchesStatus &&
-        matchesDate &&
-        matchesMerchant
-      );
+      return matchesSearch && matchesStatus && matchesDate && matchesMerchant;
     });
   }, [search, statusFilter, startDate, endDate, selectedMerchant, data]);
 
@@ -557,18 +545,27 @@ const Table = ({
     if (!filteredData?.length) return 0;
 
     return filteredData
-      .filter(
-        (row) => String(row.status).toLowerCase() === "success"
-      )
+      .filter((row) => String(row.status).toLowerCase() === "success")
       .reduce(
-        (sum, row) =>
-          sum + (isNaN(row.numericAmount) ? 0 : row.numericAmount),
+        (sum, row) => sum + (isNaN(row.numericAmount) ? 0 : row.numericAmount),
         0
       );
   }, [filteredData]);
 
-  const months = ["Jan","Feb","Mar","Apr","May","Jun",
-    "Jul","Aug","Sep","Oct","Nov","Dec"];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   const years = Array.from({ length: 20 }, (_, i) => 2020 + i);
 
   const customHeader = ({ date, changeMonth, changeYear }) => (
@@ -597,37 +594,47 @@ const Table = ({
 
   return (
     <div className="w-full">
-
       {/* FILTER BAR (unchanged) */}
-      {(showSearch || showStatusFilter || showExport || showDateFilter || showSelectUserFilter) && (
-        <div className="w-full bg-white shadow-md border border-sky-200 rounded-xl p-4 mb-4">
+      {(showSearch ||
+        showStatusFilter ||
+        showExport ||
+        showDateFilter ||
+        showSelectUserFilter) && (
+        <div className="w-full bg-[#0c1222] shadow-md shadow-[#f2b207]/40 rounded-xl p-4 mb-4">
           <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
+            {/* LEFT SIDE FILTERS */}
             <div className="flex flex-wrap items-center gap-4">
-
+              {/* 🔍 Search */}
               {showSearch && (
                 <div className="relative w-56">
                   <i className="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400"></i>
                   <input
                     type="text"
                     placeholder="Search..."
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-sky-400 outline-none"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg 
+                         bg-[#131b33] text-white border border-gray-700 
+                         shadow-sm focus:ring-2 focus:ring-[#FFD700] outline-none"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
               )}
 
+              {/* 🧍‍♂️ Merchant Filter */}
               {showSelectUserFilter && (
-                <div className="w-56">
+                <div className="w-56 bg-[#131b33] border border-[#FFD700] rounded-lg p-2 shadow-md">
                   <CustomSelect
                     options={selectData}
                     placeholder="Select Merchant"
                     value={selectedMerchant}
                     onChange={(option) => setSelectedMerchant(option)}
+                    className="bg-[#131b33] text-white border border-[#FFD700] 
+                         rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
                   />
                 </div>
               )}
 
+              {/* 📅 Date Filters */}
               {showDateFilter && (
                 <div className="flex items-center gap-2">
                   <DatePicker
@@ -637,10 +644,11 @@ const Table = ({
                     startDate={startDate}
                     endDate={endDate}
                     placeholderText="Start Date"
-                    className="border border-gray-300 rounded-lg px-3 py-2 shadow-sm w-40"
+                    className="border border-gray-700 bg-[#131b33] text-white 
+                         rounded-lg px-3 py-2 shadow-sm w-40 focus:ring-2 focus:ring-[#FFD700]"
                   />
 
-                  <span className="text-gray-500 font-medium">→</span>
+                  <span className="text-gray-400 font-medium">→</span>
 
                   <DatePicker
                     selected={endDate}
@@ -650,16 +658,20 @@ const Table = ({
                     endDate={endDate}
                     minDate={startDate}
                     placeholderText="End Date"
-                    className="border border-gray-300 rounded-lg px-3 py-2 shadow-sm w-40"
+                    className="border border-gray-700 bg-[#131b33] text-white 
+                         rounded-lg px-3 py-2 shadow-sm w-40 focus:ring-2 focus:ring-[#FFD700]"
                   />
                 </div>
               )}
 
+              {/* 📌 Status Filter */}
               {showStatusFilter && (
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="border border-gray-300 bg-white rounded-lg px-3 py-2 shadow-sm font-medium"
+                  className="border border-gray-700 bg-[#131b33] text-white 
+                       rounded-lg px-3 py-2 shadow-sm font-medium 
+                       focus:ring-2 focus:ring-[#FFD700]"
                 >
                   <option value="all">All</option>
                   {statusList?.map((item, index) => (
@@ -670,74 +682,32 @@ const Table = ({
                 </select>
               )}
             </div>
-
-            {/* RIGHT SIDE: Export + Clear */}
-            <div className="flex items-center gap-3">
-              {showExport && (
-                <div className="relative">
-                  <button
-                    onClick={() => setOpenExport(!openExport)}
-                    className="bg-yellow-400 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500 transition flex items-center gap-2"
-                  >
-                    <i className="fa-solid fa-download"></i> Export
-                  </button>
-
-                  {openExport && (
-                    <div className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-2 w-40 z-50">
-                      <button onClick={exportCSV} className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-md">CSV</button>
-                      <button onClick={exportJSON} className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-md">JSON</button>
-                      <button onClick={exportTXT} className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-md">TEXT</button>
-                      <button onClick={exportSQL} className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-md">SQL</button>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              <Button
-                className="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg shadow-md transition"
-                onClick={() => {
-                  setStartDate(null);
-                  setEndDate(null);
-                  setStatusFilter("all");
-                  setSearch("");
-                  setSelectedMerchant(null);
-                }}
-              >
-                Clear All
-              </Button>
-            </div>
-          </div>
-
-          {/* Total Successful (unchanged) */}
-          <div className="flex justify-end w-full mt-2">
-            {showSelectUserFilter && (
-              <div className="flex items-center gap-2 text-sm md:text-base font-semibold text-green-700 bg-green-50 px-3 py-2 rounded-lg shadow-sm">
-                <i className="fa-solid fa-circle-check text-green-600"></i>
-                <span>Total Successful: ₹{totalSuccessAmount.toFixed(2)}</span>
-              </div>
-            )}
           </div>
         </div>
       )}
 
       {/* TABLE SECTION */}
-      <div className="bg-white rounded-lg shadow-lg w-full overflow-x-auto border border-sky-300 mt-6">
-
-        {/* ⭐ FIX: No min-w-max, no table-fixed, no nowrap */}
-        <table className="w-full text-sm text-left text-gray-700 border-collapse">
-
-          <thead className="uppercase text-white tracking-wide"
-            style={{ background: "linear-gradient(90deg, #D4AF37, #C5A23E)" }}
+      <div className="bg-[#10172e] rounded-lg shadow-lg w-full overflow-x-auto border border-[#FFD700] mt-6">
+        <table className="w-full text-sm text-left text-white border-collapse">
+          <thead
+            className="uppercase text-white tracking-wide"
+            style={{
+              background: "linear-gradient(90deg, #D4AF37, #C5A23E)",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.3)",
+            }}
           >
             <tr>
               {columns.map((column, index) => (
-                <th key={index} className="font-semibold text-md px-4 py-3 text-left border-b border-white/30">
+                <th
+                  key={index}
+                  className="font-semibold text-md px-4 py-3 text-left border-b border-white/300 tracking-wide"
+                >
                   {column.header}
                 </th>
               ))}
 
               {showDeleteColumn && (
-                <th className="font-semibold text-md px-4 py-3 text-left border-b border-white/30">
+                <th className="font-semibold text-md px-4 py-3 text-left border-b text-white/300 tracking-wide">
                   Delete
                 </th>
               )}
@@ -754,15 +724,14 @@ const Table = ({
                 .map((row, rowIndex) => (
                   <tr
                     key={row.id}
-                    className={`${rowIndex % 2 === 0
-                        ? "bg-[#FFF7E0]"
-                        : "bg-[#FFFAF0]"
-                      } hover:bg-[#F5E1A4] transition-all duration-150 border-b border-[#C5A23E]`}
+                    className={`${
+                      rowIndex % 2 === 0 ? "bg-[#1E2A47]" : "bg-[#10172e]"
+                    } hover:bg-[#303d66] transition-all duration-150 border-b border-[#FFD700]`}
                   >
                     {columns.map((column, colIndex) => (
                       <td
                         key={colIndex}
-                        className="px-4 py-3 text-gray-800 text-left text-sm md:text-base break-words"
+                        className="px-4 py-3 text-white-800 text-left text-md md:text-base break-words"
                       >
                         {column.Cell
                           ? column.Cell({
@@ -778,7 +747,7 @@ const Table = ({
                         <Button
                           type="button"
                           onClick={() => handleConfirmModal(row.id)}
-                          className="text-red-800 p-3 rounded-xl cursor-pointer"
+                          className="text-red-800 p-3 rounded-xl cursor-pointer hover:bg-red-500 transition duration-150"
                         >
                           <i className="fa-solid fa-trash fa-lg"></i>
                         </Button>
@@ -790,11 +759,9 @@ const Table = ({
               <tr>
                 <td
                   colSpan={
-                    showDeleteColumn
-                      ? columns.length + 1
-                      : columns.length
+                    showDeleteColumn ? columns.length + 1 : columns.length
                   }
-                  className="text-center text-gray-600 py-6 bg-white font-medium"
+                  className="text-center text-white-600 py-6 bg-[#10172e] font-medium"
                 >
                   No data found
                 </td>
@@ -803,10 +770,10 @@ const Table = ({
           </tbody>
         </table>
 
-        {/* Pagination (unchanged) */}
+        {/* Pagination */}
         {showPagination && (
-          <div className="flex flex-col md:flex-row justify-between items-center bg-white px-4 py-3 rounded-b-lg border-t border-sky-200 mt-3">
-            <div className="flex items-center gap-2 text-sm text-gray-700">
+          <div className="flex flex-col md:flex-row justify-between items-center bg-[#10172e] px-4 py-3 rounded-b-lg border-t border-[#FFD700] mt-3">
+            <div className="flex items-center gap-2 text-sm text-white">
               <span>Show</span>
               <select
                 value={entriesPerPage}
@@ -814,7 +781,7 @@ const Table = ({
                   setEntriesPerPage(Number(e.target.value));
                   setCurrentPage(1);
                 }}
-                className="border border-gray-300 rounded-md px-2 py-1 text-sm focus:ring-1 focus:ring-sky-400 focus:outline-none"
+                className="border border-[#FFD700] rounded-md px-2 py-1 text-sm text-[#FFD700] focus:ring-2 focus:ring-[#D4AF37] focus:outline-none"
               >
                 <option value="5">5</option>
                 <option value="10">10</option>
@@ -826,20 +793,18 @@ const Table = ({
 
             <div className="flex items-center gap-2 mt-2 md:mt-0">
               <Button
-                onClick={() =>
-                  setCurrentPage((prev) => Math.max(prev - 1, 1))
-                }
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
                 className={`px-3 py-1 text-sm rounded-md font-medium transition ${
                   currentPage === 1
-                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-gradient-to-r from-sky-200 to-indigo-200 text-sky-900 hover:from-sky-300 hover:to-indigo-300"
+                    ? "bg-gray-500 text-gray-300 cursor-not-allowed"
+                    : "bg-gradient-to-r from-[#FFD700] to-[#D4AF37] text-black hover:from-[#D4AF37] hover:to-[#FFD700]"
                 }`}
               >
                 Prev
               </Button>
 
-              <span className="text-sm text-gray-700">
+              <span className="text-sm text-white">
                 Page <span className="font-semibold">{currentPage}</span>
               </span>
 
@@ -858,8 +823,8 @@ const Table = ({
                 className={`px-3 py-1 text-sm rounded-md font-medium transition ${
                   currentPage ===
                   Math.ceil(filteredData.length / entriesPerPage)
-                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-gradient-to-r from-sky-200 to-indigo-200 text-sky-900 hover:from-sky-300 hover:to-indigo-300"
+                    ? "bg-gray-500 text-gray-300 cursor-not-allowed"
+                    : "bg-gradient-to-r from-[#FFD700] to-[#D4AF37] text-black hover:from-[#D4AF37] hover:to-[#FFD700]"
                 }`}
               >
                 Next
@@ -868,7 +833,6 @@ const Table = ({
           </div>
         )}
       </div>
-
       <ConfirmModal
         showConfirmModal={showConfirmModal}
         handleConfirmModal={() => setShowConfirmModal(false)}

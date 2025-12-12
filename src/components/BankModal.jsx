@@ -48,7 +48,7 @@ export const BankModal = ({ showModal, handleModal, activeTab, refreshTable }) =
           onClick={() => handleModal(false)}
         >
           <div
-            className="bg-white border rounded-lg shadow-lg max-w-3xl w-full mx-2 p-6 transform transition-all scale-100"
+            className="bg-[#10172e] border rounded-lg shadow-lg max-w-3xl w-full mx-2 p-6 transform transition-all scale-100"
             onClick={(e) => e.stopPropagation()}
           >
             <div
@@ -98,13 +98,15 @@ export const BankModal = ({ showModal, handleModal, activeTab, refreshTable }) =
                   )}
                 </div>
                 <div className="relative z-0 w-full mb-5 group">
-                  <label className="block text-sm font-medium text-gray-500 mb-1">
-                    Bank Type
-                  </label>
-                  <div className="w-full border rounded-md p-2 text-sm bg-gray-100 text-gray-900">
-                    {activeTab === "payin" ? "Payin" : "Payout"}
-                  </div>
-                </div>
+  <label className="block text-sm font-medium text-gray-400 mb-1">
+    Bank Type
+  </label>
+
+  <div className="w-full border border-gray-700 rounded-md p-2 text-sm bg-gray-800 text-gray-100">
+    {activeTab === "payin" ? "Payin" : "Payout"}
+  </div>
+</div>
+
               </div>
               <div className="flex justify-center mt-6">
                 <Button

@@ -100,9 +100,9 @@ const OnboardBank = () => {
   ];
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-4 bg-[#10172e] space-y-4">
       {/* Header */}
-      <div className="bg-gradient-to-t from-sky-500 to-indigo-500 rounded-lg flex justify-between items-center p-4 shadow-md">
+      <div className="bg-[#10172e] rounded-lg flex justify-between items-center p-4 shadow-md">
         <h4 className="font-bold text-white text-xl">Onboard Bank</h4>
         <Button
           className="bg-white border border-sky-200 text-sky-800 font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-sky-50 hover:border-sky-300 transition-all duration-200"
@@ -136,7 +136,7 @@ const OnboardBank = () => {
       </div>
 
       {/* Table */}
-      <div className="bg-white shadow-lg rounded-lg p-4">
+      <div className="bg-[#10172e] shadow-lg rounded-lg p-4">
         {activeTab === "payin" ? (
           payinLoading ? <TableSkeleton /> : null
         ) : payoutLoading ? (

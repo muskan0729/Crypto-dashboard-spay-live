@@ -145,10 +145,10 @@ export const SchemeModal = ({
       ></div>
 
       <div
-        className="fixed top-10 left-1/2 transform -translate-x-1/2 z-50 bg-white border rounded-lg w-full max-w-xl"
+        className="fixed top-10 bg-black left-1/2 transform -translate-x-1/2 z-50 bg-white border rounded-lg w-full max-w-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white font-medium rounded-t-lg px-5 py-3 flex justify-between items-center">
+        <div className="bg-[#303d66] text-white font-medium rounded-t-lg px-5 py-3 flex justify-between items-center">
           <h3 className="text-lg font-semibold">
             {editData ? "Edit Scheme" : "Add New Scheme"}
           </h3>
@@ -160,10 +160,10 @@ export const SchemeModal = ({
           </Button>
         </div>
 
-        <form className="p-5" onSubmit={handleSubmit}>
+        <form className="p-5 bg-[#0d1940] shadow-[0_4px_10px_rgba(255,215,0,0.7)] rounded-lg" onSubmit={handleSubmit}>
           {/* Scheme Name */}
           <div className="mb-5">
-            <label className="block mb-1 text-sm font-medium">
+            <label className="block mb-1 text-sm font-medium text-[#d59d08]">
               Scheme Name
             </label>
             <input
@@ -172,7 +172,7 @@ export const SchemeModal = ({
               placeholder="Enter Scheme Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border rounded-lg p-2 text-sm"
+              className="w-full border border-[#d59d08] text-[#d59d08] rounded-lg p-2 text-sm"
             />
           </div>
 
@@ -190,8 +190,8 @@ export const SchemeModal = ({
                 return (
                   <li
                     key={tab}
-                    className={`me-2 hover:text-blue-900 ${
-                      activeTab === tab ? "text-blue-500" : "text-gray-500"
+                    className={`me-2 hover:text-yellow-200 ${
+                      activeTab === tab ? "text-yellow-500" : "text-gray-500"
                     }`}
                   >
                     <Button
@@ -213,16 +213,16 @@ export const SchemeModal = ({
             <table className="text-sm text-left text-gray-500 w-full">
               <thead className="text-md text-white uppercase bg-gradient-to-r from-blue-400 to-blue-700">
                 <tr>
-                  <th className="px-6 py-3">Operator</th>
-                  <th className="px-6 py-3">Type</th>
-                  <th className="px-6 py-3">Amount/Percentage</th>
+                  <th className="px-6 py-3 text-yellow-500">Operator</th>
+                  <th className="px-6 py-3 text-yellow-500">Type</th>
+                  <th className="px-6 py-3 text-yellow-500">Amount/Percentage</th>
                 </tr>
               </thead>
               <tbody>
                 {/* Payin */}
                 {activeTab === "tab1" && (
                   <tr className="border-b border-gray-500">
-                    <td className="px-6 py-4 font-medium text-gray-900">
+                    <td className="px-6 py-4 font-medium text-white-500">
                       Payin Commission Slab
                     </td>
                     <td className="px-6 py-4">
@@ -253,7 +253,7 @@ export const SchemeModal = ({
                 {activeTab === "tab2" && (
                   <>
                     <tr className="border-b border-gray-500">
-                      <td className="px-6 py-4 font-medium text-gray-900">
+                      <td className="px-6 py-4 font-medium text-white-500">
                         Payout Below 700
                       </td>
                       <td className="px-6 py-4">
@@ -346,7 +346,7 @@ export const SchemeModal = ({
                             checked={selectedRolling === "payin"}
                             onChange={() => setSelectedRolling("payin")}
                           />
-                          <span>Rolling Payin Amount</span>
+                          <span className="text-white">Rolling Payin Amount</span>
                         </label>
                       </td>
                       <td className="px-6 py-4">
@@ -396,7 +396,7 @@ export const SchemeModal = ({
                             checked={selectedRolling === "fixed"}
                             onChange={() => setSelectedRolling("fixed")}
                           />
-                          <span>Rolling Fixed Amount</span>
+                          <span className="text-white">Rolling Fixed Amount</span>
                         </label>
                       </td>
                       <td className="px-6 py-4">
@@ -440,7 +440,7 @@ export const SchemeModal = ({
                 {/* GST */}
                 {activeTab === "tab4" && (
                   <tr className="border-b border-gray-500">
-                    <td className="px-6 py-4 font-medium text-gray-900">
+                    <td className="px-6 py-4 font-medium text-white-900">
                       Goods and Service Tax
                     </td>
                     <td className="px-6 py-4">

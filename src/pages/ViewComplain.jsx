@@ -272,7 +272,7 @@ export const ViewComplain = () => {
       <div className="w-full flex justify-center py-8">
         <div className="w-full max-w-[1140px] px-4 lg:px-6 space-y-6">
           {/* -------- HEADER: View Complain -------- */}
-          <div className="bg-gradient-to-t from-sky-500 to-indigo-500 flex justify-between items-center rounded-lg p-4 shadow-md">
+          <div className="bg-[#10172e] flex justify-between items-center rounded-lg p-4 shadow-md shadow-[#cca83d]">
             <h4 className="font-bold text-white text-lg">View Complain</h4>
             <Button
               type="button"
@@ -304,116 +304,132 @@ export const ViewComplain = () => {
       {/* -------- MODALS -------- */}
       {showModal && (
         <div
-          className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50"
-          onClick={() => setShowModal(false)}
-        >
-          <div
-            className="bg-white border rounded-lg shadow-lg max-w-3xl w-full mx-2 p-6 transform transition-all scale-100"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div
-              className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 
-            font-medium rounded-t-lg text-sm px-5 py-3 flex justify-between items-center"
-            >
-              <h4 className="font-bold text-white text-lg py-2">
-                {editData ? "Edit Complaint" : "Register Complaint"}
-              </h4>
-              <Button
-                onClick={() => setShowModal(false)}
-                className="flex items-center justify-center w-8 h-8 rounded-full bg-white text-red-500 font-bold text-lg shadow-md hover:bg-red-500 hover:text-white transition"
-              >
-                <i className="fa-solid fa-xmark fa-lg"></i>
-              </Button>
-            </div>
+  className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50"
+  onClick={() => setShowModal(false)}
+>
+  <div
+    className="bg-[#0f1629] border border-gray-700 rounded-lg shadow-2xl max-w-3xl w-full mx-2 p-0 transform transition-all scale-100"
+    onClick={(e) => e.stopPropagation()}
+  >
+    {/* Modal Header */}
+    <div
+      className="text-white bg-gradient-to-r from-blue-700 via-blue-800 to-blue-900 
+      font-medium rounded-t-lg text-sm px-5 py-3 flex justify-between items-center"
+    >
+      <h4 className="font-bold text-white text-lg py-1">
+        {editData ? "Edit Complaint" : "Register Complaint"}
+      </h4>
 
-            <form className="p-6" onSubmit={handleSubmit}>
-              <div className="grid md:grid-cols-1 gap-6 px-4">
-                {/* User Id */}
-                <div className="relative z-0 w-full mb-5 group">
-                  <input
-                    type="text"
-                    name="user_id"
-                    value={ticketFormData.user_id}
-                    onChange={handleChange}
-                    placeholder="User Id"
-                    className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border ${errors?.user_id ? "border-red-500" : "border-gray-300"
-                      }`}
-                    required
-                  />
-                </div>
+      <Button
+        onClick={() => setShowModal(false)}
+        className="flex items-center justify-center w-8 h-8 rounded-full 
+                   bg-gray-200 text-red-600 font-bold text-lg shadow-md 
+                   hover:bg-red-600 hover:text-white transition"
+      >
+        <i className="fa-solid fa-xmark fa-lg"></i>
+      </Button>
+    </div>
 
-                {/* Subject */}
-                <div className="relative z-0 w-full mb-5 group">
-                  <input
-                    type="text"
-                    name="subject"
-                    value={ticketFormData.subject}
-                    onChange={handleChange}
-                    placeholder="Subject"
-                    className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border ${errors?.subject ? "border-red-500" : "border-gray-300"
-                      }`}
-                    required
-                  />
-                </div>
+    {/* Modal Body */}
+    <form className="p-6" onSubmit={handleSubmit}>
+      <div className="grid md:grid-cols-1 gap-6 px-2">
 
-                {/* Description */}
-                <div className="relative z-0 w-full mb-5 group">
-                  <textarea
-                    name="description"
-                    value={ticketFormData.description}
-                    onChange={handleChange}
-                    placeholder="Description"
-                    className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border ${errors?.description ? "border-red-500" : "border-gray-300"
-                      }`}
-                    rows={4}
-                    required
-                  />
-                </div>
-
-                {/* Attachment */}
-                <div className="relative z-0 w-full mb-5 group">
-                  <input
-                    type="file"
-                    name="attachment"
-                    onChange={handleChange}
-                    className={`block px-2.5 pb-2.5 pt-2 w-full text-sm text-gray-900 bg-transparent rounded-lg border ${errors?.attachment ? "border-red-500" : "border-gray-300"
-                      }`}
-                  />
-                </div>
-
-                {/* Assigned To */}
-                <div className="relative z-0 w-full mb-5 group">
-                  <input
-                    type="text"
-                    name="assigned_to"
-                    value={ticketFormData.assigned_to}
-                    onChange={handleChange}
-                    placeholder="Assigned To"
-                    className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border ${errors?.assigned_to ? "border-red-500" : "border-gray-300"
-                      }`}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="flex justify-center mt-6">
-                <Button
-                  type="submit"
-                  disabled={creating || updating}
-                  className="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-                >
-                  {editData
-                    ? updating
-                      ? "Updating..."
-                      : "Update"
-                    : creating
-                      ? "Submitting..."
-                      : "Submit"}
-                </Button>
-              </div>
-            </form>
-          </div>
+        {/* User Id */}
+        <div className="relative z-0 w-full mb-4 group">
+          <input
+            type="text"
+            name="user_id"
+            value={ticketFormData.user_id}
+            onChange={handleChange}
+            placeholder="User Id"
+            className={`block px-3 py-3 w-full text-sm text-white bg-[#1a233b] rounded-lg border 
+              ${errors?.user_id ? "border-red-500" : "border-gray-600"} 
+              focus:ring-2 focus:ring-blue-500 outline-none`}
+            required
+          />
         </div>
+
+        {/* Subject */}
+        <div className="relative w-full mb-4 group">
+          <input
+            type="text"
+            name="subject"
+            value={ticketFormData.subject}
+            onChange={handleChange}
+            placeholder="Subject"
+            className={`block px-3 py-3 w-full text-sm text-white bg-[#1a233b] rounded-lg border 
+              ${errors?.subject ? "border-red-500" : "border-gray-600"} 
+              focus:ring-2 focus:ring-blue-500 outline-none`}
+            required
+          />
+        </div>
+
+        {/* Description */}
+        <div className="relative w-full mb-4 group">
+          <textarea
+            name="description"
+            value={ticketFormData.description}
+            onChange={handleChange}
+            placeholder="Description"
+            rows={4}
+            className={`block px-3 py-3 w-full text-sm text-white bg-[#1a233b] rounded-lg border 
+              ${errors?.description ? "border-red-500" : "border-gray-600"} 
+              focus:ring-2 focus:ring-blue-500 outline-none`}
+            required
+          />
+        </div>
+
+        {/* Attachment */}
+        <div className="relative w-full mb-4 group">
+          <input
+            type="file"
+            name="attachment"
+            onChange={handleChange}
+            className={`block px-3 py-2 w-full text-sm text-gray-300 bg-[#1a233b] rounded-lg border 
+              ${errors?.attachment ? "border-red-500" : "border-gray-600"} 
+              file:bg-blue-700 file:text-white file:px-4 file:py-2 file:rounded-md 
+              focus:ring-2 focus:ring-blue-500 outline-none`}
+          />
+        </div>
+
+        {/* Assigned To */}
+        <div className="relative w-full mb-4 group">
+          <input
+            type="text"
+            name="assigned_to"
+            value={ticketFormData.assigned_to}
+            onChange={handleChange}
+            placeholder="Assigned To"
+            className={`block px-3 py-3 w-full text-sm text-white bg-[#1a233b] rounded-lg border 
+              ${errors?.assigned_to ? "border-red-500" : "border-gray-600"} 
+              focus:ring-2 focus:ring-blue-500 outline-none`}
+            required
+          />
+        </div>
+      </div>
+
+      {/* Submit Button */}
+      <div className="flex justify-center mt-6">
+        <Button
+          type="submit"
+          disabled={creating || updating}
+          className="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 
+                     focus:ring-4 focus:outline-none focus:ring-blue-500 
+                     font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+        >
+          {editData
+            ? updating
+              ? "Updating..."
+              : "Update"
+            : creating
+            ? "Submitting..."
+            : "Submit"}
+        </Button>
+      </div>
+    </form>
+  </div>
+</div>
+
       )}
       {showViewMessageModal && (
         <div

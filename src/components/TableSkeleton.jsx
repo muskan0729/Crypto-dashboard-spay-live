@@ -2,7 +2,7 @@ import React from "react";
 
 export const TableSkeleton = () => {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-md p-4">
+    <div className="bg-[#10172e] border border-gray-200 rounded-lg shadow-md p-4">
       <div className="h-6 w-40 bg-gray-200 rounded mb-4"></div>
       <div className="space-y-3">
         {[...Array(6)].map((_, i) => (

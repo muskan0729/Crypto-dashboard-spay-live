@@ -117,7 +117,7 @@ const LoadWallet = () => {
   return (
     <div className="p-4 space-y-4">
       {/* Header */}
-      <div className="bg-gradient-to-t from-sky-500 to-indigo-500 rounded-lg flex justify-between items-center p-4 shadow-md">
+      <div className="bg-[#10172e] shadow shadow-[#b88909] rounded-lg flex justify-between items-center p-4 shadow-md">
         <h4 className="font-bold text-white text-xl">Load Wallet</h4>
       </div>
 
@@ -137,78 +137,94 @@ const LoadWallet = () => {
 
       {/* Modal */}
       {showModal && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50"
-          onClick={() => setShowModal(false)}
-        >
-          <div
-            className="bg-white border rounded-lg shadow-lg max-w-md w-full mx-2 transform transition-all scale-100"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className="flex justify-between items-center bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white rounded-t-lg px-5 py-3">
-              <h3 className="text-lg font-semibold">
-                {modalType === "load"
-                  ? `Wallet Topup for ${selectedUser?.name}`
-                  : `Reverse Topup for ${selectedUser?.name}`}
-              </h3>
-              <Button
-                onClick={() => setShowModal(false)}
-                className="flex items-center justify-center w-8 h-8 rounded-full bg-white text-red-500 font-bold text-lg shadow-md hover:bg-red-500 hover:text-white transition"
-              >
-                <i className="fa-solid fa-xmark fa-lg"></i>
-              </Button>
-            </div>
+       <div
+  className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50"
+  onClick={() => setShowModal(false)}
+>
+  <div
+    className="bg-[#0f1629] border border-gray-700 rounded-lg shadow-2xl max-w-md w-full mx-2 transform transition-all scale-100"
+    onClick={(e) => e.stopPropagation()}
+  >
+    {/* Modal Header */}
+    <div className="flex justify-between items-center 
+                    bg-gradient-to-r from-[#b8860b] via-[#ffd700] to-[#b8860b] 
+                    text-black font-semibold rounded-t-lg px-5 py-3 shadow-md">
+      <h3 className="text-lg font-bold">
+        {modalType === "load"
+          ? `for ${selectedUser?.name}`
+          : `Reverse Topup for ${selectedUser?.name}`}
+      </h3>
 
-            {/* Modal Body */}
-            <form
-              className="p-6 space-y-4"
-              onSubmit={
-                modalType === "load"
-                  ? handleSubmitLoadWallet
-                  : handleSubmitReverseTopup
-              }
-            >
-              <div>
-                <label className="block mb-1 text-sm font-medium">
-                  Amount
-                </label>
-                <input
-                  name="payout_wallet"
-                  type="number"
-                  value={walletFormData.payout_wallet}
-                  onChange={handleChange}
-                  placeholder="Enter Amount"
-                  className="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-400 outline-none"
-                />
-              </div>
+      <Button
+        onClick={() => setShowModal(false)}
+        className="flex items-center justify-center w-8 h-8 rounded-full 
+                   bg-black/20 text-white border border-black/30 text-lg shadow 
+                   hover:bg-red-600 hover:text-white transition"
+      >
+        <i className="fa-solid fa-xmark fa-lg"></i>
+      </Button>
+    </div>
 
-              <div>
-                <label className="block mb-1 text-sm font-medium">Remark</label>
-                <textarea
-                  rows="3"
-                  name="remark"
-                  value={walletFormData.remark}
-                  onChange={handleChange}
-                  placeholder="Enter Remark"
-                  className="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-400 outline-none"
-                />
-              </div>
+    {/* Modal Body */}
+    <form
+      className="p-6 space-y-4"
+      onSubmit={
+        modalType === "load"
+          ? handleSubmitLoadWallet
+          : handleSubmitReverseTopup
+      }
+    >
+      {/* Amount */}
+      <div>
+        <label className="block mb-1 text-sm font-medium text-gray-300">
+          Amount
+        </label>
+        <input
+          name="payout_wallet"
+          type="number"
+          value={walletFormData.payout_wallet}
+          onChange={handleChange}
+          placeholder="Enter Amount"
+          className="w-full bg-[#19223c] text-white border border-gray-700 
+                     rounded-lg p-2 text-sm 
+                     focus:ring-2 focus:ring-[#FFD700] outline-none"
+        />
+      </div>
 
-              <Button
-                type="submit"
-                onClick={
-                  modalType === "load"
-                    ? handleSubmitLoadWallet
-                    : handleSubmitReverseTopup
-                }
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg shadow-md transition"
-              >
-                Submit
-              </Button>
-            </form>
-          </div>
-        </div>
+      {/* Remark */}
+      <div>
+        <label className="block mb-1 text-sm font-medium text-gray-300">
+          Remark
+        </label>
+        <textarea
+          rows="3"
+          name="remark"
+          value={walletFormData.remark}
+          onChange={handleChange}
+          placeholder="Enter Remark"
+          className="w-full bg-[#19223c] text-white border border-gray-700 
+                     rounded-lg p-2 text-sm 
+                     focus:ring-2 focus:ring-[#FFD700] outline-none"
+        />
+      </div>
+
+      {/* Submit Button */}
+      <Button
+        type="submit"
+        onClick={
+          modalType === "load"
+            ? handleSubmitLoadWallet
+            : handleSubmitReverseTopup
+        }
+        className="w-full bg-[#FFD700] hover:bg-[#e6c200] text-black 
+                   font-semibold px-5 py-2 rounded-lg shadow-md transition"
+      >
+        Submit
+      </Button>
+    </form>
+  </div>
+</div>
+
       )}
     </div>
   );
