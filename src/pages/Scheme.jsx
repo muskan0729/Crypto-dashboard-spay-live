@@ -20,9 +20,10 @@ const Scheme = () => {
     const handleChange = (checked) => {
       if (onToggle) onToggle(id, sqno, checked);
     };
-    return <Toggle defaultChecked={value === "Active"} onChange={handleChange} />;
+    return (
+      <Toggle defaultChecked={value === "Active"} onChange={handleChange} />
+    );
   };
-
 
   useEffect(() => {
     if (data?.data) {
@@ -88,18 +89,15 @@ const Scheme = () => {
   return (
     <div className="p-4 space-y-4">
       {/* Header */}
-      <div className="bg-gradient-to-t from-sky-500 to-indigo-500 rounded-lg flex justify-between items-center p-4 shadow-md">
+      <div className="bg-[#10172e] rounded-lg flex justify-between items-center p-4 shadow-md shadow-[#f2b407]">
         <h4 className="font-bold text-white text-xl">Scheme Manager</h4>
-      <Button
-  className="bg-white border border-sky-200 text-sky-800 font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-sky-50 hover:border-sky-300 transition-all duration-200"
-  onClick={handleModal}
->
-  ADD NEW
-</Button>
-
-
+        <Button
+          className="bg-white border border-sky-200 text-sky-800 font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-sky-50 hover:border-sky-300 transition-all duration-200"
+          onClick={handleModal}
+        >
+          ADD NEW
+        </Button>
       </div>
-
       <SchemeModal
         showModal={showModal}
         handleModal={handleModal}
@@ -118,7 +116,9 @@ const Scheme = () => {
           data={schemedata}
           className="shadow-lg rounded-lg overflow-hidden border border-gray-200"
           rowClassName={(rowIndex) =>
-            rowIndex % 2 === 0 ? "bg-white hover:bg-blue-50" : "bg-gray-50 hover:bg-blue-50"
+            rowIndex % 2 === 0
+              ? "bg-white hover:bg-blue-50"
+              : "bg-gray-50 hover:bg-blue-50"
           }
           paginationClassName="flex justify-end gap-2 mt-4"
           previousClassName="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm cursor-pointer transition"

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import logo from "../images/logo.png";
-import paymentGatewayBg from "../images/login-background.jpg";
+import paymentGatewayBg from "../images/lgoinbg.jpg";
 import { usePost } from "../hooks/usePost";
 import { useNavigate } from "react-router-dom";
 
@@ -25,7 +25,7 @@ function LoginForm() {
         localStorage.setItem("token", response.token);
         localStorage.setItem("email", response.user.email);
         localStorage.setItem("role", btoa(response.user.role_type));
-              localStorage.setItem("user", JSON.stringify(response.user));
+        localStorage.setItem("user", JSON.stringify(response.user));
         navigate("/dashboard", { replace: true });
       }
     } catch (err) {
@@ -34,38 +34,46 @@ function LoginForm() {
   };
 
   return (
-    <section className="bg-gray-100 min-h-screen flex items-center justify-center px-6">
+    <section className="bg-[#0b0f1d] min-h-screen flex items-center justify-center px-6 relative">
+      {/* Background Image */}
       <div
-        className="absolute inset-0 bg-no-repeat bg-center bg-cover opacity-70"
+        className="absolute inset-0 bg-no-repeat bg-center bg-cover opacity-20"
         style={{ backgroundImage: `url(${paymentGatewayBg})` }}
       ></div>
-      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-gray-200 opacity-90">
+
+      {/* Login Card */}
+      <div className="relative w-full max-w-md bg-[#10172e] rounded-2xl shadow-2xl p-8 border border-[#FFD700]">
+        {/* Logo */}
         <div className="flex justify-center mb-6">
-          <img className="w-70 mr-2" src={logo} alt="logo" />
+          <img className="w-32" src={logo} alt="logo" />
         </div>
-        <h1 className="text-xl font-bold mb-6 text-center text-blue-600">
+
+        {/* Heading */}
+        <h1 className="text-2xl font-bold mb-6 text-center text-[#FFD700]">
           Sign in to your account
         </h1>
-        <form onSubmit={handleSubmit} className="space-y-5">
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email */}
-          <div className="relative z-0 w-full mb-5">
+          <div className="relative z-0 w-full">
             <input
               type="email"
               name="email"
               id="email"
               value={formData.email}
               onChange={handleChange}
-              className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer ${
+              className={`block py-3 px-4 w-full text-sm text-[#FFD700] bg-black/20 backdrop-blur-sm border-0 border-b-2 appearance-none rounded-lg focus:outline-none focus:ring-0 peer ${
                 error?.errors.email
                   ? "border-red-500 focus:border-red-500"
-                  : "border-gray-300 focus:border-blue-600"
+                  : "border-[#FFD700] focus:border-[#D4AF37]"
               }`}
               placeholder=" "
               required
             />
             <label
               htmlFor="email"
-              className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-blue-600"
+              className="absolute text-sm text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 left-4 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-3 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-[#D4AF37]"
             >
               Email
             </label>
@@ -75,31 +83,32 @@ function LoginForm() {
           </div>
 
           {/* Password */}
-          <div className="relative z-0 w-full mb-5">
+          <div className="relative z-0 w-full">
             <input
               type={showPassword ? "text" : "password"}
               name="password"
               id="password"
               value={formData.password}
               onChange={handleChange}
-              className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer ${
+              className={`block py-3 px-4 w-full text-sm text-[#FFD700] bg-black/20 backdrop-blur-sm border-0 border-b-2 appearance-none rounded-lg focus:outline-none focus:ring-0 peer ${
                 error?.errors.password
                   ? "border-red-500 focus:border-red-500"
-                  : "border-gray-300 focus:border-blue-600"
+                  : "border-[#FFD700] focus:border-[#D4AF37]"
               }`}
               placeholder=" "
               required
             />
             <label
               htmlFor="password"
-              className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-blue-600"
+              className="absolute text-sm text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 left-4 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-3 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-[#D4AF37]"
             >
               Password
             </label>
 
+            {/* Toggle Password */}
             <button
               type="button"
-              className="absolute right-0 top-2.5 text-gray-500 hover:text-gray-700"
+              className="absolute right-3 top-3 text-gray-400 hover:text-gray-200 transition"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? (
@@ -152,11 +161,11 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex justify-center items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition focus:ring-4 focus:ring-blue-300 disabled:opacity-70"
+            className="w-full flex justify-center items-center gap-2 py-3 bg-gradient-to-r from-[#FFD700] to-[#D4AF37] hover:from-[#D4AF37] hover:to-[#FFD700] text-black rounded-xl font-semibold transition shadow-lg shadow-black/20 focus:ring-4 focus:ring-[#FFD700]/40 disabled:opacity-70"
           >
             {loading ? (
               <span className="flex items-center gap-2">
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></span>
                 Signing in...
               </span>
             ) : (

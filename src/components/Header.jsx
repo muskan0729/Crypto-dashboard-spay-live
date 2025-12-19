@@ -90,7 +90,7 @@ export const Header = ({ onMenuClick }) => {
                 </div>
               ))}
             </div>
-            <div className="flex items-center gap-6 md:hidden relative">
+            <div className="flex text-white items-center gap-6 md:hidden relative">
               {(role === "crypto" ? cryptoStats : userStats).map((item) => (
                 <div key={item.id} className="relative"
                   onMouseEnter={() => setActiveStat(item.id)}

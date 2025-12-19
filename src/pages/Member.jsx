@@ -12,8 +12,6 @@ import { useGet } from "../hooks/useGet";
 import { usePost } from "../hooks/usePost";
 import { useToast } from "../contexts/ToastContext";
 
-
-
 export const Member = () => {
   const toast = useToast();
   const [showModal, setShowModal] = useState(false);
@@ -21,7 +19,6 @@ export const Member = () => {
   const memberDetails = useNavigate();
   const [merchantData, setMerchantData] = useState([]);
   const [initialLoad, setInitialLoad] = useState(true);
-
 
   const { executePut: updateSingle } = usePut("/update-user-statuses");
   const { executePut: updateAll } = usePut("/payin-payout-statuses");
@@ -41,14 +38,19 @@ export const Member = () => {
     }
   };
 
-  const { data: dataOfMerchants, refetch: refetchOfMerchants, loading: merchantLoading } =
-    useAutoFetch("/get-merchants", 20000);
+  const {
+    data: dataOfMerchants,
+    refetch: refetchOfMerchants,
+    loading: merchantLoading,
+  } = useAutoFetch("/get-merchants", 20000);
 
-    console.log("payoutdata", dataOfMerchants);
+  console.log("payoutdata", dataOfMerchants);
   const { data: credentialsData } = useGet("/credentials");
 
-
-  const initialDataOfMerchants = useMemo(() => dataOfMerchants?.data ?? [], [dataOfMerchants]);
+  const initialDataOfMerchants = useMemo(
+    () => dataOfMerchants?.data ?? [],
+    [dataOfMerchants]
+  );
 
   useEffect(() => {
     if (!merchantLoading && dataOfMerchants) setInitialLoad(false);
@@ -56,7 +58,8 @@ export const Member = () => {
 
   const handlePayinToggle = async (v, rowId, accountStatus) => {
     try {
-      if (accountStatus) await updateSingle({ user_id: rowId, payin_status: v });
+      if (accountStatus)
+        await updateSingle({ user_id: rowId, payin_status: v });
     } catch (err) {
       console.log("Payin Toggle Failed: ", err);
     }
@@ -64,7 +67,8 @@ export const Member = () => {
 
   const handlePayoutToggle = async (v, rowId, accountStatus) => {
     try {
-      if (accountStatus) await updateSingle({ user_id: rowId, payout_status: v });
+      if (accountStatus)
+        await updateSingle({ user_id: rowId, payout_status: v });
     } catch (err) {
       console.log("Payout Toggle Failed: ", err);
     }
@@ -85,7 +89,6 @@ export const Member = () => {
   };
 
   const handleAllPayinToggle = async (v) => {
-
     try {
       const x = v ? 1 : 0;
       const response = await updateAll({ payin_status: x });
@@ -101,7 +104,6 @@ export const Member = () => {
   };
 
   const handleAllPayoutToggle = async (v) => {
-
     try {
       const x = v ? 1 : 0;
       const response = await updateAll({ payout_status: x });
@@ -116,15 +118,17 @@ export const Member = () => {
     }
   };
 
-
-
   useEffect(() => {
     if (!initialDataOfMerchants || !credentialsData) return;
 
-    const credentialsList = Array.isArray(credentialsData) ? credentialsData : credentialsData.data || [];
+    const credentialsList = Array.isArray(credentialsData)
+      ? credentialsData
+      : credentialsData.data || [];
 
     const formattedMerchantData = initialDataOfMerchants.map((item, index) => {
-      const credential = credentialsList.find((cred) => cred.id === item.credentials_id);
+      const credential = credentialsList.find(
+        (cred) => cred.id === item.credentials_id
+      );
 
       const payinBank =
         item.payin_at_onboard === "Airpay" ? (
@@ -151,28 +155,28 @@ export const Member = () => {
         sqno: index + 1,
         id: item.id,
         // name: item.name,
-        name:(
-        <span className="text-blue-600 cursor-pointer" 
-        
-        onClick={() => {
-          localStorage.setItem("merchantId", item.id);
-          memberDetails(`/MerchantDetails/${item.id}`) 
-        }}>
-        
-          {item.name}
-        </span>
+        name: (
+          <span
+            className="text-blue-600 cursor-pointer"
+            onClick={() => {
+              localStorage.setItem("merchantId", item.id);
+              memberDetails(`/MerchantDetails/${item.id}`);
+            }}
+          >
+            {item.name}
+          </span>
         ),
         payin_bank: payinBank,
         payin: item.payin_status,
-       
-        payout: item.payout_status,
-     payincharge: Number(item.total_charge?.UPI || 0).toFixed(2),
-payoutcharge: Number(item.total_charge?.payout || 0).toFixed(2),
-cryptocharge: Number(item.total_charge?.CRYPTO || 0).toFixed(2),
 
-  totalwalletpayin: Number(item.total_amount?.UPI || 0).toFixed(2),
-totalwalletpayout: Number(item.total_amount?.payout || 0).toFixed(2),
-totalwallet: Number(item.total_payout || 0).toFixed(2),
+        payout: item.payout_status,
+        payincharge: Number(item.total_charge?.UPI || 0).toFixed(2),
+        payoutcharge: Number(item.total_charge?.payout || 0).toFixed(2),
+        cryptocharge: Number(item.total_charge?.CRYPTO || 0).toFixed(2),
+
+        totalwalletpayin: Number(item.total_amount?.UPI || 0).toFixed(2),
+        totalwalletpayout: Number(item.total_amount?.payout || 0).toFixed(2),
+        totalwallet: Number(item.total_payout || 0).toFixed(2),
         account: item.account_status,
 
         walletpayin: item.payin_wallet,
@@ -193,17 +197,16 @@ totalwallet: Number(item.total_payout || 0).toFixed(2),
     { header: "SQNo", accessor: "sqno" },
     { header: "Name", accessor: "name" },
     { header: "Payin", accessor: "payin" },
- 
+
     { header: "Payout", accessor: "payout" },
-    
+
     { header: "Payin Wallet", accessor: "walletpayin" },
     { header: "Payout Wallet", accessor: "walletpayout" },
     { header: "Total Payin Wallet", accessor: "totalwalletpayin" },
-         { header: "Payin Charge", accessor: "payincharge" },
-      { header: "Total Payout Wallet", accessor: "totalwalletpayout" },
-         { header: "Payout Charge", accessor: "payoutcharge" },
-      { header: "Total Wallet", accessor: "totalwallet" },
-
+    { header: "Payin Charge", accessor: "payincharge" },
+    { header: "Total Payout Wallet", accessor: "totalwalletpayout" },
+    { header: "Payout Charge", accessor: "payoutcharge" },
+    { header: "Total Wallet", accessor: "totalwallet" },
 
     { header: "Payin Onboarded Bank", accessor: "payin_bank" },
   ];
@@ -225,14 +228,16 @@ totalwallet: Number(item.total_payout || 0).toFixed(2),
       />
     ),
     sqno: (
-      <div className="flex flex-col">
+      <div className="flex flex-col shadow shadow-yellow-100">
         <span className="text-sm font-semibold">{row.sqno}</span>
         <Toggle
           defaultChecked={row.account}
           onChange={(v) => handleAccountToggle(v, row.id)}
           className="mt-1"
         />
-        <span className="text-xs text-blue-400 font-semibold mt-1">{row.date}</span>
+        <span className="text-xs text-blue-400 font-semibold mt-1">
+          {row.date}
+        </span>
       </div>
     ),
   }));
@@ -240,25 +245,34 @@ totalwallet: Number(item.total_payout || 0).toFixed(2),
   return (
     <div className="p-4 space-y-4">
       {/* Header */}
-      <div className="bg-gradient-to-t from-sky-500 to-indigo-500 rounded-lg flex justify-between items-center p-4 shadow-md">
+      <div className="bg-[#10172e] rounded-lg flex justify-between items-center p-4 shadow-[0px_4px_10px_rgba(255,215,0,0.6)] border border-[#FFD700]">
         <h4 className="font-bold text-white text-xl">Member List</h4>
+
+        {/* All Payin Toggle */}
         <div className="flex items-center space-x-2">
           <span className="font-bold text-white">All Payin ON/OFF</span>
-          <Toggle onChange={handleAllPayinToggle} />
+          <Toggle
+            onChange={handleAllPayinToggle}
+            className="bg-[#FFD700] rounded-full p-1"
+          />
         </div>
 
+        {/* All Payout Toggle */}
         <div className="flex items-center space-x-2">
           <span className="font-bold text-white">All Payout ON/OFF</span>
-          <Toggle onChange={handleAllPayoutToggle} />
+          <Toggle
+            onChange={handleAllPayoutToggle}
+            className="bg-[#FFD700] rounded-full p-1"
+          />
         </div>
 
+        {/* Create New Button */}
         <Button
           onClick={() => navigate("/member-create")}
-          className="bg-white border border-sky-200 text-sky-800 font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-sky-50 hover:border-sky-300 transition-all duration-200"
+          className="bg-[#FFD700] text-black font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-yellow-200 hover:text-black transition-all duration-200"
         >
           + Create New
         </Button>
-
       </div>
 
       {/* Table */}
@@ -268,9 +282,11 @@ totalwallet: Number(item.total_payout || 0).toFixed(2),
         <Table
           columns={memberColumns}
           data={tableDataWithActions}
-          className="shadow-lg rounded-lg overflow-hidden border border-gray-200"
+          className="bg-[#10172e] rounded-lg overflow-hidden border border-[#FFD700]"
           rowClassName={(rowIndex) =>
-            rowIndex % 2 === 0 ? "bg-white hover:bg-blue-50" : "bg-gray-50 hover:bg-blue-50"
+            rowIndex % 2 === 0
+              ? "bg-[#10172e] text-white hover:bg-[#0f1a2b]"
+              : "bg-[#1a2436] text-white hover:bg-[#0f1a2b]"
           }
           paginationClassName="flex justify-end gap-2 mt-4"
           previousClassName="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm cursor-pointer transition"
@@ -280,7 +296,10 @@ totalwallet: Number(item.total_payout || 0).toFixed(2),
         />
       )}
 
-      <SchemeModal showModal={showModal} handleModal={() => setShowModal(!showModal)} />
+      <SchemeModal
+        showModal={showModal}
+        handleModal={() => setShowModal(!showModal)}
+      />
     </div>
   );
 };

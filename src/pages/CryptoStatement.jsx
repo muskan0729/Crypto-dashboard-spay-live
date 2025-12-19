@@ -89,8 +89,8 @@ const CryptoStatement = () => {
   return (
     <div className="p-4 space-y-4">
       {/* Header */}
-      <div className="bg-gradient-to-t from-sky-500 to-indigo-500 rounded-lg flex justify-between items-center p-4 shadow-md">
-        <h4 className="font-bold text-white text-xl">PayIn Statement</h4>
+      <div className="bg-[#10172e] rounded-lg flex justify-between items-center p-4 shadow-md shadow-[#cca83d]">
+        <h4 className="font-bold text-white text-xl">Crypto Statement</h4>
       </div>
 
       {/* Table */}
