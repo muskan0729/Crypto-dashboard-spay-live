@@ -10,6 +10,9 @@ import ApexCharts from "apexcharts";
 import TransactionStatusPie from "../components/TransactionStatusPie";
 import TransactionLineChart from "../components/TransactionLineChart";
 import TransactionTable from "../components/TransactionTable";
+import { areaOptions1, areaOptions2 } from "../components/chartOptions";
+import DashboardCards from "../components/DashboardTopCards";
+import TransactionsChart from "../components/TransactionAreaChart";
 // import largesttxn from "../images/largesttxn.jpg";
 
 export const Dashboard = () => {
@@ -30,6 +33,8 @@ export const Dashboard = () => {
     "/crypto-reportrecords-list?status=success"
   );
 
+  const [chartDataArea, setchartDataArea] = useState(null);
+  
   const initialDataOfTransactions = tableData?.data;
   const cryptoinitialDataOfTransactions = cryptotableData?.data;
 
@@ -85,22 +90,13 @@ export const Dashboard = () => {
       const formattedTime = date.toLocaleTimeString();
 
       return {
-        sqno: index + 1,
-        txnid: item.txnid,
+        sq: index + 1,
+        txn: item.txnid,
         name: item.user.name,
         type: item.product,
         amount: item.amount,
-        status: (
-          <span className="px-2 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-            {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-          </span>
-        ),
-        time: (
-          <div className="flex flex-col">
-            <span className="text-sm font-medium">{formattedDate}</span>
-            <span className="text-sm text-gray-500">{formattedTime}</span>
-          </div>
-        ),
+        status: item.status.charAt(0).toUpperCase() + item.status.slice(1),
+        datetime: formattedDate + ' ' + formattedTime
       };
     });
     setTransactionData(formattedTableData);
@@ -479,11 +475,13 @@ export const Dashboard = () => {
                 )}
               </div>
             </div>
-
             {/* -------- TABLE -------- */}
             <div className="mt-8 mb-4">
               <div className="p-4">
-                <TransactionLineChart dates={dates} height={350} />
+                {/* <TransactionLineChart dates={dates} height={350} /> */}
+                {/* Add your chart here */}
+                {chartDataArea && <TransactionsChart chartData={chartDataArea} />}
+                
               </div>
 
               <TransactionTable transactions={transactions} />

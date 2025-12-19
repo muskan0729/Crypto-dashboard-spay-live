@@ -58,9 +58,8 @@ export const Sidebar = ({ open, setOpen }) => {
             icon: "fa-clock-rotate-left",
             dropdown: "txn",
             items: [
-              { label: "UPI Statement", link: "/upi-statement" },
+              { label: "Crypto Statement", link: "/crypto-statement" },
               { label: "Payout Statement", link: "/payout-statement" },
-             
             ],
           },
 
@@ -97,7 +96,7 @@ export const Sidebar = ({ open, setOpen }) => {
             icon: "fa-clock-rotate-left",
             dropdown: "txn",
             items: [
-              { label: "UPI Statement", link: "/upi-statement" },
+              { label: "PayIn Statement", link: "/crypto-statement" },
               { label: "Payout Statement", link: "/payout-statement" },
             ],
           },

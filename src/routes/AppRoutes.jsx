@@ -8,7 +8,7 @@ import LoginForm from "../pages/LoginForm";
 import { MemberOnboardForm } from "../pages/MemberOnboardForm";
 import { Member } from "../pages/Member";
 import { Dashboard } from "../pages/Dashboard";
-import UpiStatement from "../pages/UpiStatement";
+//import UpiStatement from "../pages/UpiStatement";
 import CryptoStatement from "../pages/CryptoStatement";
 import PayoutStatement from "../pages/PayoutStatement";
 import { ViewComplain } from "../pages/ViewComplain";
@@ -32,10 +32,10 @@ import MerchantDetails from "../pages/MerchantDetails";
 const AppRoutes = () => {
     return(
         <Routes>
-            <Route path="/spay-glide-pgwidget" element={ <SpayGlidePGWidget/> } />
-            <Route path="/spay-glide-pgsuccess" element={ <SpayGlidePGSuccess/> } />
-            <Route path="/spay-glide-pgcancel" element={ <SpayGlidePGCancel/> } />
-            <Route path="/spay-glide-pgerror" element={ <SpayGlidePGError/> } />
+            <Route path="/spay-glide-payinwidget" element={ <SpayGlidePGWidget/> } />
+            <Route path="/spay-glide-payinsuccess" element={ <SpayGlidePGSuccess/> } />
+            <Route path="/spay-glide-payincancel" element={ <SpayGlidePGCancel/> } />
+            <Route path="/spay-glide-payinerror" element={ <SpayGlidePGError/> } />
             <Route path="/" element={<LoginForm />} />
             <Route element={<Layout />}>
                 <Route 
@@ -118,14 +118,14 @@ const AppRoutes = () => {
                     </PrivateRoute>
                 }
                 />
-                <Route
+                {/* <Route
                     path="/upi-statement"
                     element={
                     <PrivateRoute>
                         <UpiStatement />
                     </PrivateRoute>
                     }
-                />
+                /> */}
                 <Route
                     path="/payout-statement"
                     element={
