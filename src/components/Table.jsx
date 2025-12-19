@@ -622,7 +622,7 @@ const Table = ({
 
               {/* 🧍‍♂️ Merchant Filter */}
               {showSelectUserFilter && (
-                <div className="w-56 bg-[#131b33] border border-[#FFD700] rounded-lg p-2 shadow-md">
+                // <div className="w-56 bg-[#131b33] border border-[#FFD700] rounded-lg p-2 shadow-md">
                   <CustomSelect
                     options={selectData}
                     placeholder="Select Merchant"
@@ -631,7 +631,7 @@ const Table = ({
                     className="bg-[#131b33] text-white border border-[#FFD700] 
                          rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
                   />
-                </div>
+                // </div>
               )}
 
               {/* 📅 Date Filters */}

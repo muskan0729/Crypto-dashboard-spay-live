@@ -41,7 +41,7 @@ export const Header = ({ onMenuClick }) => {
   ];
 
   const cryptoStats = [
-    { id: 101, icon: "fa-brands fa-bitcoin text-yellow-400", label: "Crypto Wallet", value: `${Number(data?.total_crypto ?? 0).toFixed(2)}` },
+    { id: 101, icon: "fa-brands fa-bitcoin text-white", label: "Crypto Wallet", value: `${Number(data?.total_crypto ?? 0).toFixed(2)}` },
   ];
 
   const handleLogout = async (e) => {
@@ -90,7 +90,7 @@ export const Header = ({ onMenuClick }) => {
                 </div>
               ))}
             </div>
-            <div className="flex items-center gap-6 md:hidden relative">
+            <div className="flex text-white items-center gap-6 md:hidden relative">
               {(role === "crypto" ? cryptoStats : userStats).map((item) => (
                 <div key={item.id} className="relative"
                   onMouseEnter={() => setActiveStat(item.id)}
