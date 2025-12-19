@@ -33,7 +33,7 @@ export default function TransactionTable({ transactions, rowsPerPageOptions = [5
 
             {/* Second Column: Amount and TXN */}
             <div className="space-y-1">
-              <div>Amount: <span className="text-white">₹{tx.amount.toFixed(2)}</span></div>
+              <div>Amount: <span className="text-white">₹{tx.amount}</span></div>
               <div>TXN: <span className="text-white">{tx.txn}</span></div>
             </div>
 

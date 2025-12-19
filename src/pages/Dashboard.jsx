@@ -10,6 +10,9 @@ import ApexCharts from "apexcharts";
 import TransactionStatusPie from "../components/TransactionStatusPie";
 import TransactionLineChart from "../components/TransactionLineChart";
 import TransactionTable from "../components/TransactionTable";
+import { areaOptions1, areaOptions2 } from "../components/chartOptions";
+import DashboardCards from "../components/DashboardTopCards";
+import TransactionsChart from "../components/TransactionAreaChart";
 // import largesttxn from "../images/largesttxn.jpg";
 
 export const Dashboard = () => {
@@ -19,12 +22,14 @@ export const Dashboard = () => {
   const [transactionData, setTransactionData] = useState([]);
   const [largeTransactionData, setLargeTransactionData] = useState([]);
   const [initialLoad, setInitialLoad] = useState(true);
-
+  
   // Fetch data
   const { data: cardData, loading: recordLoading } = useAutoFetch("/collection-record");
   const { data: tableData } = useAutoFetch("/reportrecords-List?status=success");
   const { data: cryptotableData } = useAutoFetch("/crypto-reportrecords-list?status=success");
 
+  const [chartDataArea, setchartDataArea] = useState(null);
+  
   const initialDataOfTransactions = tableData?.data;
   const cryptoinitialDataOfTransactions = cryptotableData?.data;
 
@@ -76,22 +81,13 @@ export const Dashboard = () => {
       const formattedTime = date.toLocaleTimeString();
 
       return {
-        sqno: index + 1,
-        txnid: item.txnid,
+        sq: index + 1,
+        txn: item.txnid,
         name: item.user.name,
         type: item.product,
         amount: item.amount,
-        status: (
-          <span className="px-2 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-            {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-          </span>
-        ),
-        time: (
-          <div className="flex flex-col">
-            <span className="text-sm font-medium">{formattedDate}</span>
-            <span className="text-sm text-gray-500">{formattedTime}</span>
-          </div>
-        ),
+        status: item.status.charAt(0).toUpperCase() + item.status.slice(1),
+        datetime: formattedDate + ' ' + formattedTime
       };
     });
     setTransactionData(formattedTableData);
@@ -127,8 +123,36 @@ export const Dashboard = () => {
     console.log(cardData);
   }, [recordLoading, cardData]);
 
+useEffect(() => {
+    if (!cardData) return;
 
+    // Transform API data to chart format
+    // Assuming cardData has these fields: total_payin_amount, total_payin_count, etc.
+    const transformedData = {
+      Total: {
+        PayIn: {
+          amount: [cardData.total_payin_amount], // you can expand by months if needed
+          count: [cardData.total_payin_count],
+        },
+        PayOut: {
+          amount: [cardData.total_payout_amount],
+          count: [cardData.total_payout_count],
+        },
+      },
+      Today: {
+        PayIn: {
+          amount: [cardData.today_payin_amount],
+          count: [cardData.today_payin_count],
+        },
+        PayOut: {
+          amount: [cardData.today_payout_amount],
+          count: [cardData.today_payout_count],
+        },
+      },
+    };
 
+    setchartDataArea(transformedData);
+  }, [cardData]);
 
 const chartRef1 = useRef(null);
 const chartRef2 = useRef(null);
@@ -136,70 +160,8 @@ const chartRef2 = useRef(null);
 useEffect(() => {
   if (initialLoad) return;
 
-  const options1 = {
-    chart: {
-      type: "area",
-      height: 80,
-      sparkline: { enabled: true },
-      toolbar: { show: false },
-      background: "transparent",
-    },
-    stroke: {
-      curve: "smooth",
-      width: 3,
-      colors: ["#D4AF37"],
-    },
-    fill: {
-      type: "gradient",
-      gradient: {
-        shadeIntensity: 0.5,
-        opacityFrom: 0.35,
-        opacityTo: 0,
-        stops: [0, 90, 100],
-      },
-    },
-    series: [
-      {
-        name: "Collection",
-        data: [15, 35, 20, 45, 30, 55, 25],
-      },
-    ],
-    tooltip: { theme: "dark", x: { show: false } },
-  };
-
-  const options2 = {
-    chart: {
-      type: "area",
-      height: 80,
-      sparkline: { enabled: true },
-      toolbar: { show: false },
-      background: "transparent",
-    },
-    stroke: {
-      curve: "smooth",
-      width: 3,
-      colors: ["#D4AF37"],
-    },
-    fill: {
-      type: "gradient",
-      gradient: {
-        shadeIntensity: 0.5,
-        opacityFrom: 0.35,
-        opacityTo: 0,
-        stops: [0, 90, 100],
-      },
-    },
-    series: [
-      {
-        name: "Collection",
-        data: [25, 45, 15, 35, 20, 50, 30],
-      },
-    ],
-    tooltip: { theme: "dark", x: { show: false } },
-  };
-
-  const chart1 = chartRef1.current ? new ApexCharts(chartRef1.current, options1) : null;
-  const chart2 = chartRef2.current ? new ApexCharts(chartRef2.current, options2) : null;
+  const chart1 = chartRef1.current ? new ApexCharts(chartRef1.current, areaOptions1) : null;
+  const chart2 = chartRef2.current ? new ApexCharts(chartRef2.current, areaOptions2) : null;
 
   chart1?.render();
   chart2?.render();
@@ -211,47 +173,27 @@ useEffect(() => {
   };
 }, [initialLoad]);
 
-const dates = [
-    { x: new Date("2025-01-01").getTime(), y: 1200000 },
-    { x: new Date("2025-01-02").getTime(), y: 1400000 },
-    { x: new Date("2025-01-03").getTime(), y: 1300000 },
-    { x: new Date("2025-01-04").getTime(), y: 1100000 },
-    { x: new Date("2025-01-05").getTime(), y: 1000000 },
-    { x: new Date("2025-01-06").getTime(), y: 900000 },
-    { x: new Date("2025-01-07").getTime(), y: 1500000 },
-    { x: new Date("2025-01-08").getTime(), y: 1450000 },
-    { x: new Date("2025-01-09").getTime(), y: 1350000 },
-  ];
-
-
-  const transactions = [
-    { sq: 1, txn: 'Sxxxxxxx1015553036555852', name: 'abc technology pvt ltd', type: 'topup_payout', amount: 1000, status: 'Success', datetime: '10 Dec 2025, 15:55:30' },
-    { sq: 1, txn: 'Sxxxxxxx1015553036555852', name: 'abc technology pvt ltd', type: 'topup_payout', amount: 1000, status: 'Success', datetime: '10 Dec 2025, 15:55:30' },
-    { sq: 1, txn: 'Sxxxxxxx1015553036555852', name: 'abc technology pvt ltd', type: 'topup_payout', amount: 1000, status: 'Success', datetime: '10 Dec 2025, 15:55:30' },
-    { sq: 1, txn: 'Sxxxxxxx1015553036555852', name: 'abc technology pvt ltd', type: 'topup_payout', amount: 1000, status: 'Success', datetime: '10 Dec 2025, 15:55:30' },
-    // more transactions
-  ];
-
-  // Role-based cards
+  // normalCards data prepared in Dashboard.jsx
   const normalCards = [
-    { title: "Total Pay-IN Collection", icon: "fa-wallet", value: cardData?.total_payin_amount ?? 0 },
-    { title: "Total Pay-OUT", icon: "fa-wallet", value: cardData?.total_payout_amount ?? 0 },
-    { title: "Today Pay-IN Collection", icon: "fa-arrow-trend-up", value: cardData?.today_payin ?? 0 },
-    { title: "Today Pay-OUT", icon: "fa-arrow-trend-up", value: cardData?.today_payout ?? 0 },
+  {
+    type: "payin",
+    totalTitle: "Total Pay-IN Collection",
+    todayTitle: "Today Pay-IN Collection",
+    value: cardData?.total_payin_amount ?? 0,
+    todayValue: cardData?.today_payin ?? 0,
+    ref: chartRef1,
+  },
+  {
+    type: "payout",
+    totalTitle: "Total Pay-OUT Collection",
+    todayTitle: "Today Pay-OUT Collection",
+    value: cardData?.total_payout_amount ?? 0,
+    todayValue: cardData?.today_payout ?? 0,
+    ref: chartRef2,
+  },
   ];
 
-  const cryptoCard = [
-    { title: "Total Crypto-IN Collection", icon: "fa-bitcoin-sign", value: cardData?.total_crypto ?? 0 },
-    { title: "Total Crypto-OUT Collection", icon: "fa-bitcoin-sign", value: cardData?.total_crypto_payout ?? 0 },
-    { title: "Today Crypto-IN Collection", icon: "fa-bitcoin-sign", value: cardData?.today_crypto ?? 0 },
-    { title: "Today Crypto-OUT Collection", icon: "fa-bitcoin-sign", value: cardData?.today_crypto_payout ?? 0 },
-  ];
-
-  let cardsToShow = [];
-  if (role === "admin") cardsToShow = [...normalCards];
-  else if (role === "crypto") cardsToShow = [...cryptoCard];
-  else cardsToShow = [...normalCards]; // normal users
-console.log(cardData?.transactionStatusCounts);
+  console.log(cardData?.transactionStatusCounts);
   return (
     <>
       {initialLoad ? (
@@ -264,8 +206,6 @@ console.log(cardData?.transactionStatusCounts);
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
 
               {/* Cards */}
-              
-
               {/* Charts */}
             {(role === "admin" || role === "user") && (
   <>
@@ -280,74 +220,13 @@ console.log(cardData?.transactionStatusCounts);
       </div>
     </div>
 
-    <div className="lg:col-span-2 p-6 rounded-xl backdrop-blur-xl shadow-[0_4px_20px_rgba(144,238,144,0.25)] flex flex-col gap-4">
-  {/* Pay-IN Card */}
-  <div className="card card-block card-stretch custom-scroll bg-black/80 rounded-xl">
-    <div className="card-header d-flex flex-wrap justify-content-between items-center gap-3 px-4 py-3 border-b border-[#433200]">
-      <h5 className="text-base sm:text-lg font-semibold text-[#D4AF37]">
-        Pay-IN Collection
-      </h5>
-
-      <div className="flex gap-2">
-        <button className="px-2 py-1 bg-[#02030a] text-[#D4AF37] text-xs rounded border border-[#433200]">
-          Total
-        </button>
-        <button className="px-2 py-1 bg-[#02030a] text-[#D4AF37] text-xs rounded border border-[#433200]">
-          Today
-        </button>
-      </div>
+    <div>
+      {/* Pass the cards to the new component */}
+      <DashboardCards cards={normalCards} />
     </div>
-
-    <div className="card-body px-5 py-6 flex justify-between items-start">
-      {/* Left column */}
-      <div>
-        <h6 className="text-2xl font-bold text-[#D4AF37] leading-none">
-          ₹ 0.00
-        </h6>
-        <div className="text-green-500 text-xs font-semibold mt-1">+64%</div>
-      </div>
-
-      {/* Chart placeholder with ref */}
-      <div ref={chartRef1} className="w-[200px] h-[80px]"></div>
-    </div>
-  </div>
-
-  {/* Pay-OUT Card */}
-  <div className="card card-block card-stretch custom-scroll bg-black/80 rounded-xl">
-    <div className="card-header d-flex flex-wrap justify-content-between items-center gap-3 px-4 py-3 border-b border-[#433200]">
-      <h5 className="text-base sm:text-lg font-semibold text-[#D4AF37]">
-        Pay-OUT Collection
-      </h5>
-
-      <div className="flex gap-2">
-        <button className="px-2 py-1 bg-[#02030a] text-[#D4AF37] text-xs rounded border border-[#433200]">
-          Total
-        </button>
-        <button className="px-2 py-1 bg-[#02030a] text-[#D4AF37] text-xs rounded border border-[#433200]">
-          Today
-        </button>
-      </div>
-    </div>
-
-    <div className="card-body px-5 py-6 flex justify-between items-start">
-      {/* Left column */}
-      <div>
-        <h6 className="text-2xl font-bold text-[#D4AF37] leading-none">
-          ₹ 0.00
-        </h6>
-        <div className="text-green-500 text-xs font-semibold mt-1">+64%</div>
-      </div>
-
-      {/* Chart placeholder with ref */}
-      <div ref={chartRef2} className="w-[200px] h-[80px]"></div>
-    </div>
-  </div>
-</div>
 
   </>
 )}
-
-
               {role === "crypto" && (
                 <>
                   <div className="flex justify-center items-start">
@@ -357,40 +236,20 @@ console.log(cardData?.transactionStatusCounts);
                   </div>
                   <div className="lg:col-span-2 p-6 rounded-xl backdrop-blur-xl shadow-[0_4px_20px_rgba(144,238,144,0.25)]">
                     {/* <LineChart data={cardData?.cryptoMonthWiseStatusCounts} className="h-[260px]" /> */}
-
-
-
-
-
-
-
                   </div>
                 </>
               )}
-
               {/* Large Transactions */}
-             
-           
-
             </div>
-
             {/* -------- TABLE -------- */}
             <div className="mt-8 mb-4">
               <div className="p-4">
-                <TransactionLineChart dates={dates} height={350} />
+                {/* <TransactionLineChart dates={dates} height={350} /> */}
+                {/* Add your chart here */}
+                {chartDataArea && <TransactionsChart chartData={chartDataArea} />}
+                
               </div>
-              
-              {/* <Table
-                columns={transactioncolumn}
-                data={transactionData}
-                showSearch={false}
-                showPagination={true}
-                showExport={false}
-                showStatusFilter={false}
-                showDeleteColumn={false}
-                showDateFilter={false}
-              /> */}
-              <TransactionTable transactions={transactions} />
+              <TransactionTable transactions={transactionData} />
             </div>
           </div>
         </div>

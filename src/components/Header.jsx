@@ -34,14 +34,14 @@ export const Header = ({ onMenuClick }) => {
   }, []);
 
   const userStats = [
-    { id: 1, icon: "fa-solid fa-arrow-trend-up text-green-400", label: "Payin Rolling Amount", value: `${Number(data?.PayinRollingAmount ?? 0).toFixed(2)}` },
-    { id: 2, icon: "fa-solid fa-arrow-trend-up text-green-400", label: "Payin Total Charges", value: `${Number(data?.PayinProfitAmount ?? 0).toFixed(2)}` },
-    { id: 3, icon: "fa-solid fa-wallet text-red-400", label: "Payout Wallet", value: `${Number(data?.payout_wallet ?? 0).toFixed(2)}` },
-    { id: 4, icon: "fa-solid fa-wallet text-green-400", label: "Payin Wallet", value: `${Number(data?.PayingAmount ?? 0).toFixed(2)}` },
+    // { id: 1, icon: "fa-solid fa-arrow-trend-up text-green-400", label: "Payin Rolling Amount", value: `${Number(data?.PayinRollingAmount ?? 0).toFixed(8)}` },
+    // { id: 2, icon: "fa-solid fa-arrow-trend-up text-green-400", label: "Payin Total Charges", value: `${Number(data?.PayinProfitAmount ?? 0).toFixed(8)}` },
+    { id: 3, icon: "fa-solid fa-wallet text-red-400", label: "Payout Wallet", value: `${Number(data?.payout_wallet ?? 0).toFixed(8)}` },
+    { id: 4, icon: "fa-solid fa-wallet text-green-400", label: "Payin Wallet", value: `${Number(data?.PayingAmount ?? 0).toFixed(8)}` },
   ];
 
   const cryptoStats = [
-    { id: 101, icon: "fa-brands fa-bitcoin text-yellow-400", label: "Crypto Wallet", value: `${Number(data?.total_crypto ?? 0).toFixed(2)}` },
+    { id: 101, icon: "fa-brands fa-bitcoin text-yellow-400", label: "Crypto Wallet", value: `${Number(data?.total_crypto ?? 0).toFixed(8)}` },
   ];
 
   const handleLogout = async (e) => {
@@ -64,7 +64,7 @@ export const Header = ({ onMenuClick }) => {
   };
 
   return (
-    <nav className="flex items-center justify-between w-full px-4 py-3 bg-sidebarbg bg-sidebarbtm">
+    <nav className="flex items-center justify-between w-full px-4 py-3 bg-sidebarbg bg-sidebarbtm text-gold">
       <div className="flex items-center gap-4">
         <button onClick={onMenuClick} className="md:hidden text-2xl text-blue-600">☰</button>
 
