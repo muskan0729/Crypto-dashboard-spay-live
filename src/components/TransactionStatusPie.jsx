@@ -10,17 +10,17 @@ import {
 } from "recharts";
 
 // GOLD PALETTE — renamed to avoid collisions
-// const COLOR_MAP = {
-//   success: "#CDA434", // soft gold
-//   failed: "#B8860B",  // darker bronze
-//   pending: "#F0C75E", // light gold
-// };
-
 const COLOR_MAP = {
-  success: "#16A34A", // green (tailwind green-600 style)
-  failed: "#DC2626",  // red (tailwind red-600)
-  pending: "#FACC15", // yellow (tailwind yellow-400)
+  success: "#F5C542", // soft gold
+  failed: "#C0841D",  // darker bronze
+  pending: "#E5E7EB", // light gold
 };
+
+// const COLOR_MAP = {
+//   success: "#16A34A", // green (tailwind green-600 style)
+//   failed: "#DC2626",  // red (tailwind red-600)
+//   pending: "#FACC15", // yellow (tailwind yellow-400)
+// };
 
 // const COLOR_MAP = {
 //   success: "#22c55e", // bright green
@@ -29,9 +29,9 @@ const COLOR_MAP = {
 // };
 
 export default function TransactionStatusPie({
-  success = 100,
-  failed = 20,
-  pending = 40,
+  success ,
+  failed ,
+  pending,
   height = 260,
 }) {
   const data = [

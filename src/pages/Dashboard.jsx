@@ -13,6 +13,7 @@ import TransactionTable from "../components/TransactionTable";
 import { areaOptions1, areaOptions2 } from "../components/chartOptions";
 import DashboardCards from "../components/DashboardTopCards";
 import TransactionsChart from "../components/TransactionAreaChart";
+import { ca } from "date-fns/locale";
 // import largesttxn from "../images/largesttxn.jpg";
 
 export const Dashboard = () => {
@@ -23,14 +24,20 @@ export const Dashboard = () => {
   const [largeTransactionData, setLargeTransactionData] = useState([]);
   const [initialLoad, setInitialLoad] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
- 
-  // Fetch data
-  const { data: cardData, loading: recordLoading } = useAutoFetch("/collection-record");
-  const { data: tableData } = useAutoFetch("/reportrecords-List?status=success");
-  const { data: cryptotableData } = useAutoFetch("/crypto-reportrecords-list?status=success");
+  const [donutChart, setDonutChart] = useState(null);
+  const [today, setToday] = useState(false);
 
+  // Fetch data
+  const { data: cardData, loading: recordLoading } =
+    useAutoFetch("/collection-record");
+  const { data: tableData } = useAutoFetch(
+    "/reportrecords-List?status=success"
+  );
+  const { data: cryptotableData } = useAutoFetch(
+    "/crypto-reportrecords-list?status=success"
+  );
   const [chartDataArea, setchartDataArea] = useState(null);
-  
+
   const initialDataOfTransactions = tableData?.data;
   const cryptoinitialDataOfTransactions = cryptotableData?.data;
 
@@ -73,12 +80,16 @@ export const Dashboard = () => {
       role === "crypto" ? cryptoprocessTableData : processTableData;
 
     const largeSource =
-      role === "crypto" ? cryptoprocessLargeTransactionData : processLargeTransactionData;
+      role === "crypto"
+        ? cryptoprocessLargeTransactionData
+        : processLargeTransactionData;
 
     // Format table data
     const formattedTableData = tableSource.map((item, index) => {
       const date = new Date(item.created_at);
-      const formattedDate = `${date.getDate()} ${ MONTH_NAMES[date.getMonth()] } ${date.getFullYear()}`;
+      const formattedDate = `${date.getDate()} ${
+        MONTH_NAMES[date.getMonth()]
+      } ${date.getFullYear()}`;
       const formattedTime = date.toLocaleTimeString();
 
       return {
@@ -88,7 +99,7 @@ export const Dashboard = () => {
         type: item.product,
         amount: item.amount,
         status: item.status.charAt(0).toUpperCase() + item.status.slice(1),
-        datetime: formattedDate + ' ' + formattedTime
+        datetime: formattedDate + " " + formattedTime,
       };
     });
     setTransactionData(formattedTableData);
@@ -120,13 +131,16 @@ export const Dashboard = () => {
   ];
 
   useEffect(() => {
-    if (!recordLoading && cardData) setInitialLoad(false);
+    if (!recordLoading && cardData) {
+      setInitialLoad(false);
+    }
+    setDonutChart(cardData?.transactionStatusCounts.UPI);
     // console.log(cardData);
   }, [recordLoading, cardData]);
 
   useEffect(() => {
     if (!cardData) return;
-  
+
     // Transform API data to chart format
     // Assuming cardData has these fields: total_payin_amount, total_payin_count, etc.
     const transformedData = {
@@ -157,21 +171,25 @@ export const Dashboard = () => {
   const chartRef1 = useRef(null);
   const chartRef2 = useRef(null);
 
-useEffect(() => {
-  if (initialLoad) return;
+  useEffect(() => {
+    if (initialLoad) return;
 
-  const chart1 = chartRef1.current ? new ApexCharts(chartRef1.current, areaOptions1) : null;
-  const chart2 = chartRef2.current ? new ApexCharts(chartRef2.current, areaOptions2) : null;
+    const chart1 = chartRef1.current
+      ? new ApexCharts(chartRef1.current, areaOptions1)
+      : null;
+    const chart2 = chartRef2.current
+      ? new ApexCharts(chartRef2.current, areaOptions2)
+      : null;
 
-  chart1?.render();
-  chart2?.render();
+    chart1?.render();
+    chart2?.render();
 
-  // cleanup on unmount
-  return () => {
-    chart1?.destroy();
-    chart2?.destroy();
-  };
-}, [initialLoad]);  
+    // cleanup on unmount
+    return () => {
+      chart1?.destroy();
+      chart2?.destroy();
+    };
+  }, [initialLoad]);
   // useEffect(() => {
   //   if (initialLoad) return;
 
@@ -254,8 +272,6 @@ useEffect(() => {
   //   };
   // }, [initialLoad]);
 
-  
-
   const transactions = [
     {
       sq: 1,
@@ -304,39 +320,56 @@ useEffect(() => {
     },
   ];
 
-  
   // Role-based cards
-  const normalCards = [
-    {
-      title: "Total Pay-IN Collection",
-      icon: "fa-wallet",
-      value: cardData?.total_payin_amount ?? 0,
-    },
-    {
-      title: "Total Pay-OUT",
-      icon: "fa-wallet",
-      value: cardData?.total_payout_amount ?? 0,
-    },
-    {
-      title: "Today Pay-IN Collection",
-      icon: "fa-arrow-trend-up",
-      value: cardData?.today_payin ?? 0,
-    },
-    {
-      title: "Today Pay-OUT",
-      icon: "fa-arrow-trend-up",
-      value: cardData?.today_payout ?? 0,
-    },
-  ];
+  // const normalCards = [
+
+  //   {
+  //     title: "Total Pay-IN Collection",
+  //     icon: "fa-wallet",
+  //     value: cardData?.total_payin_amount ?? 0,
+  //   },
+  //   {
+  //     title: "Total Pay-OUT",
+  //     icon: "fa-wallet",
+  //     value: cardData?.total_payout_amount ?? 0,
+  //   },
+  //   {
+  //     title: "Today Pay-IN Collection",
+  //     icon: "fa-arrow-trend-up",
+  //     value: cardData?.today_payin ?? 0,
+  //   },
+  //   {
+  //     title: "Today Pay-OUT",
+  //     icon: "fa-arrow-trend-up",
+  //     value: cardData?.today_payout ?? 0,
+  //   },
+  // ];
+
+  const normalCards = {
+    totalPayIn: cardData?.total_payin_amount || 0,
+    totalPayOut: cardData?.total_payout_amount || 0,
+    todayPayIn: cardData?.today_payin || 0,
+    todayPayOut: cardData?.today_payout || 0,
+  };
+
+  // console.log("normalCards data ====>", normalCards);
 
   useEffect(() => {
     if (showPassword) {
       console.log();
     }
   }, [showPassword]);
-  let cardsToShow = [];
-  cardsToShow = [...normalCards]; // normal users
-  
+
+  // let cardsToShow = [];
+  // cardsToShow = [...normalCards]; // normal users
+
+  useEffect(() => {
+    console.log(
+      "Data for donutChart card data chart Data Area::::->",
+      cardData
+    );
+  }, [cardData]);
+
   return (
     <>
       {initialLoad ? (
@@ -351,21 +384,21 @@ useEffect(() => {
                 {/* Toggle Button */}
                 <div
                   className={`relative w-20 h-8 rounded-full cursor-pointer transition-colors ${
-                    showPassword ? "bg-yellow-400" : "bg-gray-400"
+                    today ? "bg-yellow-400" : "bg-gray-400"
                   }`}
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => setToday(!today)}
                 >
                   {/* Labels */}
                   <span
                     className={`absolute left-2 top-1 text-xs font-semibold transition-opacity ${
-                      showPassword ? "opacity-50" : "opacity-100"
+                      today ? "opacity-50" : "opacity-100"
                     } text-black`}
                   >
                     Total
                   </span>
                   <span
                     className={`absolute right-2 top-1 text-xs font-semibold transition-opacity ${
-                      showPassword ? "opacity-100" : "opacity-50"
+                      today ? "opacity-100" : "opacity-50"
                     } text-black`}
                   >
                     Today
@@ -390,9 +423,9 @@ useEffect(() => {
                     <div className="flex justify-center items-start">
                       <div className="w-full max-w-[380px] p-6 rounded-xl backdrop-blur-xl shadow-lg bg-black/70">
                         <TransactionStatusPie
-                          success={200}
-                          failed={15}
-                          pending={35}
+                          success={donutChart.success}
+                          failed={donutChart.failed}
+                          // pending={donutChart.pending}
                         />
                       </div>
                     </div>
@@ -405,16 +438,18 @@ useEffect(() => {
                           <h5 className="text-lg font-semibold text-[#D4AF37]">
                             Pay-IN Collection
                           </h5>
-                          
                         </div>
                         <div className="flex justify-between items-center">
                           <div>
                             <h6 className="text-2xl font-bold text-[#D4AF37]">
-                              ₹ 0.00
+                              ₹{" "}
+                              {today
+                                ? normalCards.totalPayIn
+                                : normalCards.todayPayIn}
                             </h6>
-                            <div className="text-green-500 text-xs font-semibold mt-1">
+                            {/* <div className="text-green-500 text-xs font-semibold mt-1">
                               +64%
-                            </div>
+                            </div> */}
                           </div>
                           <div
                             ref={chartRef1}
@@ -429,16 +464,18 @@ useEffect(() => {
                           <h5 className="text-lg font-semibold text-[#D4AF37]">
                             Pay-OUT Collection
                           </h5>
-                          
                         </div>
                         <div className="flex justify-between items-center">
                           <div>
                             <h6 className="text-2xl font-bold text-[#D4AF37]">
-                              ₹ 0.00
+                              ₹{" "}
+                              {today
+                                ? normalCards.totalPayOut
+                                : normalCards.todayPayOut}
                             </h6>
-                            <div className="text-green-500 text-xs font-semibold mt-1">
+                            {/* <div className="text-green-500 text-xs font-semibold mt-1">
                               +64%
-                            </div>
+                            </div> */}
                           </div>
                           <div
                             ref={chartRef2}
@@ -469,11 +506,12 @@ useEffect(() => {
               <div className="p-4">
                 {/* <TransactionLineChart dates={dates} height={350} /> */}
                 {/* Add your chart here */}
-                {chartDataArea && <TransactionsChart chartData={chartDataArea} />}
-                
+                {chartDataArea && (
+                  <TransactionsChart chartData={chartDataArea} />
+                )}
               </div>
 
-              <TransactionTable transactions={transactions} />
+              <TransactionTable transactions={transactionData} />
             </div>
           </div>
         </div>
