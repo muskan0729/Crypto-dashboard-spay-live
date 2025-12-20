@@ -23,15 +23,11 @@ export const Dashboard = () => {
   const [largeTransactionData, setLargeTransactionData] = useState([]);
   const [initialLoad, setInitialLoad] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+ 
   // Fetch data
-  const { data: cardData, loading: recordLoading } =
-    useAutoFetch("/collection-record");
-  const { data: tableData } = useAutoFetch(
-    "/reportrecords-List?status=success"
-  );
-  const { data: cryptotableData } = useAutoFetch(
-    "/crypto-reportrecords-list?status=success"
-  );
+  const { data: cardData, loading: recordLoading } = useAutoFetch("/collection-record");
+  const { data: tableData } = useAutoFetch("/reportrecords-List?status=success");
+  const { data: cryptotableData } = useAutoFetch("/crypto-reportrecords-list?status=success");
 
   const [chartDataArea, setchartDataArea] = useState(null);
   
@@ -77,16 +73,12 @@ export const Dashboard = () => {
       role === "crypto" ? cryptoprocessTableData : processTableData;
 
     const largeSource =
-      role === "crypto"
-        ? cryptoprocessLargeTransactionData
-        : processLargeTransactionData;
+      role === "crypto" ? cryptoprocessLargeTransactionData : processLargeTransactionData;
 
     // Format table data
     const formattedTableData = tableSource.map((item, index) => {
       const date = new Date(item.created_at);
-      const formattedDate = `${date.getDate()} ${
-        MONTH_NAMES[date.getMonth()]
-      } ${date.getFullYear()}`;
+      const formattedDate = `${date.getDate()} ${ MONTH_NAMES[date.getMonth()] } ${date.getFullYear()}`;
       const formattedTime = date.toLocaleTimeString();
 
       return {
@@ -132,102 +124,137 @@ export const Dashboard = () => {
     // console.log(cardData);
   }, [recordLoading, cardData]);
 
+  useEffect(() => {
+    if (!cardData) return;
+  
+    // Transform API data to chart format
+    // Assuming cardData has these fields: total_payin_amount, total_payin_count, etc.
+    const transformedData = {
+      Total: {
+        PayIn: {
+          amount: [cardData.total_payin_amount], // you can expand by months if needed
+          count: [cardData.total_payin_count],
+        },
+        PayOut: {
+          amount: [cardData.total_payout_amount],
+          count: [cardData.total_payout_count],
+        },
+      },
+      Today: {
+        PayIn: {
+          amount: [cardData.today_payin_amount],
+          count: [cardData.today_payin_count],
+        },
+        PayOut: {
+          amount: [cardData.today_payout_amount],
+          count: [cardData.today_payout_count],
+        },
+      },
+    };
+    setchartDataArea(transformedData);
+  }, [cardData]);
+
   const chartRef1 = useRef(null);
   const chartRef2 = useRef(null);
 
-  useEffect(() => {
-    if (initialLoad) return;
+useEffect(() => {
+  if (initialLoad) return;
 
-    const options1 = {
-      chart: {
-        type: "area",
-        height: 80,
-        sparkline: { enabled: true },
-        toolbar: { show: false },
-        background: "transparent",
-      },
-      stroke: {
-        curve: "smooth",
-        width: 3,
-        colors: ["#D4AF37"],
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-          shadeIntensity: 0.5,
-          opacityFrom: 0.35,
-          opacityTo: 0,
-          stops: [0, 90, 100],
-        },
-      },
-      series: [
-        {
-          name: "Collection",
-          data: [15, 35, 20, 45, 30, 55, 25],
-        },
-      ],
-      tooltip: { theme: "dark", x: { show: false } },
-    };
+  const chart1 = chartRef1.current ? new ApexCharts(chartRef1.current, areaOptions1) : null;
+  const chart2 = chartRef2.current ? new ApexCharts(chartRef2.current, areaOptions2) : null;
 
-    const options2 = {
-      chart: {
-        type: "area",
-        height: 80,
-        sparkline: { enabled: true },
-        toolbar: { show: false },
-        background: "transparent",
-      },
-      stroke: {
-        curve: "smooth",
-        width: 3,
-        colors: ["#D4AF37"],
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-          shadeIntensity: 0.5,
-          opacityFrom: 0.35,
-          opacityTo: 0,
-          stops: [0, 90, 100],
-        },
-      },
-      series: [
-        {
-          name: "Collection",
-          data: [25, 45, 15, 35, 20, 50, 30],
-        },
-      ],
-      tooltip: { theme: "dark", x: { show: false } },
-    };
+  chart1?.render();
+  chart2?.render();
 
-    const chart1 = chartRef1.current
-      ? new ApexCharts(chartRef1.current, options1)
-      : null;
-    const chart2 = chartRef2.current
-      ? new ApexCharts(chartRef2.current, options2)
-      : null;
+  // cleanup on unmount
+  return () => {
+    chart1?.destroy();
+    chart2?.destroy();
+  };
+}, [initialLoad]);  
+  // useEffect(() => {
+  //   if (initialLoad) return;
 
-    chart1?.render();
-    chart2?.render();
+  //   const options1 = {
+  //     chart: {
+  //       type: "area",
+  //       height: 80,
+  //       sparkline: { enabled: true },
+  //       toolbar: { show: false },
+  //       background: "transparent",
+  //     },
+  //     stroke: {
+  //       curve: "smooth",
+  //       width: 3,
+  //       colors: ["#D4AF37"],
+  //     },
+  //     fill: {
+  //       type: "gradient",
+  //       gradient: {
+  //         shadeIntensity: 0.5,
+  //         opacityFrom: 0.35,
+  //         opacityTo: 0,
+  //         stops: [0, 90, 100],
+  //       },
+  //     },
+  //     series: [
+  //       {
+  //         name: "Collection",
+  //         data: [15, 35, 20, 45, 30, 55, 25],
+  //       },
+  //     ],
+  //     tooltip: { theme: "dark", x: { show: false } },
+  //   };
 
-    // cleanup on unmount
-    return () => {
-      chart1?.destroy();
-      chart2?.destroy();
-    };
-  }, [initialLoad]);
+  //   const options2 = {
+  //     chart: {
+  //       type: "area",
+  //       height: 80,
+  //       sparkline: { enabled: true },
+  //       toolbar: { show: false },
+  //       background: "transparent",
+  //     },
+  //     stroke: {
+  //       curve: "smooth",
+  //       width: 3,
+  //       colors: ["#D4AF37"],
+  //     },
+  //     fill: {
+  //       type: "gradient",
+  //       gradient: {
+  //         shadeIntensity: 0.5,
+  //         opacityFrom: 0.35,
+  //         opacityTo: 0,
+  //         stops: [0, 90, 100],
+  //       },
+  //     },
+  //     series: [
+  //       {
+  //         name: "Collection",
+  //         data: [25, 45, 15, 35, 20, 50, 30],
+  //       },
+  //     ],
+  //     tooltip: { theme: "dark", x: { show: false } },
+  //   };
 
-  const dates = [
-    { x: new Date("2025-01-01").getTime(), y: 1200000 },
-    { x: new Date("2025-01-02").getTime(), y: 1400000 },
-    { x: new Date("2025-01-03").getTime(), y: 1300000 },
-    { x: new Date("2025-01-04").getTime(), y: 1100000 },
-    { x: new Date("2025-01-05").getTime(), y: 1000000 },
-    { x: new Date("2025-01-06").getTime(), y: 900000 },
-    { x: new Date("2025-01-07").getTime(), y: 1500000 },
-    { x: new Date("2025-01-08").getTime(), y: 1450000 },
-    { x: new Date("2025-01-09").getTime(), y: 1350000 },
-  ];
+  //   const chart1 = chartRef1.current
+  //     ? new ApexCharts(chartRef1.current, options1)
+  //     : null;
+  //   const chart2 = chartRef2.current
+  //     ? new ApexCharts(chartRef2.current, options2)
+  //     : null;
+
+  //   chart1?.render();
+  //   chart2?.render();
+
+  //   // cleanup on unmount
+  //   return () => {
+  //     chart1?.destroy();
+  //     chart2?.destroy();
+  //   };
+  // }, [initialLoad]);
+
+  
 
   const transactions = [
     {
@@ -277,6 +304,7 @@ export const Dashboard = () => {
     },
   ];
 
+  
   // Role-based cards
   const normalCards = [
     {
@@ -301,39 +329,14 @@ export const Dashboard = () => {
     },
   ];
 
-  const cryptoCard = [
-    {
-      title: "Total Crypto-IN Collection",
-      icon: "fa-bitcoin-sign",
-      value: cardData?.total_crypto ?? 0,
-    },
-    {
-      title: "Total Crypto-OUT Collection",
-      icon: "fa-bitcoin-sign",
-      value: cardData?.total_crypto_payout ?? 0,
-    },
-    {
-      title: "Today Crypto-IN Collection",
-      icon: "fa-bitcoin-sign",
-      value: cardData?.today_crypto ?? 0,
-    },
-    {
-      title: "Today Crypto-OUT Collection",
-      icon: "fa-bitcoin-sign",
-      value: cardData?.today_crypto_payout ?? 0,
-    },
-  ];
-
   useEffect(() => {
     if (showPassword) {
       console.log();
     }
   }, [showPassword]);
   let cardsToShow = [];
-  if (role === "admin") cardsToShow = [...normalCards];
-  else if (role === "crypto") cardsToShow = [...cryptoCard];
-  else cardsToShow = [...normalCards]; // normal users
-  // console.log(cardData?.transactionStatusCounts);
+  cardsToShow = [...normalCards]; // normal users
+  
   return (
     <>
       {initialLoad ? (
@@ -402,14 +405,7 @@ export const Dashboard = () => {
                           <h5 className="text-lg font-semibold text-[#D4AF37]">
                             Pay-IN Collection
                           </h5>
-                          <div className="flex gap-2">
-                            <button className="px-2 py-1 bg-[#02030a] text-[#D4AF37] text-xs rounded border border-[#433200]">
-                              Total
-                            </button>
-                            <button className="px-2 py-1 bg-[#02030a] text-[#D4AF37] text-xs rounded border border-[#433200]">
-                              Today
-                            </button>
-                          </div>
+                          
                         </div>
                         <div className="flex justify-between items-center">
                           <div>
@@ -433,14 +429,7 @@ export const Dashboard = () => {
                           <h5 className="text-lg font-semibold text-[#D4AF37]">
                             Pay-OUT Collection
                           </h5>
-                          <div className="flex gap-2">
-                            <button className="px-2 py-1 bg-[#02030a] text-[#D4AF37] text-xs rounded border border-[#433200]">
-                              Total
-                            </button>
-                            <button className="px-2 py-1 bg-[#02030a] text-[#D4AF37] text-xs rounded border border-[#433200]">
-                              Today
-                            </button>
-                          </div>
+                          
                         </div>
                         <div className="flex justify-between items-center">
                           <div>
