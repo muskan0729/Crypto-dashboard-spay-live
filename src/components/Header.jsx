@@ -69,14 +69,14 @@ export const Header = ({ onMenuClick }) => {
         <button onClick={onMenuClick} className="md:hidden text-2xl text-blue-600">☰</button>
 
         {/* Role Toggle button: ✅ only on dashboard page */}
-        {showButton && (
+        {/* {showButton && (
           <button
             onClick={handleToggleRole}
             className="bg-switchbtn text-black px-3 py-1 rounded-lg text-sm font-medium"
           >
             Switch Role: {role === "admin" ? "admin" : "crypto"}
           </button>
-        )}
+        )} */}
 
         {/* Stats */}
         {role !== "admin" && (

@@ -5,7 +5,6 @@ export default function DashboardSummary({
   today,
   setToday,
   showPassword, // seems like a prop controlling the toggle knob
-  role,
   donutChart,
   normalCards,
   chartRef1,
@@ -49,7 +48,7 @@ export default function DashboardSummary({
 
       {/* Cards + Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {(role === "admin" || role === "user") && (
+        {(
           <>
             {/* Pie Chart */}
             <div className="flex justify-center items-start">
@@ -93,19 +92,6 @@ export default function DashboardSummary({
                   {/* <div ref={chartRef2} className="w-[200px] h-[80px]"></div> */}
                 </div>
               </div>
-            </div>
-          </>
-        )}
-
-        {role === "crypto" && (
-          <>
-            <div className="flex justify-center items-start">
-              <div className="w-full max-w-[380px] p-6 rounded-xl backdrop-blur-xl shadow-lg bg-black/70">
-                {/* Crypto Pie Chart */}
-              </div>
-            </div>
-            <div className="lg:col-span-2 p-6 rounded-xl backdrop-blur-xl shadow-lg bg-black/70">
-              {/* Crypto Line Chart */}
             </div>
           </>
         )}
