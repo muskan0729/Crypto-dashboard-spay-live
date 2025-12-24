@@ -1,18 +1,13 @@
 import { useEffect, useMemo, useState, useRef } from "react";
-import { DonutChart } from "../components/DonutChart";
-import { LineChart } from "../components/LineChart";
-import Table from "../components/Table";
 import useAutoFetch from "../hooks/useAutoFetch";
 import { MONTH_NAMES } from "../constants/Constants";
 import DashboardSkeleton from "../components/DashboardSkeleton";
 import "../css/dashboard.css";
 import ApexCharts from "apexcharts";
-import TransactionStatusPie from "../components/TransactionStatusPie";
-import TransactionLineChart from "../components/TransactionLineChart";
 import TransactionTable from "../components/TransactionTable";
 import { areaOptions1, areaOptions2 } from "../components/chartOptions";
-import DashboardCards from "../components/DashboardTopCards";
 import TransactionsChart from "../components/TransactionAreaChart";
+import DashboardSummary from "../components/DashboardSummary";
 import { ca } from "date-fns/locale";
 // import largesttxn from "../images/largesttxn.jpg";
 
@@ -109,7 +104,7 @@ export const Dashboard = () => {
       name: item.user.name,
       amount: item.amount,
     }));
-
+    console.log("----------------", formattedLargeTransactionData);
     setLargeTransactionData(formattedLargeTransactionData);
   }, [
     role,
@@ -118,24 +113,13 @@ export const Dashboard = () => {
     cryptoprocessTableData,
     cryptoprocessLargeTransactionData,
   ]);
-
-  // Table columns
-  const transactioncolumn = [
-    { header: "SQ No.", accessor: "sqno" },
-    { header: "TXN Id", accessor: "txnid" },
-    { header: "Name", accessor: "name" },
-    { header: "Type", accessor: "type" },
-    { header: "Amount", accessor: "amount" },
-    { header: "Status", accessor: "status" },
-    { header: "Date/Time", accessor: "time" },
-  ];
-
+  
   useEffect(() => {
     if (!recordLoading && cardData) {
       setInitialLoad(false);
     }
-    setDonutChart(cardData?.transactionStatusCounts.UPI);
-    // console.log(cardData);
+    setDonutChart(cardData?.transactionStatusCounts);
+    //console.log("------------------",cardData);
   }, [recordLoading, cardData]);
 
   useEffect(() => {
@@ -190,161 +174,7 @@ export const Dashboard = () => {
       chart2?.destroy();
     };
   }, [initialLoad]);
-  // useEffect(() => {
-  //   if (initialLoad) return;
-
-  //   const options1 = {
-  //     chart: {
-  //       type: "area",
-  //       height: 80,
-  //       sparkline: { enabled: true },
-  //       toolbar: { show: false },
-  //       background: "transparent",
-  //     },
-  //     stroke: {
-  //       curve: "smooth",
-  //       width: 3,
-  //       colors: ["#D4AF37"],
-  //     },
-  //     fill: {
-  //       type: "gradient",
-  //       gradient: {
-  //         shadeIntensity: 0.5,
-  //         opacityFrom: 0.35,
-  //         opacityTo: 0,
-  //         stops: [0, 90, 100],
-  //       },
-  //     },
-  //     series: [
-  //       {
-  //         name: "Collection",
-  //         data: [15, 35, 20, 45, 30, 55, 25],
-  //       },
-  //     ],
-  //     tooltip: { theme: "dark", x: { show: false } },
-  //   };
-
-  //   const options2 = {
-  //     chart: {
-  //       type: "area",
-  //       height: 80,
-  //       sparkline: { enabled: true },
-  //       toolbar: { show: false },
-  //       background: "transparent",
-  //     },
-  //     stroke: {
-  //       curve: "smooth",
-  //       width: 3,
-  //       colors: ["#D4AF37"],
-  //     },
-  //     fill: {
-  //       type: "gradient",
-  //       gradient: {
-  //         shadeIntensity: 0.5,
-  //         opacityFrom: 0.35,
-  //         opacityTo: 0,
-  //         stops: [0, 90, 100],
-  //       },
-  //     },
-  //     series: [
-  //       {
-  //         name: "Collection",
-  //         data: [25, 45, 15, 35, 20, 50, 30],
-  //       },
-  //     ],
-  //     tooltip: { theme: "dark", x: { show: false } },
-  //   };
-
-  //   const chart1 = chartRef1.current
-  //     ? new ApexCharts(chartRef1.current, options1)
-  //     : null;
-  //   const chart2 = chartRef2.current
-  //     ? new ApexCharts(chartRef2.current, options2)
-  //     : null;
-
-  //   chart1?.render();
-  //   chart2?.render();
-
-  //   // cleanup on unmount
-  //   return () => {
-  //     chart1?.destroy();
-  //     chart2?.destroy();
-  //   };
-  // }, [initialLoad]);
-
-  const transactions = [
-    {
-      sq: 1,
-      txn: "Sxxxxxxx1015553036555852",
-      name: "ABC Technology Pvt Ltd",
-      type: "topup_payout",
-      amount: 1000,
-      status: "Success",
-      datetime: "10 Dec 2025, 15:55:30",
-    },
-    {
-      sq: 2,
-      txn: "Sxxxxxxx1015553036555853",
-      name: "XYZ Solutions Ltd",
-      type: "topup_payout",
-      amount: 2500,
-      status: "Failed",
-      datetime: "11 Dec 2025, 11:20:10",
-    },
-    {
-      sq: 3,
-      txn: "Sxxxxxxx1015553036555854",
-      name: "PQR Enterprises",
-      type: "topup_payout",
-      amount: 1800,
-      status: "Pending",
-      datetime: "12 Dec 2025, 09:45:50",
-    },
-    {
-      sq: 4,
-      txn: "Sxxxxxxx1015553036555855",
-      name: "LMN Tech Corp",
-      type: "topup_payout",
-      amount: 3000,
-      status: "Success",
-      datetime: "13 Dec 2025, 14:30:15",
-    },
-    {
-      sq: 5,
-      txn: "Sxxxxxxx1015553036555856",
-      name: "OPQ Solutions",
-      type: "topup_payout",
-      amount: 1200,
-      status: "Failed",
-      datetime: "14 Dec 2025, 10:10:05",
-    },
-  ];
-
-  // Role-based cards
-  // const normalCards = [
-
-  //   {
-  //     title: "Total Pay-IN Collection",
-  //     icon: "fa-wallet",
-  //     value: cardData?.total_payin_amount ?? 0,
-  //   },
-  //   {
-  //     title: "Total Pay-OUT",
-  //     icon: "fa-wallet",
-  //     value: cardData?.total_payout_amount ?? 0,
-  //   },
-  //   {
-  //     title: "Today Pay-IN Collection",
-  //     icon: "fa-arrow-trend-up",
-  //     value: cardData?.today_payin ?? 0,
-  //   },
-  //   {
-  //     title: "Today Pay-OUT",
-  //     icon: "fa-arrow-trend-up",
-  //     value: cardData?.today_payout ?? 0,
-  //   },
-  // ];
-
+  
   const normalCards = {
     totalPayIn: cardData?.total_payin_amount || 0,
     totalPayOut: cardData?.total_payout_amount || 0,
@@ -359,9 +189,6 @@ export const Dashboard = () => {
       console.log();
     }
   }, [showPassword]);
-
-  // let cardsToShow = [];
-  // cardsToShow = [...normalCards]; // normal users
 
   useEffect(() => {
     console.log(
@@ -378,133 +205,21 @@ export const Dashboard = () => {
         <div className="w-full flex justify-center py-8">
           <div className="w-full max-w-[1140px] px-4 lg:px-6">
             {/* -------- TOP CARDS + DONUT/LINE CHART -------- */}
-            <div className="w-full mb-8">
-              {/* Flex container for toggle + grid */}
-              <div className="flex justify-end mb-6">
-                {/* Toggle Button */}
-                <div
-                  className={`relative w-20 h-8 rounded-full cursor-pointer transition-colors ${
-                    today ? "bg-yellow-400" : "bg-gray-400"
-                  }`}
-                  onClick={() => setToday(!today)}
-                >
-                  {/* Labels */}
-                  <span
-                    className={`absolute left-2 top-1 text-xs font-semibold transition-opacity ${
-                      today ? "opacity-50" : "opacity-100"
-                    } text-black`}
-                  >
-                    Total
-                  </span>
-                  <span
-                    className={`absolute right-2 top-1 text-xs font-semibold transition-opacity ${
-                      today ? "opacity-100" : "opacity-50"
-                    } text-black`}
-                  >
-                    Today
-                  </span>
+            
+            <DashboardSummary
+              today={today}
+              setToday={setToday}
+              showPassword={showPassword}
+              role={role}
+              donutChart={donutChart}
+              normalCards={normalCards}
+              chartRef1={chartRef1}
+              chartRef2={chartRef2}
+            />
 
-                  {/* Moving Knob */}
-                  <div
-                    className={`absolute top-1 left-1 w-8 h-6 bg-white rounded-full shadow-md flex items-center justify-center font-semibold text-xs text-black transform transition-transform duration-300 ${
-                      showPassword ? "translate-x-12" : "translate-x-0"
-                    }`}
-                  >
-                    {/* Optional: inside knob icon/text */}
-                  </div>
-                </div>
-              </div>
-
-              {/* Cards + Charts Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {(role === "admin" || role === "user") && (
-                  <>
-                    {/* Pie Chart */}
-                    <div className="flex justify-center items-start">
-                      <div className="w-full max-w-[380px] p-6 rounded-xl backdrop-blur-xl shadow-lg bg-black/70">
-                        <TransactionStatusPie
-                          success={donutChart.success}
-                          failed={donutChart.failed}
-                          // pending={donutChart.pending}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Pay-IN / Pay-OUT Cards */}
-                    <div className="lg:col-span-2 flex flex-col gap-4">
-                      {/* Pay-IN */}
-                      <div className="bg-black/80 rounded-xl p-6 shadow-lg">
-                        <div className="flex justify-between items-center mb-4 border-b border-[#433200] pb-2">
-                          <h5 className="text-lg font-semibold text-[#D4AF37]">
-                            Pay-IN Collection
-                          </h5>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h6 className="text-2xl font-bold text-[#D4AF37]">
-                              ₹{" "}
-                              {today
-                                ? normalCards.totalPayIn
-                                : normalCards.todayPayIn}
-                            </h6>
-                            {/* <div className="text-green-500 text-xs font-semibold mt-1">
-                              +64%
-                            </div> */}
-                          </div>
-                          <div
-                            ref={chartRef1}
-                            className="w-[200px] h-[80px]"
-                          ></div>
-                        </div>
-                      </div>
-
-                      {/* Pay-OUT */}
-                      <div className="bg-black/80 rounded-xl p-6 shadow-lg">
-                        <div className="flex justify-between items-center mb-4 border-b border-[#433200] pb-2">
-                          <h5 className="text-lg font-semibold text-[#D4AF37]">
-                            Pay-OUT Collection
-                          </h5>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h6 className="text-2xl font-bold text-[#D4AF37]">
-                              ₹{" "}
-                              {today
-                                ? normalCards.totalPayOut
-                                : normalCards.todayPayOut}
-                            </h6>
-                            {/* <div className="text-green-500 text-xs font-semibold mt-1">
-                              +64%
-                            </div> */}
-                          </div>
-                          <div
-                            ref={chartRef2}
-                            className="w-[200px] h-[80px]"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                {role === "crypto" && (
-                  <>
-                    <div className="flex justify-center items-start">
-                      <div className="w-full max-w-[380px] p-6 rounded-xl backdrop-blur-xl shadow-lg bg-black/70">
-                        {/* Crypto Pie Chart */}
-                      </div>
-                    </div>
-                    <div className="lg:col-span-2 p-6 rounded-xl backdrop-blur-xl shadow-lg bg-black/70">
-                      {/* Crypto Line Chart */}
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
             {/* -------- TABLE -------- */}
             <div className="mt-8 mb-4">
               <div className="p-4">
-                {/* <TransactionLineChart dates={dates} height={350} /> */}
                 {/* Add your chart here */}
                 {chartDataArea && (
                   <TransactionsChart chartData={chartDataArea} />
