@@ -1,0 +1,27 @@
+Universal Styling Conversion Prompt (Tailwind + Glassmorphism Dashboard Theme)
+Convert the following React component to match the styling and visual design used in my existing Dashboard component.
+Styling requirements:
+Use Tailwind CSS utility classes only (no styled-components, no inline CSS, no MUI/AntD).
+Apply a dark theme with a black background.
+Use glassmorphism cards:
+bg-white/5
+backdrop-blur-xl
+border border-white/10
+rounded-2xl
+shadow-xl
+Add soft gradient glow effects using Tailwind gradients and blur:
+radial or linear gradients
+warm tones (red / orange / gold)
+Use gold/yellow accent text for headings (e.g. text-[#ffd700]).
+Maintain clean spacing and layout using Tailwind (space-y, gap, px, py).
+Keep the component responsive (mobile → desktop).
+Behavior rules:
+Do NOT change the component’s logic or data flow.
+Do NOT rename props, hooks, or variables.
+Only modify JSX structure and classNames where needed.
+Keep all existing functionality intact.
+Output requirements:
+Return the full updated component code.
+Use consistent styling across all sections.
+Ensure visual consistency with a modern fintech/admin dashboard UI.
+Component to convert:

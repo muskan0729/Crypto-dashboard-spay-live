@@ -4,92 +4,97 @@ import TransactionStatusPie from "../components/TransactionStatusPie";
 export default function DashboardSummary({
   today,
   setToday,
-  showPassword, // seems like a prop controlling the toggle knob
+  showPassword,
+  role,
   donutChart,
   normalCards,
   chartRef1,
   chartRef2,
 }) {
   return (
-    <div className="w-full mb-8">
-      {/* Flex container for toggle + grid */}
-      <div className="flex justify-end mb-6">
-        {/* Toggle Button */}
+    <div className="w-full space-y-8">
+      {/* HEADER */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold text-white">
+          Dashboard Summary
+        </h3>
+
+        {/* TOGGLE */}
         <div
-          className={`relative w-20 h-8 rounded-full cursor-pointer transition-colors ${
-            today ? "bg-yellow-400" : "bg-gray-400"
-          }`}
           onClick={() => setToday(!today)}
+          className={`relative w-20 h-6 rounded-full cursor-pointer transition-all duration-300 shadow-inner
+            ${today ? "bg-gradient-to-r from-yellow-400 to-red-500" : "bg-gray-300"}`}
         >
-          {/* Labels */}
+          {/* Total */}
           <span
-            className={`absolute left-2 top-1 text-xs font-semibold transition-opacity ${
-              today ? "opacity-50" : "opacity-100"
-            } text-black`}
+            className={`absolute right-2 inset-y-0 flex items-center text-[11px] font-medium transition-opacity
+              ${today ? "opacity-0" : "opacity-100"} text-black`}
           >
             Total
           </span>
+
+          {/* Today */}
           <span
-            className={`absolute right-2 top-1 text-xs font-semibold transition-opacity ${
-              today ? "opacity-100" : "opacity-50"
-            } text-black`}
+            className={`absolute left-2 inset-y-0 flex items-center text-[11px] font-medium transition-opacity
+              ${today ? "opacity-100" : "opacity-0"} text-black`}
           >
             Today
           </span>
 
-          {/* Moving Knob */}
+          {/* Knob */}
           <div
-            className={`absolute top-1 left-1 w-8 h-6 bg-white rounded-full shadow-md flex items-center justify-center font-semibold text-xs text-black transform transition-transform duration-300 ${
-              today ? "translate-x-12" : "translate-x-0"
-            }`}
-          ></div>
+            className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-lg
+              transition-transform duration-300 ease-in-out
+              ${today ? "translate-x-14" : "translate-x-0"}`}
+          />
         </div>
       </div>
 
-      {/* Cards + Charts Grid */}
+      {/* SUMMARY GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {(
           <>
-            {/* Pie Chart */}
-            <div className="flex justify-center items-start">
-              <div className="w-full max-w-[380px] p-6 rounded-xl backdrop-blur-xl shadow-lg bg-black/70">
-                <TransactionStatusPie statusCounts={donutChart} />
+            {/* PIE CHART */}
+            <div className="flex justify-center">
+              <div className="w-full max-w-[380px] rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-6 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-red-500/20 via-yellow-400/20 to-transparent blur-3xl" />
+                <div className="relative">
+                  <h4 className="mb-4 text-sm font-medium text-[#ffd700]">
+                    Transaction Status
+                  </h4>
+                  <TransactionStatusPie statusCounts={donutChart} />
+                </div>
               </div>
             </div>
 
-            {/* Pay-IN / Pay-OUT Cards */}
-            <div className="lg:col-span-2 flex flex-col gap-4">
-              {/* Pay-IN */}
-              <div className="bg-black/80 rounded-xl p-6 shadow-lg">
-                <div className="flex justify-between items-center mb-4 border-b border-[#433200] pb-2">
-                  <h5 className="text-lg font-semibold text-[#D4AF37]">
+            {/* PAY-IN / PAY-OUT */}
+            <div className="lg:col-span-2 flex flex-col gap-6">
+              {/* PAY-IN */}
+              <div className="relative rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-6 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-red-500/20 blur-3xl" />
+                <div className="relative">
+                  <h5 className="mb-2 text-sm font-medium text-[#ffd700]">
                     Pay-IN Collection
                   </h5>
-                </div>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h6 className="text-2xl font-bold text-[#D4AF37]">
-                      ₹ {today ? normalCards.totalPayIn : normalCards.todayPayIn}
-                    </h6>
-                  </div>
-                  {/* <div ref={chartRef1} className="w-[200px] h-[80px]"></div> */}
+                  <h6 className="text-3xl font-bold text-white">
+                    ₹ {today ? normalCards.totalPayIn : normalCards.todayPayIn}
+                  </h6>
+                  {/* <div ref={chartRef1} className="mt-4 h-[80px]" /> */}
                 </div>
               </div>
 
-              {/* Pay-OUT */}
-              <div className="bg-black/80 rounded-xl p-6 shadow-lg">
-                <div className="flex justify-between items-center mb-4 border-b border-[#433200] pb-2">
-                  <h5 className="text-lg font-semibold text-[#D4AF37]">
+              {/* PAY-OUT */}
+              <div className="relative rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-6 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 to-yellow-400/20 blur-3xl" />
+                <div className="relative">
+                  <h5 className="mb-2 text-sm font-medium text-[#ffd700]">
                     Pay-OUT Collection
                   </h5>
-                </div>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h6 className="text-2xl font-bold text-[#D4AF37]">
-                      ₹ {today ? normalCards.totalPayOut : normalCards.todayPayOut}
-                    </h6>
-                  </div>
-                  {/* <div ref={chartRef2} className="w-[200px] h-[80px]"></div> */}
+                  <h6 className="text-3xl font-bold text-white">
+                    ₹{" "}
+                    {today ? normalCards.totalPayOut : normalCards.todayPayOut}
+                  </h6>
+                  {/* <div ref={chartRef2} className="mt-4 h-[80px]" /> */}
                 </div>
               </div>
             </div>
