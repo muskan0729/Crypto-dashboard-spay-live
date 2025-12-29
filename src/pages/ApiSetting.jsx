@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"; 
 import { usePost } from "../hooks/usePost";
 import Table from "../components/Table";
 import { useGet } from "../hooks/useGet";
@@ -11,12 +11,10 @@ const ApiSetting = () => {
   const [isLoading, setIsLoading] = useState(false);
   const Toast = useToast();
   const [PayinWebHook, setPayinWebHook] = useState("");
-  const [PayoutWebhook,setPayoutWebHook] = useState("");
-
+  const [PayoutWebhook, setPayoutWebHook] = useState("");
 
   const { execute } = usePost("/generate-token");
   const endPoint = activeTab === "apiToken" ? "/get-tokens" : "";
-
   const { data: apiTokensData, refetch: refetchApiTokens } = useGet(endPoint);
   const initialDataOfTokens = apiTokensData?.data;
 
@@ -45,53 +43,53 @@ const ApiSetting = () => {
 
   const handleGenerateToken = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // start loading
-
+    setIsLoading(true);
     try {
       const res = await execute({});
-      if (res.message == "Auth token generated successfully") {
+      if (res.message === "Auth token generated successfully") {
         Toast.success("Token Generated Successfully");
         refetchApiTokens();
       }
     } catch (err) {
       console.error("Error generating token:", err);
     } finally {
-      setIsLoading(false); // stop loading after response
+      setIsLoading(false);
     }
   };
-const {data:WebhookUrl, loading:WebHookLoading} = useGet("/show-merchant");
-useEffect(()=>{
-  if(WebhookUrl){
-    setPayinWebHook(WebhookUrl?.data?.payin_callback || " ");
-    setPayoutWebHook(WebhookUrl?.data?.payout_callback || " ");
-    console.log(WebhookUrl?.data?.payin_callback );
-  }
-},[WebhookUrl]);
-const {execute:updateWebhook} =usePost("/update-merchant");
-const handleSaveWebhook = async () => {
-  try {
-    const res = await updateWebhook({
-      payin_callback: PayinWebHook,
-      payout_callback: PayoutWebhook,
-    });
 
-    if (res?.message === "Merchant updated successfully") {
-      Toast.success("Webhook updated successfully!");
+  const { data: WebhookUrl } = useGet("/show-merchant");
+  useEffect(() => {
+    if (WebhookUrl) {
+      setPayinWebHook(WebhookUrl?.data?.payin_callback || " ");
+      setPayoutWebHook(WebhookUrl?.data?.payout_callback || " ");
     }
-  } catch (err) {
-    console.log(err);
-    Toast.error("Failed to update webhook!");
-  }
-};
+  }, [WebhookUrl]);
+
+  const { execute: updateWebhook } = usePost("/update-merchant");
+  const handleSaveWebhook = async () => {
+    try {
+      const res = await updateWebhook({
+        payin_callback: PayinWebHook,
+        payout_callback: PayoutWebhook,
+      });
+      if (res?.message === "Merchant updated successfully") {
+        Toast.success("Webhook updated successfully!");
+      }
+    } catch (err) {
+      console.log(err);
+      Toast.error("Failed to update webhook!");
+    }
+  };
+
   return (
-    <div className="p-6 mx-auto">
+    <div className="p-6 space-y-6 max-w-7xl mx-auto">
       {/* Tabs */}
-      <div className="flex border-b mb-4">
+      <div className="flex border-b border-white/10 mb-6">
         <button
           className={`flex items-center gap-2 px-4 py-2 font-medium transition ${
             activeTab === "apiToken"
-              ? "border-b-2 border-blue-600 text-blue-600"
-              : "text-gray-500 hover:text-blue-600"
+              ? "border-b-2 border-[#ffd700] text-[#ffd700]"
+              : "text-gray-400 hover:text-[#ffd700]"
           }`}
           onClick={() => setActiveTab("apiToken")}
         >
@@ -101,8 +99,8 @@ const handleSaveWebhook = async () => {
         <button
           className={`flex items-center gap-2 px-4 py-2 font-medium transition ${
             activeTab === "webhookConfig"
-              ? "border-b-2 border-blue-600 text-blue-600"
-              : "text-gray-500 hover:text-blue-600"
+              ? "border-b-2 border-[#ffd700] text-[#ffd700]"
+              : "text-gray-400 hover:text-[#ffd700]"
           }`}
           onClick={() => setActiveTab("webhookConfig")}
         >
@@ -111,12 +109,17 @@ const handleSaveWebhook = async () => {
       </div>
 
       {/* Tab Content */}
-      <div className="mt-4">
+      <div className="space-y-6">
         {/* ---- API Token Tab ---- */}
         {activeTab === "apiToken" && (
-          <div>
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">Manage API Tokens</h2>
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-6 relative overflow-hidden">
+            {/* Gradient Glow */}
+            <div className="absolute -z-10 w-60 h-60 top-[-2rem] right-[-2rem] bg-gradient-to-tr from-red-500/30 via-orange-400/20 to-yellow-400/20 blur-[120px] rounded-full"></div>
+
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+              <h2 className="text-xl font-bold text-[#ffd700]">
+                Manage API Tokens
+              </h2>
 
               <button
                 onClick={handleGenerateToken}
@@ -124,15 +127,15 @@ const handleSaveWebhook = async () => {
                 type="button"
                 className={`${
                   isLoading
-                    ? "bg-blue-700 cursor-not-allowed opacity-80"
-                    : "bg-blue-600 hover:bg-blue-700"
-                } text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center`}
+                    ? "bg-[#ffd700]/50 cursor-not-allowed opacity-80"
+                    : "bg-[#ffd700]/30 hover:bg-[#ffd700]/50"
+                } text-black font-medium rounded-xl text-sm px-5 py-2.5 transition flex items-center`}
               >
                 {isLoading && (
                   <svg
                     aria-hidden="true"
                     role="status"
-                    className="inline w-4 h-4 me-3 text-white animate-spin"
+                    className="inline w-4 h-4 mr-2 text-black animate-spin"
                     viewBox="0 0 100 101"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -147,7 +150,7 @@ const handleSaveWebhook = async () => {
                       91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 
                       27.9921 72.5987 9.67226 50 9.67226C27.4013 
                       9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                      fill="#E5E7EB"
+                      fill="#000"
                     />
                     <path
                       d="M93.9676 39.0409C96.393 38.4038 
@@ -183,60 +186,70 @@ const handleSaveWebhook = async () => {
               showExport={false}
               setData={setApiToken}
               showDateFilter={false}
+              className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl overflow-hidden"
+              rowClassName={(rowIndex) =>
+                rowIndex % 2 === 0
+                  ? "bg-white/10 hover:bg-white/20 transition"
+                  : "bg-white/5 hover:bg-white/20 transition"
+              }
             />
           </div>
         )}
 
         {/* ---- Webhook Config Tab ---- */}
         {activeTab === "webhookConfig" && (
-          <div>
-            <h2 className="text-lg font-semibold mb-3">
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-6 relative overflow-hidden space-y-6">
+            {/* Gradient Glow */}
+            <div className="absolute -z-10 w-60 h-60 top-[-2rem] left-[-2rem] bg-gradient-to-br from-red-500/30 via-orange-400/20 to-yellow-400/20 blur-[120px] rounded-full"></div>
+
+            <h2 className="text-xl font-bold text-[#ffd700]">
               Webhook Configuration
             </h2>
 
             <div className="space-y-6">
               <div>
-                <label className="block text-gray-700 font-medium mb-1">
+                <label className="block text-[#ffd700] font-semibold mb-1">
                   Payment Received Webhook URL
                 </label>
-                <div className="flex items-center border rounded-lg px-3">
+                <div className="flex items-center border border-white/10 rounded-lg px-3 bg-white/5 backdrop-blur-md">
                   <span className="text-gray-400 mr-2">🔗</span>
                   <input
                     type="text"
                     placeholder=""
-                    className="w-full p-2 outline-none"
+                    className="w-full p-2 bg-transparent outline-none text-white placeholder-gray-400"
                     value={PayinWebHook}
                     onChange={(e) => setPayinWebHook(e.target.value)}
                   />
                 </div>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-gray-400 mt-1">
                   We'll POST payin status notifications to this URL
                 </p>
               </div>
 
               <div>
-                <label className="block text-gray-700 font-medium mb-1">
+                <label className="block text-[#ffd700] font-semibold mb-1">
                   Payout Processed Webhook URL
                 </label>
-                <div className="flex items-center border rounded-lg px-3">
+                <div className="flex items-center border border-white/10 rounded-lg px-3 bg-white/5 backdrop-blur-md">
                   <span className="text-gray-400 mr-2">🔗</span>
                   <input
                     type="text"
                     placeholder=""
-                    className="w-full p-2 outline-none"
+                    className="w-full p-2 bg-transparent outline-none text-white placeholder-gray-400"
                     value={PayoutWebhook}
                     onChange={(e) => setPayoutWebHook(e.target.value)}
                   />
                 </div>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-gray-400 mt-1">
                   We'll POST payout status updates to this URL
                 </p>
               </div>
             </div>
 
-            <button 
-            onClick={handleSaveWebhook}
-            className="mt-6 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
+            <button
+              onClick={handleSaveWebhook}
+              className="mt-6 w-full bg-[#ffd700]/30 hover:bg-[#ffd700]/50 text-black font-semibold py-2 rounded-xl transition"
+            >
               💾 Save Webhook Settings
             </button>
           </div>

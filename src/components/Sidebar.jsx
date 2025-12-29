@@ -169,7 +169,7 @@ export const Sidebar = ({ open, setOpen }) => {
         className={`fixed top-0 left-0 h-full w-64 p-4 flex flex-col z-40
       bg-gradient-to-br from-red-500/10 via-yellow-400/5 to-transparent
       backdrop-blur-xl border-r border-white/10
-      shadow-[0_0_40px_rgba(255,180,0,0.15)]
+      
       transform transition-transform duration-300 ease-in-out
       md:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
@@ -185,17 +185,14 @@ export const Sidebar = ({ open, setOpen }) => {
         </button>
 
         {/* Logo */}
-        <div className="relative flex-shrink-0 flex justify-center py-6">
-          <div
-            className="rounded-full h-24 w-24
-        bg-gradient-to-br from-red-500/30 to-yellow-400/30
-        backdrop-blur-md border border-white/20
-        flex items-center justify-center shadow-lg"
-          >
-            <Link to="/dashboard">
-              <img src={Logo} className="w-16" alt="Spay Logo" />
-            </Link>
-          </div>
+        <div className="relative flex justify-center items-center w-25 h-25 rounded-full  overflow-hidden bg-white shadow-md ml-15 mb-5">
+          <Link to="/dashboard">
+            <img
+              src={Logo}
+              className="w-full h-full object-cover"
+              alt="Spay Logo"
+            />
+          </Link>
         </div>
 
         {/* MENU */}

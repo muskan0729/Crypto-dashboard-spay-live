@@ -20,9 +20,7 @@ const Scheme = () => {
     const handleChange = (checked) => {
       if (onToggle) onToggle(id, sqno, checked);
     };
-    return (
-      <Toggle defaultChecked={value === "Active"} onChange={handleChange} />
-    );
+    return <Toggle defaultChecked={value === "Active"} onChange={handleChange} />;
   };
 
   useEffect(() => {
@@ -35,7 +33,7 @@ const Scheme = () => {
         action: (
           <Button
             onClick={() => handleEdit(item)}
-            className="bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium px-3 py-1.5 rounded-md shadow-md transition"
+            className="bg-[#ffd700]/20 hover:bg-[#ffd700]/40 text-[#ffd700] text-xs font-medium px-3 py-1.5 rounded-xl shadow-lg transition"
           >
             Edit
           </Button>
@@ -60,9 +58,7 @@ const Scheme = () => {
     if (res) {
       setSchemeData((prev) =>
         prev.map((item) =>
-          item.sqno === sqno
-            ? { ...item, status: checked ? "Active" : "Inactive" }
-            : item
+          item.sqno === sqno ? { ...item, status: checked ? "Active" : "Inactive" } : item
         )
       );
     }
@@ -87,17 +83,21 @@ const Scheme = () => {
   ];
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-4 space-y-6">
       {/* Header */}
-      <div className="bg-[#10172e] rounded-lg flex justify-between items-center p-4 shadow-md shadow-[#f2b407]">
-        <h4 className="font-bold text-white text-xl">Scheme Manager</h4>
+
+            
+      <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl flex justify-between items-center p-4">
+        
+          <h4 className="font-bold text-[#ffd700] text-xl z-10">Scheme Manager</h4>
         <Button
-          className="bg-white border border-sky-200 text-sky-800 font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-sky-50 hover:border-sky-300 transition-all duration-200"
+          className="bg-white/10 border border-[#ffd700]/50 text-[#ffd700] font-semibold px-4 py-2 rounded-2xl shadow-md hover:bg-white/20 hover:border-[#ffd700] transition-all duration-200 z-10"
           onClick={handleModal}
         >
           ADD NEW
         </Button>
       </div>
+
       <SchemeModal
         showModal={showModal}
         handleModal={handleModal}
@@ -114,15 +114,15 @@ const Scheme = () => {
         <Table
           columns={schemecolumn}
           data={schemedata}
-          className="shadow-lg rounded-lg overflow-hidden border border-gray-200"
+          className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl overflow-hidden"
           rowClassName={(rowIndex) =>
             rowIndex % 2 === 0
-              ? "bg-white hover:bg-blue-50"
-              : "bg-gray-50 hover:bg-blue-50"
+              ? "bg-white/10 hover:bg-white/20 transition"
+              : "bg-white/5 hover:bg-white/20 transition"
           }
           paginationClassName="flex justify-end gap-2 mt-4"
-          previousClassName="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm cursor-pointer transition"
-          nextClassName="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm cursor-pointer transition"
+          previousClassName="bg-[#ffd700]/30 hover:bg-[#ffd700]/50 text-[#ffd700] px-3 py-1 rounded-xl shadow-sm cursor-pointer transition"
+          nextClassName="bg-[#ffd700]/30 hover:bg-[#ffd700]/50 text-[#ffd700] px-3 py-1 rounded-xl shadow-sm cursor-pointer transition"
           showDateFilter={false}
           endPoint="/delete-scheme"
           refreshTable={refetch}

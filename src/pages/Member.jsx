@@ -227,23 +227,25 @@ export const Member = () => {
         disabled={!row.account}
       />
     ),
-    sqno: (
-      <div className="flex flex-col shadow shadow-yellow-100">
-        <span className="text-sm font-semibold">{row.sqno}</span>
-        <Toggle
-          defaultChecked={row.account}
-          onChange={(v) => handleAccountToggle(v, row.id)}
-          className="mt-1"
-        />
-        <span className="text-xs text-blue-400 font-semibold mt-1">
-          {row.date}
-        </span>
-      </div>
-    ),
+//     sqno: (
+// <span>
+//         <span className="text-sm font-semibold">{row.sqno}</span>
+//         <Toggle
+//           defaultChecked={row.account}
+//           onChange={(v) => handleAccountToggle(v, row.id)}
+//           className="mt-1"
+//         />
+//         <span className="text-xs text-blue-400 font-semibold mt-1">
+//           {row.date}
+//         </span>
+//         </span>
+    // ),
   }));
 
   return (
     <div className="p-4 space-y-4">
+
+      
       {/* Header */}
       <div className="bg-[#10172e] rounded-lg flex justify-between items-center p-4 shadow-[0px_4px_10px_rgba(255,215,0,0.6)] border border-[#FFD700]">
         <h4 className="font-bold text-white text-xl">Member List</h4>

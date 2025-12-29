@@ -19,7 +19,6 @@ function LoginForm() {
     e.preventDefault();
     try {
       const response = await login(formData);
-      console.log(response.user.role_type);
 
       if (response) {
         localStorage.setItem("token", response.token);
@@ -35,21 +34,20 @@ function LoginForm() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 bg-black overflow-hidden">
-      {/* Gradient Background */}
-      {/* <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/40 via-purple-900/20 to-[#1174bd]"></div> */}
-<div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#117fc2]/50 via-[#0f6fb5]/30 to-[#064c97]"></div>
+      {/* Warm Gradient Glow Background */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-600/30 via-orange-500/20 to-yellow-400/10 -z-10"></div>
 
       {/* Optional Background Image Overlay */}
       <div
-        className="absolute inset-0 bg-center bg-cover opacity-10"
+        className="absolute inset-0 bg-center bg-cover opacity-10 -z-10"
         style={{ backgroundImage: `url(${paymentGatewayBg})` }}
       ></div>
 
       {/* Outer Glow */}
-      <div className="absolute w-[420px] h-[420px] bg-gradient-to-br from-purple-600/30 to-indigo-600/30 blur-3xl rounded-full"></div>
+      <div className="absolute w-[420px] h-[420px] bg-gradient-to-br from-red-500/30 via-orange-400/20 to-yellow-300/10 blur-3xl rounded-full -z-10"></div>
 
       {/* Login Card */}
-      <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl p-8">
+      <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-xl p-8">
         {/* Logo */}
         <div className="flex justify-center mb-6">
           <div className="rounded-xl bg-black/40 backdrop-blur-md px-6 py-3 border border-white/10">
@@ -58,7 +56,7 @@ function LoginForm() {
         </div>
 
         {/* Heading */}
-        <h1 className="text-2xl font-semibold mb-6 text-center bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+        <h1 className="text-2xl font-semibold mb-6 text-center text-[#FFD700]">
           Sign in to your account
         </h1>
 
@@ -74,21 +72,18 @@ function LoginForm() {
               onChange={handleChange}
               placeholder="Email"
               required
-              className={`peer w-full rounded-lg bg-black/40 backdrop-blur-md
-            px-4 pt-5 pb-2 text-sm text-white
-            border focus:outline-none placeholder-transparent
-            ${
-              error?.errors.email
-                ? "border-red-500 focus:border-red-500"
-                : "border-white/10 focus:border-indigo-500"
-            }`}
+              className={`peer w-full rounded-xl bg-black/40 backdrop-blur-md
+                px-4 pt-5 pb-2 text-sm text-white
+                border focus:outline-none placeholder-transparent
+                ${
+                  error?.errors.email
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-white/10 focus:border-[#FFD700]"
+                }`}
             />
             <label
               htmlFor="email"
-              className="absolute left-4 top-1.5 z-10
-            text-xs text-indigo-400
-            bg-black/70 px-4 rounded
-            "
+              className="absolute left-4 top-1.5 z-10 text-xs text-[#FFD700] bg-black/70 px-2 rounded"
             >
               Email
             </label>
@@ -107,22 +102,18 @@ function LoginForm() {
               onChange={handleChange}
               placeholder="Password"
               required
-              className={`peer w-full rounded-lg bg-black/40 backdrop-blur-md
-            px-4 pt-5 pb-2 text-sm text-white
-            border focus:outline-none placeholder-transparent
-            ${
-              error?.errors.password
-                ? "border-red-500 focus:border-red-500"
-                : "border-white/10 focus:border-indigo-500"
-            }`}
+              className={`peer w-full rounded-xl bg-black/40 backdrop-blur-md
+                px-4 pt-5 pb-2 text-sm text-white
+                border focus:outline-none placeholder-transparent
+                ${
+                  error?.errors.password
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-white/10 focus:border-[#FFD700]"
+                }`}
             />
             <label
               htmlFor="password"
-              className="absolute left-4 top-1.5 z-10
-            text-xs text-indigo-400
-            bg-black/70 px-1 rounded
-            transition-all
-            "
+              className="absolute left-4 top-1.5 z-10 text-xs text-[#FFD700] bg-black/70 px-2 rounded transition-all"
             >
               Password
             </label>
@@ -147,20 +138,15 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="
-          inline-flex items-center justify-center whitespace-nowrap rounded-md
-          text-sm font-medium transition-all disabled:pointer-events-none
-          disabled:opacity-50 w-full gap-2 h-10 px-4
-          bg-gradient-to-r from-blue-600 to-purple-600
-          hover:from-blue-700 hover:to-purple-700
-          shadow-lg shadow-blue-500/25
-          text-white
-          focus-visible:ring-2 focus-visible:ring-purple-500
-        "
+            className="inline-flex items-center justify-center w-full h-10 gap-2 px-4 rounded-xl text-sm font-medium text-black
+              bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400
+              hover:from-red-600 hover:via-orange-500 hover:to-yellow-500
+              shadow-lg shadow-yellow-400/25 transition-all
+              disabled:pointer-events-none disabled:opacity-50"
           >
             {loading ? (
               <>
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></span>
                 Signing in...
               </>
             ) : (

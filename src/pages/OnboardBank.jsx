@@ -100,35 +100,36 @@ const OnboardBank = () => {
   ];
 
   return (
-    <div className="p-4 bg-[#10172e] space-y-4">
+    <div className="p-6 bg-black min-h-screen space-y-6">
       {/* Header */}
-      <div className="bg-[#10172e] rounded-lg flex justify-between items-center p-4 shadow-md">
-        <h4 className="font-bold text-white text-xl">Onboard Bank</h4>
+      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl flex justify-between items-center px-6 py-4">
+        <h4 className="font-bold text-[#ffd700] text-2xl">Onboard Bank</h4>
         <Button
-          className="bg-white border border-sky-200 text-sky-800 font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-sky-50 hover:border-sky-300 transition-all duration-200"
+          className="bg-white/10 text-[#ffd700] border border-white/20 font-semibold px-4 py-2 rounded-xl shadow-md hover:bg-white/20 transition duration-200"
           onClick={handleModal}
         >
           ADD BANK
         </Button>
-
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-4">
         <Button
-          className={`px-4 py-2 rounded-lg font-medium ${activeTab === "payin"
-              ? "bg-blue-100 text-blue-600 shadow-md"
-              : "bg-white text-gray-600 hover:bg-blue-50 transition"
-            }`}
+          className={`px-5 py-2 rounded-xl font-medium ${
+            activeTab === "payin"
+              ? "bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-black shadow-lg"
+              : "bg-white/5 text-white hover:bg-white/10 transition"
+          }`}
           onClick={() => setActiveTab("payin")}
         >
           Payin Bank List
         </Button>
         <Button
-          className={`px-4 py-2 rounded-lg font-medium ${activeTab === "payout"
-              ? "bg-blue-100 text-blue-600 shadow-md"
-              : "bg-white text-gray-600 hover:bg-blue-50 transition"
-            }`}
+          className={`px-5 py-2 rounded-xl font-medium ${
+            activeTab === "payout"
+              ? "bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-black shadow-lg"
+              : "bg-white/5 text-white hover:bg-white/10 transition"
+          }`}
           onClick={() => setActiveTab("payout")}
         >
           Payout Bank List
@@ -136,26 +137,23 @@ const OnboardBank = () => {
       </div>
 
       {/* Table */}
-      <div className="bg-[#10172e] shadow-lg rounded-lg p-4">
-        {activeTab === "payin" ? (
-          payinLoading ? <TableSkeleton /> : null
-        ) : payoutLoading ? (
+      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-6">
+        {(activeTab === "payin" && payinLoading) ||
+        (activeTab === "payout" && payoutLoading) ? (
           <TableSkeleton />
-        ) : null}
-
-        {!payinLoading && !payoutLoading && (
+        ) : (
           <Table
             columns={bankColumn}
             data={bankData}
-            className="shadow-lg rounded-lg overflow-hidden border border-gray-200"
+            className="shadow-xl rounded-2xl overflow-hidden border border-white/10"
             rowClassName={(rowIndex) =>
               rowIndex % 2 === 0
-                ? "bg-white hover:bg-blue-50"
-                : "bg-gray-50 hover:bg-blue-50"
+                ? "bg-white/10 hover:bg-white/20"
+                : "bg-white/5 hover:bg-white/20"
             }
             paginationClassName="flex justify-end gap-2 mt-4"
-            previousClassName="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm cursor-pointer transition"
-            nextClassName="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm cursor-pointer transition"
+            previousClassName="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-black px-3 py-1 rounded-md shadow-sm cursor-pointer transition"
+            nextClassName="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-black px-3 py-1 rounded-md shadow-sm cursor-pointer transition"
             showPagination={true}
             showStatusFilter={true}
             showExport={false}

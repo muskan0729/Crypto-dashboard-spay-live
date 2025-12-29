@@ -39,7 +39,7 @@ export default function TransactionStatusPie({
   return (
     <div className="relative rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-6 overflow-hidden">
       {/* Ambient Glow */}
-      <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 via-red-500/20 to-transparent blur-3xl" />
+      <div  />
 
       <div className="relative">
         {/* Header */}

@@ -70,9 +70,16 @@ export const Dashboard = () => {
         type: item.product,
         amount: item.amount,
         status: item.status.charAt(0).toUpperCase() + item.status.slice(1),
+        //  status:(<span
+        //     className={`px-2 py-1 rounded-full text-sm font-medium ${statusClasses[item.status] ?? "bg-gray-100 text-gray-800"}`}
+        //   >
+        //     {item?.status
+        //       ? item.status.charAt(0).toUpperCase() + item.status.slice(1)
+        //       : "N/A"}
+        //   </span>),
         datetime: formattedDate + " " + formattedTime,
       };
-    });
+    }); 
     setTransactionData(formattedTableData);
 
     const formattedLargeTransactionData = largeSource.map((item) => ({
@@ -175,9 +182,9 @@ export const Dashboard = () => {
               )}
 
               <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-xl p-6">
-                <h2 className="mb-4 text-sm font-medium text-[#ffd700]">
+                {/* <h2 className="mb-4 text-sm font-medium text-[#ffd700]">
                   Recent Transactions
-                </h2>
+                </h2> */}
                 <TransactionTable transactions={transactionData} />
               </div>
             </div>
