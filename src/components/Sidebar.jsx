@@ -70,7 +70,10 @@ export const Sidebar = ({ open, setOpen }) => {
             dropdown: "account",
             items: [
               { label: "Topup Statement", link: "/topup-statement" },
-              { label: "Settlement Payin Statement", link: "/settlement-payin-statement" },
+              {
+                label: "Settlement Payin Statement",
+                link: "/settlement-payin-statement",
+              },
             ],
           },
         ]
@@ -106,7 +109,10 @@ export const Sidebar = ({ open, setOpen }) => {
             dropdown: "account",
             items: [
               { label: "Topup Statement", link: "/topup-statement" },
-              { label: "Settlement Payin Statement", link: "/settlement-payin-statement" },
+              {
+                label: "Settlement Payin Statement",
+                link: "/settlement-payin-statement",
+              },
             ],
           },
           {
@@ -134,9 +140,7 @@ export const Sidebar = ({ open, setOpen }) => {
             label: "Transaction History",
             icon: "fa-clock-rotate-left",
             dropdown: "txn",
-            items: [
-              { label: "Crypto Statement", link: "/crypto-statement" },
-            ],
+            items: [{ label: "Crypto Statement", link: "/crypto-statement" }],
           },
         ]
       : []),
@@ -154,38 +158,48 @@ export const Sidebar = ({ open, setOpen }) => {
     <>
       {/* Overlay */}
       <div
-        className={`fixed inset-0 bg-black/50 z-30 md:hidden transition-opacity duration-300 ${
-          open ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
+        className={`fixed inset-0 z-30 md:hidden transition-opacity duration-300
+      bg-gradient-to-br from-red-900/60 to-yellow-800/40 backdrop-blur-sm
+      ${open ? "opacity-100 visible" : "opacity-0 invisible"}`}
         onClick={() => setOpen(false)}
       />
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 p-4 flex flex-col
-          bg-sidebarbg bg-cover bg-no-repeat bg-center bg-blend-soft-light 
-          shadow-xl z-40 transform transition-transform duration-300 ease-in-out
-          md:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed top-0 left-0 h-full w-64 p-4 flex flex-col z-40
+      bg-gradient-to-br from-red-500/10 via-yellow-400/5 to-transparent
+      backdrop-blur-xl border-r border-white/10
+      shadow-[0_0_40px_rgba(255,180,0,0.15)]
+      transform transition-transform duration-300 ease-in-out
+      md:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
-        {/* Close button mobile */}
+        {/* Glow Layer */}
+        <div className="absolute inset-0 bg-gradient-to-b from-red-500/10 via-yellow-400/5 to-transparent pointer-events-none"></div>
+
+        {/* Close Button (Mobile) */}
         <button
-          className="absolute top-4 right-4 text-2xl md:hidden"
+          className="absolute top-4 right-4 md:hidden text-yellow-300 hover:text-red-400 transition"
           onClick={() => setOpen(false)}
         >
-          <i className="fa-solid fa-xmark text-red-600"></i>
+          <i className="fa-solid fa-xmark text-xl"></i>
         </button>
 
         {/* Logo */}
-        <div className="flex-shrink-0 p-4 ml-5">
-          <div className="ml-6 rounded-full h-24 w-24 bg-white flex items-center justify-center">
-            <Link to={"/dashboard"}>
-              <img src={Logo} className="w-20" alt="Spay Logo" />
+        <div className="relative flex-shrink-0 flex justify-center py-6">
+          <div
+            className="rounded-full h-24 w-24
+        bg-gradient-to-br from-red-500/30 to-yellow-400/30
+        backdrop-blur-md border border-white/20
+        flex items-center justify-center shadow-lg"
+          >
+            <Link to="/dashboard">
+              <img src={Logo} className="w-16" alt="Spay Logo" />
             </Link>
           </div>
         </div>
 
-        {/* MENU LIST */}
-        <ul className="space-y-2 font-medium sidebar flex-1 overflow-y-auto custom-scrollbar">
+        {/* MENU */}
+        <ul className="relative space-y-2 font-medium flex-1 overflow-y-auto custom-scrollbar">
           {menu.map((item, i) => {
             const isParentActive =
               item.items?.some((sub) => sub.link === currentPath) ?? false;
@@ -197,13 +211,15 @@ export const Sidebar = ({ open, setOpen }) => {
                   <Link
                     to={item.link}
                     className={`flex items-center w-full p-3 rounded-xl transition-all duration-300
-                      ${
-                        currentPath === item.link
-                          ? "bg-sidebarmenu shadow-md"
-                          : "text-white bg-sidebarmenuhvr hover:shadow-md"
-                      }`}
+                  ${
+                    currentPath === item.link
+                      ? "bg-gradient-to-r from-red-500/40 to-yellow-400/40 text-white shadow-md"
+                      : "text-gray-100 hover:bg-gradient-to-r hover:from-red-500/20 hover:to-yellow-400/20"
+                  }`}
                   >
-                    <i className={`fa-solid ${item.icon} mr-3`}></i>
+                    <i
+                      className={`fa-solid ${item.icon} mr-3 text-yellow-300`}
+                    ></i>
                     <span>{item.label}</span>
                   </Link>
                 ) : (
@@ -211,18 +227,20 @@ export const Sidebar = ({ open, setOpen }) => {
                     {/* DROPDOWN BUTTON */}
                     <button
                       className={`flex items-center w-full p-3 rounded-xl transition-all duration-300
-                        ${
-                          isParentActive
-                            ? "bg-sidebarmenu shadow-md"
-                            : "text-white bg-sidebarmenuhvr hover:shadow-md"
-                        }`}
+                    ${
+                      isParentActive
+                        ? "bg-gradient-to-r from-red-500/40 to-yellow-400/40 text-white shadow-md"
+                        : "text-gray-100 hover:bg-gradient-to-r hover:from-red-500/20 hover:to-yellow-400/20"
+                    }`}
                       onClick={() => toggleDropdown(item.dropdown)}
                     >
-                      <i className={`fa-solid ${item.icon} mr-3`}></i>
+                      <i
+                        className={`fa-solid ${item.icon} mr-3 text-yellow-300`}
+                      ></i>
                       <span>{item.label}</span>
 
                       <svg
-                        className={`w-2.5 h-2.5 ml-auto transition-transform duration-300 ${
+                        className={`w-3 h-3 ml-auto transition-transform duration-300 ${
                           activeDropdown === item.dropdown ? "rotate-180" : ""
                         }`}
                         fill="none"
@@ -238,11 +256,12 @@ export const Sidebar = ({ open, setOpen }) => {
 
                     {/* DROPDOWN MENU */}
                     <div
-                      className={`ml-4 mt-1 rounded-lg p-2 transition-all duration-300 ease-in-out overflow-hidden ${
-                        activeDropdown === item.dropdown
-                          ? "max-h-40 opacity-100"
-                          : "max-h-0 opacity-0"
-                      }`}
+                      className={`ml-4 mt-1 rounded-lg overflow-hidden transition-all duration-300
+                    ${
+                      activeDropdown === item.dropdown
+                        ? "max-h-40 opacity-100"
+                        : "max-h-0 opacity-0"
+                    }`}
                     >
                       {item.items.map((sub, j) => {
                         const isActive = currentPath === sub.link;
@@ -251,18 +270,13 @@ export const Sidebar = ({ open, setOpen }) => {
                           <Link key={j} to={sub.link}>
                             <div
                               className={`flex items-center gap-2 p-2 rounded-lg transition-all duration-300
-                                ${
-                                  isActive
-                                    ? "bg-sidebarmenu shadow-sm scale-[1.01]"
-                                    : "bg-transparent text-gray-100 bg-sidebarmenuhvr hover:shadow-sm hover:scale-[1.01]"
-                                }`}
+                            ${
+                              isActive
+                                ? "bg-gradient-to-r from-red-500/40 to-yellow-400/40 text-white shadow-sm"
+                                : "text-gray-200 hover:bg-gradient-to-r hover:from-red-500/20 hover:to-yellow-400/20"
+                            }`}
                             >
-                              <i
-                                className={`fa-solid fa-circle text-[6px] ${
-                                  isActive ? "text-white" : ""
-                                }`}
-                              ></i>
-
+                              <i className="fa-solid fa-circle text-[6px] text-yellow-300"></i>
                               {sub.label}
                             </div>
                           </Link>
