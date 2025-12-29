@@ -52,7 +52,7 @@ export default function DashboardSummary({
 
       {/* SUMMARY GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {(role === "admin" || role === "user") && (
+        {(
           <>
             {/* PIE CHART */}
             <div className="flex justify-center">
@@ -97,22 +97,6 @@ export default function DashboardSummary({
                   {/* <div ref={chartRef2} className="mt-4 h-[80px]" /> */}
                 </div>
               </div>
-            </div>
-          </>
-        )}
-
-        {role === "crypto" && (
-          <>
-            <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-6">
-              <h4 className="mb-4 text-sm font-medium text-[#ffd700]">
-                Crypto Status
-              </h4>
-            </div>
-
-            <div className="lg:col-span-2 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-6">
-              <h4 className="mb-4 text-sm font-medium text-[#ffd700]">
-                Crypto Trends
-              </h4>
             </div>
           </>
         )}

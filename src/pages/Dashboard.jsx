@@ -11,6 +11,8 @@ import DashboardSummary from "../components/DashboardSummary";
 
 export const Dashboard = () => {
   const [role] = useState(atob(localStorage.getItem("role")) || "admin");
+  // Get role from localStorage
+  //const [role] = useState(atob(localStorage.getItem("role")) || "admin");
 
   const [transactionData, setTransactionData] = useState([]);
   const [largeTransactionData, setLargeTransactionData] = useState([]);
@@ -21,12 +23,19 @@ export const Dashboard = () => {
 
   const { data: cardData, loading: recordLoading } =
     useAutoFetch("/collection-record");
-  const { data: tableData } = useAutoFetch("/reportrecords-List?status=success");
-  const { data: cryptotableData } = useAutoFetch("/crypto-reportrecords-list?status=success");
+  const { data: tableData } = useAutoFetch(
+    "/reportrecords-List?status=success"
+  );
+  // const { data: cryptotableData } = useAutoFetch(
+  //   "/crypto-reportrecords-list?status=success"
+  // );
   const [chartDataArea, setchartDataArea] = useState(null);
 
   const initialDataOfTransactions = tableData?.data;
-  const cryptoinitialDataOfTransactions = cryptotableData?.data;
+  //const cryptoinitialDataOfTransactions = cryptotableData?.data;
+
+  // console.log("Table Data:", tableData);
+  // console.log("Crypto Table Data:", cryptotableData);
 
   // Process table data
   const processTableData = useMemo(() => {
@@ -36,13 +45,6 @@ export const Dashboard = () => {
     );
   }, [initialDataOfTransactions]);
 
-  const cryptoprocessTableData = useMemo(() => {
-    if (!cryptoinitialDataOfTransactions) return [];
-    return [...cryptoinitialDataOfTransactions].sort(
-      (a, b) => new Date(b.created_at) - new Date(a.created_at)
-    );
-  }, [cryptoinitialDataOfTransactions]);
-
   // Process top 4 largest transactions
   const processLargeTransactionData = useMemo(() => {
     if (!initialDataOfTransactions) return [];
@@ -51,22 +53,10 @@ export const Dashboard = () => {
       .slice(0, 4);
   }, [initialDataOfTransactions]);
 
-  const cryptoprocessLargeTransactionData = useMemo(() => {
-    if (!cryptoinitialDataOfTransactions) return [];
-    return [...cryptoinitialDataOfTransactions]
-      .sort((a, b) => b.amount - a.amount)
-      .slice(0, 4);
-  }, [cryptoinitialDataOfTransactions]);
-
   // Format transaction & large transaction data
   useEffect(() => {
-    const tableSource =
-      role === "crypto" ? cryptoprocessTableData : processTableData;
-
-    const largeSource =
-      role === "crypto"
-        ? cryptoprocessLargeTransactionData
-        : processLargeTransactionData;
+    const tableSource = processTableData;
+    const largeSource = processLargeTransactionData;
 
     const formattedTableData = tableSource.map((item, index) => {
       const date = new Date(item.created_at);
@@ -91,11 +81,8 @@ export const Dashboard = () => {
     }));
     setLargeTransactionData(formattedLargeTransactionData);
   }, [
-    role,
     processTableData,
-    processLargeTransactionData,
-    cryptoprocessTableData,
-    cryptoprocessLargeTransactionData,
+    processLargeTransactionData
   ]);
 
   useEffect(() => {
