@@ -82,18 +82,18 @@ export const Sidebar = ({ open, setOpen }) => {
     // ---------------------- USER MENUS ----------------------
     ...(role === "user"
       ? [
-          {
-            label: "Payout",
-            icon: "fa-credit-card",
-            dropdown: "payout",
-            items: [{ label: "Request", link: "/payout-request" }],
-          },
-          {
-            label: "Payin",
-            icon: "fa-money-bill-transfer",
-            dropdown: "payin",
-            items: [{ label: "Request", link: "/payin-request" }],
-          },
+          // {
+          //   label: "Payout",
+          //   icon: "fa-credit-card",
+          //   dropdown: "payout",
+          //   items: [{ label: "Request", link: "/payout-request" }],
+          // },
+          // {
+          //   label: "Payin",
+          //   icon: "fa-money-bill-transfer",
+          //   dropdown: "payin",
+          //   items: [{ label: "Request", link: "/payin-request" }],
+          // },
           {
             label: "Transaction History",
             icon: "fa-clock-rotate-left",
