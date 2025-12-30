@@ -25,8 +25,7 @@ export const Header = ({ onMenuClick }) => {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const userStats = [
@@ -64,9 +63,9 @@ export const Header = ({ onMenuClick }) => {
   return (
     <nav className="relative w-full bg-black border-b border-white/10 shadow-xl z-30">
       {/* Glow */}
-      <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 via-yellow-500/10 to-orange-500/10 blur-2xl pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 via-yellow-500/10 to-orange-500/10  pointer-events-none" />
 
-      <div className="relative flex items-center justify-between px-4 py-3 backdrop-blur-xl bg-white/5">
+      <div className="relative flex items-center justify-between px-4 py-3  bg-white/5">
         {/* LEFT */}
         <div className="flex items-center gap-4">
           <button
@@ -84,7 +83,7 @@ export const Header = ({ onMenuClick }) => {
                   <div
                     key={item.id}
                     className="flex items-center gap-2 px-4 py-2 rounded-2xl
-                               bg-white/5 backdrop-blur-xl
+                               bg-white/5 
                                border border-white/10 shadow-lg"
                   >
                     <i className={`${item.icon} fa-lg text-[#ffd700]`} />
@@ -112,7 +111,7 @@ export const Header = ({ onMenuClick }) => {
                     {activeStat === item.id && (
                       <div
                         className="absolute left-1/2 -translate-x-1/2 mt-3 w-48 p-4
-                                   rounded-2xl bg-white/5 backdrop-blur-xl
+                                   rounded-2xl bg-white/20
                                    border border-white/10 shadow-xl z-50"
                       >
                         <div className="text-white/70 text-sm">
@@ -148,7 +147,7 @@ export const Header = ({ onMenuClick }) => {
           {open && (
             <div
               className="absolute right-0 mt-3 w-64 p-4 rounded-2xl
-                         bg-white/5 
+                         bg-black/50 
                          border border-white/10 shadow-xl z-50"
             >
               <div className="text-center mb-4">
@@ -176,7 +175,7 @@ export const Header = ({ onMenuClick }) => {
               <button
                 onClick={handleLogout}
                 className="w-full text-left mt-1 px-4 py-2 rounded-lg
-                           text-red-400 hover:bg-red-500/10 transition"
+                           text-red-400 hover:text-red-500 hover:bg-red-500/25 transition"
               >
                 Logout
               </button>

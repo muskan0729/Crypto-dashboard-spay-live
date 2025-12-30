@@ -127,7 +127,8 @@ export const MemberOnboardForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const newValue = name === "credentials_id" ? parseInt(value, 10) || "" : value;
+    const newValue =
+      name === "credentials_id" ? parseInt(value, 10) || "" : value;
     if (name === "payin_at_onboard" && value === "Airpay") refetchCredentials();
     setMemberFormData((prev) => ({ ...prev, [name]: newValue }));
   };
@@ -242,7 +243,9 @@ export const MemberOnboardForm = () => {
                   {field.label} <span className="text-red-500">*</span>
                 </label>
                 {errors?.[field.name] && (
-                  <span className="text-xs text-red-500">{errors[field.name]}</span>
+                  <span className="text-xs text-red-500">
+                    {errors[field.name]}
+                  </span>
                 )}
               </div>
             ))}
@@ -278,9 +281,13 @@ export const MemberOnboardForm = () => {
         {/* STEP 3 */}
         {currentStep === 3 &&
           memberFormData.director_info.map((director, index) => (
-            <div key={index} className="grid gap-6 md:grid-cols-2 border-b border-white/10 pb-4">
+            <div
+              key={index}
+              className="grid gap-6 md:grid-cols-2 border-b border-white/10 pb-4"
+            >
               <input
                 type="text"
+                name="director_name"
                 value={director.director_name}
                 onChange={(e) => handleDirectorChange(index, e)}
                 className="bg-black/20 backdrop-blur-md text-[#FFD700] border border-white/10 rounded-2xl p-3"
@@ -304,11 +311,34 @@ export const MemberOnboardForm = () => {
               name="payin_at_onboard"
               value={memberFormData.payin_at_onboard}
               onChange={handleChange}
-              className="bg-black/20 backdrop-blur-md text-[#FFD700] border border-white/10 rounded-2xl p-3"
+              className="
+    w-full
+    appearance-none
+    bg-black/40
+    backdrop-blur-xl
+    text-[#FFD700]
+    border border-white/10
+    rounded-2xl
+    px-4 py-3
+    text-sm
+    focus:outline-none
+    focus:ring-2
+    focus:ring-[#FFD700]/40
+    focus:border-[#FFD700]/40
+    hover:border-white/20
+    transition
+  "
             >
-              <option value="">Select Payin Bank</option>
+              <option value="" className="bg-black text-gray-400">
+                Select Payin Bank
+              </option>
+
               {payinBanks?.data.map((b) => (
-                <option key={b.id} value={b.onboard_payin_bank}>
+                <option
+                  key={b.id}
+                  value={b.onboard_payin_bank}
+                  className="bg-black text-white"
+                >
                   {b.onboard_payin_bank}
                 </option>
               ))}
