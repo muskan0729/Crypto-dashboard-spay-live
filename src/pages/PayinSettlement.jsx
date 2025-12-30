@@ -32,7 +32,7 @@ const PayinSettlement = () => {
   }, [initialDataOfPayinWallet]);
 
   const membercolumn = [
-    { header: "SQNo", accessor: "sqno" },
+    { header: "SQ No", accessor: "sqno" },
     { header: "Name", accessor: "name" },
     { header: "Payin Wallet", accessor: "payin_wallet" },
     { header: "Action", accessor: "action" },
@@ -46,7 +46,9 @@ const PayinSettlement = () => {
           setSelectedUser(row);
           setShowModal(true);
         }}
-        className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-1.5 rounded-md shadow-md transition-all"
+        className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 
+                   text-black text-sm font-semibold px-4 py-1.5 rounded-xl 
+                   shadow-lg hover:opacity-90 transition"
       >
         Payin Settlement
       </Button>
@@ -71,10 +73,7 @@ const PayinSettlement = () => {
       if (res) {
         toast.success("Settlement done successfully!!");
         refetch();
-        setPayinFormData({
-          payin_wallet: "",
-          remark: "",
-        });
+        setPayinFormData({ payin_wallet: "", remark: "" });
         setShowModal(false);
       }
     } catch (err) {
@@ -84,107 +83,108 @@ const PayinSettlement = () => {
   };
 
   return (
-    <div className="p-4 bg-[#10172e] space-y-4">
+    <div className="bg-black min-h-screen p-6 space-y-6">
       {/* Header */}
-      <div className=" bg-[#10172e] rounded-lg flex justify-between items-center p-4 shadow-md shadow-[#cba73c]">
-        <h4 className="font-bold text-white text-xl">Payin Settlement</h4>
+      <div className="relative overflow-hidden bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl px-6 py-4">
+        <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 blur-2xl" />
+        <h4 className="relative font-bold text-[#ffd700] text-2xl">
+          Payin Settlement
+        </h4>
       </div>
 
       {/* Table */}
       {loading ? (
         <TableSkeleton />
-      ) : ( 
-        <Table
-          columns={membercolumn}
-          data={tableDataWithActions}
-          showDeleteColumn={false}
-          showDateFilter={false}
-          showStatusFilter={false}
-          className="shadow-lg rounded-lg overflow-hidden border border-gray-200"
-          paginationClassName="flex justify-end gap-2 mt-4"
-          previousClassName="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm cursor-pointer transition"
-          nextClassName="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm cursor-pointer transition"
-        />
+      ) : (
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-4">
+          <Table
+            columns={membercolumn}
+            data={tableDataWithActions}
+            showDeleteColumn={false}
+            showDateFilter={false}
+            showStatusFilter={false}
+            className="rounded-xl overflow-hidden border border-white/10"
+            paginationClassName="flex justify-end gap-2 mt-4"
+            previousClassName="bg-gradient-to-r from-yellow-400 to-orange-400 
+                               text-black px-3 py-1 rounded-md shadow cursor-pointer"
+            nextClassName="bg-gradient-to-r from-orange-400 to-red-400 
+                           text-black px-3 py-1 rounded-md shadow cursor-pointer"
+          />
+        </div>
       )}
 
       {/* Modal */}
       {showModal && (
-       <div
-  className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50"
-  onClick={() => setShowModal(false)}
->
-  <div
-    className="bg-[#0f1629] border border-gray-700 rounded-lg shadow-2xl max-w-md w-full mx-2 transform transition-all scale-100"
-    onClick={(e) => e.stopPropagation()}
-  >
-    {/* Modal Header */}
-    <div className="flex justify-between items-center 
-                    bg-gradient-to-r from-[#b88909] via-[#ffd700] to-[#b88909] 
-                    text-black font-semibold rounded-t-lg px-5 py-3 shadow-md">
-      <h3 className="text-lg font-bold">
-        Payin Settlement for {selectedUser?.name}
-      </h3>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center 
+                     bg-black/60 backdrop-blur-sm"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative bg-white/5 backdrop-blur-xl border border-white/10 
+                       rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden"
+          >
+            {/* Modal Header */}
+            <div className="relative px-6 py-4">
+              <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 via-orange-400/20 to-red-400/20 blur-xl" />
+              <div className="relative flex justify-between items-center">
+                <h3 className="text-[#ffd700] font-bold text-lg">
+                  Payin Settlement — {selectedUser?.name}
+                </h3>
+                <Button
+                  onClick={() => setShowModal(false)}
+                  className="w-8 h-8 flex items-center justify-center rounded-full 
+                             bg-white/10 text-white hover:bg-red-500 transition"
+                >
+                  ✕
+                </Button>
+              </div>
+            </div>
 
-      <Button
-        onClick={() => setShowModal(false)}
-        className="flex items-center justify-center w-8 h-8 rounded-full 
-                   bg-black/20 text-white border border-black/30 text-lg shadow 
-                   hover:bg-red-600 hover:text-white transition"
-      >
-        <i className="fa-solid fa-xmark fa-lg"></i>
-      </Button>
-    </div>
+            {/* Modal Body */}
+            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+              <div>
+                <label className="block mb-1 text-sm text-white/70">
+                  Amount
+                </label>
+                <input
+                  type="number"
+                  name="payin_wallet"
+                  value={payinFormData.payin_wallet}
+                  onChange={handleChange}
+                  className="w-full bg-black/30 text-white border border-white/20 
+                             rounded-xl px-3 py-2 focus:outline-none 
+                             focus:ring-2 focus:ring-yellow-400"
+                />
+              </div>
 
-    {/* Modal Body */}
-    <form className="p-6 space-y-4" onSubmit={handleSubmit}>
-      
-      {/* Amount */}
-      <div>
-        <label className="block mb-1 text-sm font-medium text-gray-300">
-          Amount
-        </label>
-        <input
-          type="number"
-          name="payin_wallet"
-          value={payinFormData.payin_wallet}
-          onChange={handleChange}
-          placeholder="Enter Amount"
-          className="w-full bg-[#19223c] text-white border border-gray-700 
-                     rounded-lg p-2 text-sm 
-                     focus:ring-2 focus:ring-[#FFD700] outline-none"
-        />
-      </div>
+              <div>
+                <label className="block mb-1 text-sm text-white/70">
+                  Remark
+                </label>
+                <textarea
+                  rows="3"
+                  name="remark"
+                  value={payinFormData.remark}
+                  onChange={handleChange}
+                  className="w-full bg-black/30 text-white border border-white/20 
+                             rounded-xl px-3 py-2 focus:outline-none 
+                             focus:ring-2 focus:ring-yellow-400"
+                />
+              </div>
 
-      {/* Remark */}
-      <div>
-        <label className="block mb-1 text-sm font-medium text-gray-300">
-          Remark
-        </label>
-        <textarea
-          rows="3"
-          name="remark"
-          value={payinFormData.remark}
-          onChange={handleChange}
-          placeholder="Enter Remark"
-          className="w-full bg-[#19223c] text-white border border-gray-700 
-                     rounded-lg p-2 text-sm 
-                     focus:ring-2 focus:ring-[#FFD700] outline-none"
-        />
-      </div>
-
-      {/* Submit Button */}
-      <Button
-        type="submit"
-        onClick={handleSubmit}
-        className="w-full bg-[#FFD700] hover:bg-[#e6c200] text-black 
-                   font-semibold px-5 py-2 rounded-lg shadow-md transition"
-      >
-        Submit
-      </Button>
-    </form>
-  </div>
-</div>
-
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 
+                           text-black font-semibold py-2 rounded-xl shadow-lg 
+                           hover:opacity-90 transition"
+              >
+                Submit
+              </Button>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   );

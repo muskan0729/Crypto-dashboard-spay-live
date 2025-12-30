@@ -7,11 +7,9 @@ import { TableSkeleton } from "../components/TableSkeleton";
 const Acc_topup_settlement = () => {
   const [topupPayoutData, setTopupPayoutData] = useState([]);
 
-
   const { data, loading, error } = useGet(
     "/reportrecords-List?product[]=topup_payout&product[]=take_back_from_wallet"
   );
-
 
   useEffect(() => {
     const statusClasses = {
@@ -41,14 +39,13 @@ const Acc_topup_settlement = () => {
           " - " +
           new Date(item.created_at).toLocaleTimeString(),
         amount: item.amount ?? "N/A",
-        numericAmount: parseFloat(item.amount) || 0, // ✅ for calculations
+        numericAmount: parseFloat(item.amount) || 0,
         status: item.status,
         payout_closing_balance: item.payout_closing_balance ?? "0.0",
         payout_opening_balance: item.payout_opening_balance ?? "0.0",
         showstatus: (
           <span
-            className={`px-2 py-1 rounded-full text-sm font-medium ${statusClasses[item.status] ?? "bg-gray-100 text-gray-800"
-              }`}
+            className={`px-2 py-1 rounded-full text-sm font-medium ${statusClasses[item.status] ?? "bg-gray-100 text-gray-800"}`}
           >
             {item?.status
               ? item.status.charAt(0).toUpperCase() + item.status.slice(1)
@@ -58,7 +55,6 @@ const Acc_topup_settlement = () => {
       }));
       setTopupPayoutData(formattedData);
     }
-
   }, [data]);
 
   const topupPayoutColumn = [
@@ -76,10 +72,12 @@ const Acc_topup_settlement = () => {
   ];
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-4 space-y-6">
       {/* Header */}
-      <div className="bg-[#10172e] rounded-lg flex justify-between items-center p-4 shadow-md shadow-[#cca83d]">
-        <h4 className="font-bold text-white text-xl">
+      <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl flex justify-between items-center p-4">
+        {/* Ambient Glow */}
+        <div className="absolute -z-10 w-40 h-40 top-[-1rem] left-[-1rem] bg-gradient-to-r from-red-500/30 via-orange-400/20 to-yellow-400/20 blur-[120px] rounded-full"></div>
+        <h4 className="font-bold text-[#ffd700] text-xl z-10">
           Topup Settlement Statement
         </h4>
       </div>
@@ -98,8 +96,16 @@ const Acc_topup_settlement = () => {
           showSearch={false}
           showSelectUserFilter={true}
           showDeleteColumn={false}
-          statusList={REPORT_STATUSES}  
-          className="shadow-lg rounded-lg overflow-hidden"
+          statusList={REPORT_STATUSES}
+          className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl overflow-hidden"
+          rowClassName={(rowIndex) =>
+            rowIndex % 2 === 0
+              ? "bg-white/10 hover:bg-white/20 transition"
+              : "bg-white/5 hover:bg-white/20 transition"
+          }
+          paginationClassName="flex justify-end gap-2 mt-4"
+          previousClassName="bg-[#ffd700]/30 hover:bg-[#ffd700]/50 text-[#ffd700] px-3 py-1 rounded-xl shadow-sm cursor-pointer transition"
+          nextClassName="bg-[#ffd700]/30 hover:bg-[#ffd700]/50 text-[#ffd700] px-3 py-1 rounded-xl shadow-sm cursor-pointer transition"
         />
       )}
     </div>

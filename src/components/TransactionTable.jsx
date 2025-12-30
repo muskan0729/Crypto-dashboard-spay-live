@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 export default function TransactionTable({
   transactions,
-  rowsPerPageOptions = [5, 10, 20],
+  rowsPerPageOptions = [10, 50, 100, 150],
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
@@ -24,10 +24,24 @@ export default function TransactionTable({
       {/* Ambient Glow */}
       <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 via-red-500/10 to-transparent blur-3xl pointer-events-none" />
 
-      {/* Heading */}
-      <h2 className="relative text-sm font-medium text-[#ffd700]">
-        Recent Transactions
-      </h2>
+      <div className="flex items-center justify-between w-full gap-4">
+        {/* Heading */}
+        <h2 className="text-sm font-medium text-[#ffd700]">
+          Recent Transactions
+        </h2>
+
+        {/* Select Dropdown */}
+        <select className="bg-gray-900 text-white px-3 py-1.5 rounded-lg border border-gray-700 outline-none focus:ring-1 focus:ring-yellow-500 transition">
+          <option value="Success">Success</option>
+          <option value="All">All</option>
+          <option value="Pending">Pending</option>
+          <option value="Refund">Refunded</option>
+          <option value="Initiated">Initiated</option>
+          <option value="Failed">Failed</option>
+          <option value="Reversed">Reversed</option>
+          <option value="Completed">Completed</option>
+        </select>
+      </div>
 
       {/* Transactions */}
       <div className="relative space-y-4">
@@ -51,9 +65,7 @@ export default function TransactionTable({
               <div className="space-y-1">
                 <div>
                   Amount:{" "}
-                  <span className="text-white font-medium">
-                    ₹{tx.amount}
-                  </span>
+                  <span className="text-white font-medium">₹{tx.amount}</span>
                 </div>
                 <div>
                   TXN: <span className="text-white">{tx.txn}</span>
@@ -66,11 +78,9 @@ export default function TransactionTable({
                   Name: <span className="text-white">{tx.name}</span>
                 </div>
                 <div>
-                  Date/Time:{" "}
-                  <span className="text-white">{tx.datetime}</span>
+                  Date/Time: <span className="text-white">{tx.datetime}</span>
                 </div>
               </div>
-
               {/* Status */}
               <div className="flex items-center justify-start lg:justify-end">
                 <span
@@ -124,9 +134,7 @@ export default function TransactionTable({
           </span>
 
           <button
-            onClick={() =>
-              setCurrentPage((p) => Math.min(p + 1, totalPages))
-            }
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages}
             className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-[#ffd700] hover:bg-white/10 disabled:opacity-40 disabled:cursor-not-allowed transition"
           >

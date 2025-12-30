@@ -45,7 +45,6 @@ const LoadWallet = () => {
       payout_wallet: walletFormData.payout_wallet,
       remark: walletFormData.remark,
     };
-
     try {
       const res = await loadWallet(payload);
       if (res) {
@@ -66,7 +65,6 @@ const LoadWallet = () => {
       payout_wallet: walletFormData.payout_wallet,
       remark: walletFormData.remark,
     };
-
     try {
       const res = await reverseTopup(payload);
       if (res) {
@@ -89,142 +87,121 @@ const LoadWallet = () => {
 
   const tableDataWithActions = walletData?.map((row) => ({
     ...row,
-   action: (
-  <div className="flex items-center justify-start gap-2">
-    <Button
-      onClick={() => {
-        setSelectedUser(row);
-        setModalType("load");
-        setShowModal(true);
-      }}
-      className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-1.5 rounded-md shadow-md transition-all"
-    >
-      Load Wallet
-    </Button>
-    <Button
-      onClick={() => {
-        setSelectedUser(row);
-        setModalType("reverse");
-        setShowModal(true);
-      }}
-      className="bg-blue-400 hover:bg-blue-500 text-white text-sm font-medium px-4 py-1.5 rounded-md shadow-md transition-all"
-    >
-      Reverse Top-up
-    </Button>
-  </div>
-),}));
+    action: (
+      <div className="flex items-center gap-2">
+        <Button
+          onClick={() => {
+            setSelectedUser(row);
+            setModalType("load");
+            setShowModal(true);
+          }}
+          className="bg-[#FFD700] hover:bg-yellow-500 text-black text-sm font-medium px-4 py-1.5 rounded-xl shadow-md transition"
+        >
+          Load Wallet
+        </Button>
+        <Button
+          onClick={() => {
+            setSelectedUser(row);
+            setModalType("reverse");
+            setShowModal(true);
+          }}
+          className="bg-[#FFB700] hover:bg-yellow-600 text-black text-sm font-medium px-4 py-1.5 rounded-xl shadow-md transition"
+        >
+          Reverse Top-up
+        </Button>
+      </div>
+    ),
+  }));
 
   return (
-    <div className="p-4 space-y-4">
-      {/* Header */}
-      <div className="bg-[#10172e] shadow shadow-[#b88909] rounded-lg flex justify-between items-center p-4 shadow-md">
-        <h4 className="font-bold text-white text-xl">Load Wallet</h4>
+    <div className="w-full min-h-screen p-6 space-y-6 bg-black relative">
+      {/* Gradient Glow Effects */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-radial from-red-600 via-orange-500 to-yellow-400 blur-[120px] opacity-20 -z-10 rounded-full" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-radial from-yellow-400 via-orange-500 to-red-600 blur-[150px] opacity-10 -z-10 rounded-full" />
+
+      {/* Header Card */}
+      <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-6 flex justify-between items-center">
+        <h4 className="font-bold text-[#FFD700] text-xl sm:text-2xl">Load Wallet</h4>
       </div>
 
       {/* Table */}
       {loading ? (
         <TableSkeleton />
       ) : (
-        <Table
-          columns={membercolumn}
-          data={tableDataWithActions}
-          showStatusFilter={false}
-          showDateFilter={false}
-          showDeleteColumn={false}
-          className="shadow-lg rounded-lg overflow-hidden"
-        />
+        // <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-4">
+          <Table
+            columns={membercolumn}
+            data={tableDataWithActions}
+            showStatusFilter={false}
+            showDateFilter={false}
+            showDeleteColumn={false}
+          />
+        // </div>
       )}
 
       {/* Modal */}
       {showModal && (
-       <div
-  className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50"
-  onClick={() => setShowModal(false)}
->
-  <div
-    className="bg-[#0f1629] border border-gray-700 rounded-lg shadow-2xl max-w-md w-full mx-2 transform transition-all scale-100"
-    onClick={(e) => e.stopPropagation()}
-  >
-    {/* Modal Header */}
-    <div className="flex justify-between items-center 
-                    bg-gradient-to-r from-[#b8860b] via-[#ffd700] to-[#b8860b] 
-                    text-black font-semibold rounded-t-lg px-5 py-3 shadow-md">
-      <h3 className="text-lg font-bold">
-        {modalType === "load"
-          ? `for ${selectedUser?.name}`
-          : `Reverse Topup for ${selectedUser?.name}`}
-      </h3>
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl max-w-md w-full mx-2 transform transition-all"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex justify-between items-center bg-gradient-to-r from-[#FFD700] via-orange-400 to-[#FFD700] text-black font-semibold rounded-t-2xl px-5 py-3 shadow-md">
+              <h3 className="text-lg font-bold">
+                {modalType === "load"
+                  ? `Load Wallet for ${selectedUser?.name}`
+                  : `Reverse Topup for ${selectedUser?.name}`}
+              </h3>
+              <Button
+                onClick={() => setShowModal(false)}
+                className="flex items-center justify-center w-8 h-8 rounded-full bg-black/20 text-white border border-black/30 text-lg shadow hover:bg-red-600 hover:text-white transition"
+              >
+                <i className="fa-solid fa-xmark fa-lg"></i>
+              </Button>
+            </div>
 
-      <Button
-        onClick={() => setShowModal(false)}
-        className="flex items-center justify-center w-8 h-8 rounded-full 
-                   bg-black/20 text-white border border-black/30 text-lg shadow 
-                   hover:bg-red-600 hover:text-white transition"
-      >
-        <i className="fa-solid fa-xmark fa-lg"></i>
-      </Button>
-    </div>
+            {/* Modal Body */}
+            <form
+              className="p-6 space-y-4"
+              onSubmit={modalType === "load" ? handleSubmitLoadWallet : handleSubmitReverseTopup}
+            >
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-300">Amount</label>
+                <input
+                  name="payout_wallet"
+                  type="number"
+                  value={walletFormData.payout_wallet}
+                  onChange={handleChange}
+                  placeholder="Enter Amount"
+                  className="w-full bg-black/40 text-white border border-white/10 rounded-xl p-2 text-sm focus:ring-2 focus:ring-[#FFD700] outline-none"
+                />
+              </div>
 
-    {/* Modal Body */}
-    <form
-      className="p-6 space-y-4"
-      onSubmit={
-        modalType === "load"
-          ? handleSubmitLoadWallet
-          : handleSubmitReverseTopup
-      }
-    >
-      {/* Amount */}
-      <div>
-        <label className="block mb-1 text-sm font-medium text-gray-300">
-          Amount
-        </label>
-        <input
-          name="payout_wallet"
-          type="number"
-          value={walletFormData.payout_wallet}
-          onChange={handleChange}
-          placeholder="Enter Amount"
-          className="w-full bg-[#19223c] text-white border border-gray-700 
-                     rounded-lg p-2 text-sm 
-                     focus:ring-2 focus:ring-[#FFD700] outline-none"
-        />
-      </div>
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-300">Remark</label>
+                <textarea
+                  rows="3"
+                  name="remark"
+                  value={walletFormData.remark}
+                  onChange={handleChange}
+                  placeholder="Enter Remark"
+                  className="w-full bg-black/40 text-white border border-white/10 rounded-xl p-2 text-sm focus:ring-2 focus:ring-[#FFD700] outline-none"
+                />
+              </div>
 
-      {/* Remark */}
-      <div>
-        <label className="block mb-1 text-sm font-medium text-gray-300">
-          Remark
-        </label>
-        <textarea
-          rows="3"
-          name="remark"
-          value={walletFormData.remark}
-          onChange={handleChange}
-          placeholder="Enter Remark"
-          className="w-full bg-[#19223c] text-white border border-gray-700 
-                     rounded-lg p-2 text-sm 
-                     focus:ring-2 focus:ring-[#FFD700] outline-none"
-        />
-      </div>
-
-      {/* Submit Button */}
-      <Button
-        type="submit"
-        onClick={
-          modalType === "load"
-            ? handleSubmitLoadWallet
-            : handleSubmitReverseTopup
-        }
-        className="w-full bg-[#FFD700] hover:bg-[#e6c200] text-black 
-                   font-semibold px-5 py-2 rounded-lg shadow-md transition"
-      >
-        Submit
-      </Button>
-    </form>
-  </div>
-</div>
-
+              <Button
+                type="submit"
+                className="w-full bg-[#FFD700] hover:bg-yellow-500 text-black font-semibold px-5 py-2 rounded-xl shadow-md transition"
+              >
+                Submit
+              </Button>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   );
