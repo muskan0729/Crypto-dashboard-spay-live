@@ -136,39 +136,78 @@ export const SchemeModal = ({
   return (
     <>
       {/* Overlay */}
-      <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center" />
+      <div
+        className="
+          z-50 flex
+          bg-black/70
+          fixed inset-0 backdrop-blur-md items-center justify-center
+        "
+      />
 
       {/* Modal */}
       <div
-        className="
-          fixed top-10 left-1/2 -translate-x-1/2 z-50 
-          w-full max-w-xl
-          bg-white/5 backdrop-blur-xl border border-white/10 
-          rounded-2xl shadow-xl
-          overflow-hidden
-        "
         onClick={(e) => e.stopPropagation()}
+        className="
+          z-50 overflow-hidden
+          w-full max-w-xl
+          bg-white/5
+          border border-white/10 rounded-2xl
+          shadow-xl
+          fixed top-10 left-1/2 -translate-x-1/2 backdrop-blur-xl
+        "
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-black/20">
-          <h3 className="text-[#ffd700] font-semibold text-lg tracking-wide">
+        <div
+          className="
+            flex
+            px-6 py-4
+            bg-black/20
+            border-b border-white/10
+            items-center justify-between
+          "
+        >
+          <h3
+            className="
+              text-[#ffd700] font-semibold text-lg tracking-wide
+            "
+          >
             {editData ? "Edit Scheme" : "Add New Scheme"}
           </h3>
           <Button
             onClick={handleModal}
-            className="w-8 h-8 flex items-center justify-center rounded-full 
-                       bg-black/20 border border-[#ffd700] text-[#ffd700] 
-                       hover:bg-[#ffd700] hover:text-black transition"
+            className="
+              flex
+              w-8 h-8
+              text-[#ffd700]
+              bg-black/20
+              rounded-full border border-[#ffd700]
+              items-center justify-center hover:bg-[#ffd700] hover:text-black transition
+            "
           >
-            <i className="fa-solid fa-xmark"></i>
+            <i
+              className="
+                fa-solid fa-xmark
+              "
+            ></i>
           </Button>
         </div>
 
         {/* Form */}
-        <form className="p-6 space-y-6" onSubmit={handleSubmit}>
+        <form
+          onSubmit={handleSubmit}
+          className="
+            p-6 space-y-6
+          "
+        >
           {/* Scheme Name */}
           <div>
-            <label className="block mb-2 text-sm font-medium text-[#ffd700]">
+            <label
+              className="
+                block
+                mb-2
+                text-sm font-medium text-[#ffd700]
+              "
+            >
               Scheme Name
             </label>
             <input
@@ -177,16 +216,29 @@ export const SchemeModal = ({
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter Scheme Name"
               className="
-                w-full bg-black/20 border border-white/10 
-                text-[#ffd700] rounded-lg p-2 placeholder:text-[#ffd700]/50
-                focus:outline-none focus:ring-1 focus:ring-[#ffd700]
+                w-full
+                p-2
+                text-[#ffd700]
+                bg-black/20
+                border border-white/10 rounded-lg
+                placeholder:text-[#ffd700]/50 focus:outline-none focus:ring-1 focus:ring-[#ffd700]
               "
             />
           </div>
 
           {/* Tabs */}
-          <div className="border-b border-white/10">
-            <ul className="flex text-sm font-medium space-x-4">
+          <div
+            className="
+              border-b border-white/10
+            "
+          >
+            <ul
+              className="
+                flex
+                space-x-4
+                text-sm font-medium
+              "
+            >
               {["tab1", "tab2", "tab3", "tab4"].map((tab, idx) => {
                 const labels = ["Payin", "Payout", "Rolling", "GST"];
                 const icons = [
@@ -201,7 +253,10 @@ export const SchemeModal = ({
                       type="button"
                       onClick={() => setActiveTab(tab)}
                       className={`
-                        flex items-center gap-2 px-4 py-2 border-b-2 transition
+                        flex
+                        px-4 py-2
+                        border-b-2
+                        items-center gap-2 transition
                         ${
                           activeTab === tab
                             ? "border-[#ffd700] text-[#ffd700]"
@@ -209,7 +264,11 @@ export const SchemeModal = ({
                         }
                       `}
                     >
-                      <i className={`fa-solid ${icons[idx]}`} />
+                      <i
+                        className={`
+                          fa-solid ${icons[idx]}
+                        `}
+                      />
                       {labels[idx]}
                     </Button>
                   </li>
@@ -219,49 +278,437 @@ export const SchemeModal = ({
           </div>
 
           {/* Table */}
-          <div className="overflow-hidden rounded-lg border border-white/10">
-            <table className="w-full text-sm text-left">
-              <thead className="bg-black/30 text-[#ffd700] uppercase">
+          <div
+            className="
+              overflow-hidden
+              rounded-lg border border-white/10
+            "
+          >
+            <table
+              className="
+                w-full
+                text-sm text-left
+              "
+            >
+              <thead
+                className="
+                  text-[#ffd700]
+                  bg-black/30
+                  uppercase
+                "
+              >
                 <tr>
-                  <th className="px-6 py-3">Operator</th>
-                  <th className="px-6 py-3">Type</th>
-                  <th className="px-6 py-3">Amount / %</th>
+                  <th
+                    className="
+                      px-6 py-3
+                    "
+                  >
+                    Operator
+                  </th>
+                  <th
+                    className="
+                      px-6 py-3
+                    "
+                  >
+                    Type
+                  </th>
+                  <th
+                    className="
+                      px-6 py-3
+                    "
+                  >
+                    Amount / %
+                  </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/10">
+              <tbody
+                className="
+                  divide-y divide-white/10
+                "
+              >
                 {/* PAYIN */}
                 {activeTab === "tab1" && (
                   <tr>
-                    <td className="px-6 py-4 text-gray-300">Payin Commission Slab</td>
-                    <td className="px-6 py-4">
-                      <select className="bg-black/20 border border-white/10 text-[#ffd700] rounded-md px-2 py-1">
-                        <option value="flat">Flat</option>
-                        <option value="percent">Percent</option>
+                    <td
+                      className="
+                        px-6 py-4
+                        text-gray-300
+                      "
+                    >
+                      Payin Commission Slab
+                    </td>
+                    <td
+                      className="
+                        px-6 py-4
+                      "
+                    >
+                      <select
+                        className="
+                          w-full
+                          px-4 py-2
+                          text-[#ffd700] text-sm
+                          bg-black/40
+                          border border-white/10 rounded-xl
+                          appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#ffd700]/40 focus:border-[#ffd700]/40 hover:border-white/20 transition
+                        "
+                      >
+                        <option
+                          value="flat"
+                          className="
+                            text-white
+                            bg-black
+                          "
+                        >
+                          Flat
+                        </option>
+                        <option
+                          value="percent"
+                          className="
+                            text-white
+                            bg-black
+                          "
+                        >
+                          Percent
+                        </option>
                       </select>
                     </td>
-                    <td className="px-6 py-4">
+                    <td
+                      className="
+                        px-6 py-4
+                      "
+                    >
                       <input
                         type="number"
-                        className="w-full bg-black/20 border border-white/10 text-[#ffd700] rounded-md px-2 py-1"
+                        className="
+                          w-full
+                          px-2 py-1
+                          text-[#ffd700]
+                          bg-black/20
+                          border border-white/10 rounded-md
+                        "
                       />
                     </td>
                   </tr>
                 )}
+
+                {/* PAYOUT */}
+                {activeTab === "tab2" && (
+                  <>
+                    <tr>
+                      <td
+                        className="
+                          px-6 py-4
+                          text-gray-300
+                        "
+                      >
+                        Payout Below 700
+                      </td>
+                      <td
+                        className="
+                          px-6 py-4
+                        "
+                      >
+                        <select
+                          className="
+                            w-full
+                            px-4 py-2
+                            text-[#ffd700] text-sm
+                            bg-black/40
+                            border border-white/10 rounded-xl
+                            appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#ffd700]/40 focus:border-[#ffd700]/40 hover:border-white/20 transition
+                          "
+                        >
+                          <option
+                            value="flat"
+                            className="
+                              text-white
+                              bg-black
+                            "
+                          >
+                            Flat
+                          </option>
+                          <option
+                            value="percent"
+                            className="
+                              text-white
+                              bg-black
+                            "
+                          >
+                            Percent
+                          </option>
+                        </select>
+                      </td>
+                      <td
+                        className="
+                          px-6 py-4
+                        "
+                      >
+                        <input
+                          type="number"
+                          className="
+                            w-full
+                            px-2 py-1
+                            text-[#ffd700]
+                            bg-black/20
+                            border border-white/10 rounded-md
+                          "
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        className="
+                          px-6 py-4
+                          text-gray-300
+                        "
+                      >
+                        Payout Below 700
+                      </td>
+                      <td
+                        className="
+                          px-6 py-4
+                        "
+                      >
+                        <select
+                          className="
+                            w-full
+                            px-4 py-2
+                            text-[#ffd700] text-sm
+                            bg-black/40
+                            border border-white/10 rounded-xl
+                            appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#ffd700]/40 focus:border-[#ffd700]/40 hover:border-white/20 transition
+                          "
+                        >
+                          <option
+                            value="flat"
+                            className="
+                              text-white
+                              bg-black
+                            "
+                          >
+                            Flat
+                          </option>
+                          <option
+                            value="percent"
+                            className="
+                              text-white
+                              bg-black
+                            "
+                          >
+                            Percent
+                          </option>
+                        </select>
+                      </td>
+                      <td
+                        className="
+                          px-6 py-4
+                        "
+                      >
+                        <input
+                          type="number"
+                          className="
+                            w-full
+                            px-2 py-1
+                            text-[#ffd700]
+                            bg-black/20
+                            border border-white/10 rounded-md
+                          "
+                        />
+                      </td>
+                    </tr>
+                  </>
+                )}
+
+                {/* ROLLING AMOUNT */}
+                {activeTab === "tab3" && (
+                  <>
+                    <tr>
+                      <td
+                        className="
+                          px-6 py-4
+                          text-gray-300
+                        "
+                      >
+                        Rolling Payin Amount
+                      </td>
+                      <td
+                        className="
+                          px-6 py-4
+                        "
+                      >
+                        <select
+                          className="
+                            w-full
+                            px-4 py-2
+                            text-[#ffd700] text-sm
+                            bg-black/40
+                            border border-white/10 rounded-xl
+                            appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#ffd700]/40 focus:border-[#ffd700]/40 hover:border-white/20 transition
+                          "
+                        >
+                          <option
+                            value="flat"
+                            className="
+                              text-white
+                              bg-black
+                            "
+                          >
+                            Flat
+                          </option>
+                          <option
+                            value="percent"
+                            className="
+                              text-white
+                              bg-black
+                            "
+                          >
+                            Percent
+                          </option>
+                        </select>
+                      </td>
+                      <td
+                        className="
+                          px-6 py-4
+                        "
+                      >
+                        <input
+                          type="number"
+                          className="
+                            w-full
+                            px-2 py-1
+                            text-[#ffd700]
+                            bg-black/20
+                            border border-white/10 rounded-md
+                          "
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        className="
+                          px-6 py-4
+                          text-gray-300
+                        "
+                      >
+                        Rolling fixed Amount
+                      </td>
+                      <td
+                        className="
+                          px-6 py-4
+                        "
+                      >
+                        <select
+                          className="
+                            w-full
+                            px-4 py-2
+                            text-[#ffd700] text-sm
+                            bg-black/40
+                            border border-white/10 rounded-xl
+                            appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#ffd700]/40 focus:border-[#ffd700]/40 hover:border-white/20 transition
+                          "
+                        >
+                          <option
+                            value="flat"
+                            className="
+                              text-white
+                              bg-black
+                            "
+                          >
+                            Flat
+                          </option>
+                          <option
+                            value="percent"
+                            className="
+                              text-white
+                              bg-black
+                            "
+                          >
+                            Percent
+                          </option>
+                        </select>
+                      </td>
+                      <td
+                        className="
+                          px-6 py-4
+                        "
+                      >
+                        <input
+                          type="number"
+                          className="
+                            w-full
+                            px-2 py-1
+                            text-[#ffd700]
+                            bg-black/20
+                            border border-white/10 rounded-md
+                          "
+                        />
+                      </td>
+                    </tr>
+                  </>
+                )}
+
                 {/* GST */}
                 {activeTab === "tab4" && (
                   <tr>
-                    <td className="px-6 py-4 text-gray-300">Goods and Service Tax</td>
-                    <td className="px-6 py-4">
-                      <select disabled className="bg-black/20 border border-white/10 text-[#ffd700] rounded-md px-2 py-1">
-                        <option>Percent</option>
+                    <td
+                      className="
+                        px-6 py-4
+                        text-gray-300
+                      "
+                    >
+                      Goods and Service Tax
+                    </td>
+                    <td
+                      className="
+                        px-6 py-4
+                      "
+                    >
+                      <select
+                        className="
+                          w-full
+                          px-4 py-2
+                          text-[#ffd700] text-sm
+                          bg-black/40
+                          border border-white/10 rounded-xl
+                          appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#ffd700]/40 focus:border-[#ffd700]/40 hover:border-white/20 transition
+                        "
+                      >
+                        <option
+                          value="flat"
+                          className="
+                            text-white
+                            bg-black
+                          "
+                        >
+                          Flat
+                        </option>
+                        <option
+                          value="percent"
+                          className="
+                            text-white
+                            bg-black
+                          "
+                        >
+                          Percent
+                        </option>
                       </select>
                     </td>
-                    <td className="px-6 py-4">
+                    <td
+                      className="
+                        px-6 py-4
+                      "
+                    >
                       <input
                         type="number"
                         value={percentage}
                         onChange={(e) => setPercentage(e.target.value)}
-                        className="w-full bg-black/20 border border-white/10 text-[#ffd700] rounded-md px-2 py-1"
+                        className="
+                          w-full
+                          px-2 py-1
+                          text-[#ffd700]
+                          bg-black/20
+                          border border-white/10 rounded-md
+                        "
                       />
                     </td>
                   </tr>
@@ -271,14 +718,19 @@ export const SchemeModal = ({
           </div>
 
           {/* Submit Button */}
-          <div className="text-right">
+          <div
+            className="
+              text-right
+            "
+          >
             <Button
               type="submit"
               disabled={creating || updating}
               className="
-                px-6 py-2 rounded-lg 
+                px-6 py-2
+                text-black font-semibold
                 bg-gradient-to-r from-[#ffd700]/90 to-[#d4af37]/90
-                text-black font-semibold 
+                rounded-lg
                 hover:opacity-90 transition
               "
             >
