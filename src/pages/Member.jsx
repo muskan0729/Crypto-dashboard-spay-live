@@ -22,21 +22,7 @@ export const Member = () => {
 
   const { executePut: updateSingle } = usePut("/update-user-statuses");
   const { executePut: updateAll } = usePut("/payin-payout-statuses");
-  const { execute: updateCredential } = usePost("/update-credential");
-
-  const handleCredentialChange = async (merchantId, credentialId) => {
-    try {
-      const res = await updateCredential({
-        id: merchantId,
-        credentials_id: Number(credentialId),
-      });
-      toast.success("MID Updated Successfully!");
-      refetchOfMerchants();
-    } catch (err) {
-      console.error(err);
-      toast.error("Error updating MID");
-    }
-  };
+  //const { execute: updateCredential } = usePost("/update-credential");
 
   const {
     data: dataOfMerchants,
@@ -45,8 +31,7 @@ export const Member = () => {
   } = useAutoFetch("/get-merchants", 20000);
 
   console.log("payoutdata", dataOfMerchants);
-  const { data: credentialsData } = useGet("/credentials");
-
+  
   const initialDataOfMerchants = useMemo(
     () => dataOfMerchants?.data ?? [],
     [dataOfMerchants]
@@ -119,37 +104,10 @@ export const Member = () => {
   };
 
   useEffect(() => {
-    if (!initialDataOfMerchants || !credentialsData) return;
-
-    const credentialsList = Array.isArray(credentialsData)
-      ? credentialsData
-      : credentialsData.data || [];
+    if (!initialDataOfMerchants ) return;
 
     const formattedMerchantData = initialDataOfMerchants.map((item, index) => {
-      const credential = credentialsList.find(
-        (cred) => cred.id === item.credentials_id
-      );
-
-      const payinBank =
-        item.payin_at_onboard === "Airpay" ? (
-          <div className="flex items-center space-x-2">
-            <span className="font-medium text-gray-700">Airpay</span>
-            <select
-              value={item.credentials_id || ""}
-              onChange={(e) => handleCredentialChange(item.id, e.target.value)}
-              className="border border-gray-300 rounded-md px-2 py-1 text-sm focus:ring-2 focus:ring-sky-400 focus:outline-none"
-            >
-              <option value="">Select MID</option>
-              {credentialsData?.data?.map((cred) => (
-                <option key={cred.id} value={cred.id}>
-                  {cred.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        ) : (
-          item.payin_at_onboard
-        );
+      const payinBank = item.payin_at_onboard;
 
       return {
         sqno: index + 1,
@@ -170,13 +128,13 @@ export const Member = () => {
         payin: item.payin_status,
 
         payout: item.payout_status,
-        payincharge: Number(item.total_charge?.UPI || 0).toFixed(2),
-        payoutcharge: Number(item.total_charge?.payout || 0).toFixed(2),
-        cryptocharge: Number(item.total_charge?.CRYPTO || 0).toFixed(2),
+        payincharge: Number(item.total_charge?.CRYPTO || 0).toFixed(20),
+        payoutcharge: Number(item.total_charge?.payout || 0).toFixed(20),
+        //cryptocharge: Number(item.total_charge?.CRYPTO || 0).toFixed(2),
 
-        totalwalletpayin: Number(item.total_amount?.UPI || 0).toFixed(2),
-        totalwalletpayout: Number(item.total_amount?.payout || 0).toFixed(2),
-        totalwallet: Number(item.total_payout || 0).toFixed(2),
+        totalwalletpayin: Number(item.total_amount?.CRYPTO || 0).toFixed(20),
+        totalwalletpayout: Number(item.total_amount?.payout || 0).toFixed(20),
+        totalwallet: Number(item.total_payout || 0).toFixed(20),
         account: item.account_status,
 
         walletpayin: item.payin_wallet,
@@ -191,7 +149,7 @@ export const Member = () => {
     });
 
     setMerchantData(formattedMerchantData);
-  }, [initialDataOfMerchants, credentialsData]);
+  }, [initialDataOfMerchants]);
 
   const memberColumns = [
     { header: "SQNo", accessor: "sqno" },

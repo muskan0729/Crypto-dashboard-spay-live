@@ -175,9 +175,9 @@ export const Dashboard = () => {
               )}
 
               <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-xl p-6">
-                <h2 className="mb-4 text-sm font-medium text-[#ffd700]">
+                {/* <h2 className="mb-4 text-sm font-medium text-[#ffd700]">
                   Recent Transactions
-                </h2>
+                </h2> */}
                 <TransactionTable transactions={transactionData} />
               </div>
             </div>

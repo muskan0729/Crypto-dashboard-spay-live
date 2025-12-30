@@ -10,10 +10,7 @@ const ApiSetting = () => {
   const [apiToken, setApiToken] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const Toast = useToast();
-  const [PayinWebHook, setPayinWebHook] = useState("");
-  const [PayoutWebhook,setPayoutWebHook] = useState("");
-
-
+  
   const { execute } = usePost("/generate-token");
   const endPoint = activeTab === "apiToken" ? "/get-tokens" : "";
 
@@ -59,30 +56,7 @@ const ApiSetting = () => {
       setIsLoading(false); // stop loading after response
     }
   };
-const {data:WebhookUrl, loading:WebHookLoading} = useGet("/show-merchant");
-useEffect(()=>{
-  if(WebhookUrl){
-    setPayinWebHook(WebhookUrl?.data?.payin_callback || " ");
-    setPayoutWebHook(WebhookUrl?.data?.payout_callback || " ");
-    console.log(WebhookUrl?.data?.payin_callback );
-  }
-},[WebhookUrl]);
-const {execute:updateWebhook} =usePost("/update-merchant");
-const handleSaveWebhook = async () => {
-  try {
-    const res = await updateWebhook({
-      payin_callback: PayinWebHook,
-      payout_callback: PayoutWebhook,
-    });
 
-    if (res?.message === "Merchant updated successfully") {
-      Toast.success("Webhook updated successfully!");
-    }
-  } catch (err) {
-    console.log(err);
-    Toast.error("Failed to update webhook!");
-  }
-};
   return (
     <div className="p-6 mx-auto">
       {/* Tabs */}
@@ -97,17 +71,7 @@ const handleSaveWebhook = async () => {
         >
           🔑 API Tokens
         </button>
-
-        <button
-          className={`flex items-center gap-2 px-4 py-2 font-medium transition ${
-            activeTab === "webhookConfig"
-              ? "border-b-2 border-blue-600 text-blue-600"
-              : "text-gray-500 hover:text-blue-600"
-          }`}
-          onClick={() => setActiveTab("webhookConfig")}
-        >
-          🔁 Webhook Config
-        </button>
+        
       </div>
 
       {/* Tab Content */}
@@ -184,61 +148,6 @@ const handleSaveWebhook = async () => {
               setData={setApiToken}
               showDateFilter={false}
             />
-          </div>
-        )}
-
-        {/* ---- Webhook Config Tab ---- */}
-        {activeTab === "webhookConfig" && (
-          <div>
-            <h2 className="text-lg font-semibold mb-3">
-              Webhook Configuration
-            </h2>
-
-            <div className="space-y-6">
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  Payment Received Webhook URL
-                </label>
-                <div className="flex items-center border rounded-lg px-3">
-                  <span className="text-gray-400 mr-2">🔗</span>
-                  <input
-                    type="text"
-                    placeholder=""
-                    className="w-full p-2 outline-none"
-                    value={PayinWebHook}
-                    onChange={(e) => setPayinWebHook(e.target.value)}
-                  />
-                </div>
-                <p className="text-sm text-gray-500 mt-1">
-                  We'll POST payin status notifications to this URL
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  Payout Processed Webhook URL
-                </label>
-                <div className="flex items-center border rounded-lg px-3">
-                  <span className="text-gray-400 mr-2">🔗</span>
-                  <input
-                    type="text"
-                    placeholder=""
-                    className="w-full p-2 outline-none"
-                    value={PayoutWebhook}
-                    onChange={(e) => setPayoutWebHook(e.target.value)}
-                  />
-                </div>
-                <p className="text-sm text-gray-500 mt-1">
-                  We'll POST payout status updates to this URL
-                </p>
-              </div>
-            </div>
-
-            <button 
-            onClick={handleSaveWebhook}
-            className="mt-6 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
-              💾 Save Webhook Settings
-            </button>
           </div>
         )}
       </div>
