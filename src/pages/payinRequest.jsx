@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-
 import Button from "../components/Button";
 import { usePost } from "../hooks/usePost";
 
@@ -20,13 +19,11 @@ export const PayinRequest = () => {
   const { execute: executePayin, loading } = usePost("/Airpay/request");
   const { execute: executeCheckStatus } = usePost("/AP/payin/checkstatus");
 
-  // Generate unique order ID on mount
   useEffect(() => {
     const uniqueOrderId = `DSB${Date.now()}${Math.floor(Math.random() * 1000)}`;
     setPayerOrderId(uniqueOrderId);
   }, []);
 
-  // Poll payment status
   useEffect(() => {
     if (orderId) {
       intervalRef.current = setInterval(checkPaymentStatus, 5000);
@@ -34,7 +31,6 @@ export const PayinRequest = () => {
     return () => clearInterval(intervalRef.current);
   }, [orderId]);
 
-  // Auto-reset form after success/fail
   useEffect(() => {
     if (showSuccess || showFailed) {
       const timer = setTimeout(() => {
@@ -50,10 +46,7 @@ export const PayinRequest = () => {
       }, 5000);
       return () => clearTimeout(timer);
     }
-
-
   }, [showSuccess, showFailed]);
-    
 
   const handlePayinSubmit = async () => {
     if (Number(amount) < 10) {
@@ -111,124 +104,60 @@ export const PayinRequest = () => {
   };
 
   return (
-    <div className="p-6 space-y-6"> 
+    <div className="bg-black min-h-screen p-6 space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-t from-sky-500 to-indigo-500 rounded-lg p-4 shadow-md">
-        <h4 className="text-white font-bold text-xl">Load Wallet</h4>
+      <div className="relative overflow-hidden bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl px-6 py-4">
+        <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 blur-2xl" />
+        <h4 className="relative text-[#ffd700] font-bold text-2xl">
+          Load Wallet
+        </h4>
       </div>
 
       {/* Form */}
       {!qrUrl && !showSuccess && !showFailed && (
-        <div className="bg-white shadow-md rounded-lg p-6 space-y-4 border border-gray-200">
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-6 space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="relative w-full">
-              <input
-                type="text"
-                
-                value={payerName}
-                onChange={(e) => setPayerName(e.target.value)}
-                className="block w-full border-b-2 border-gray-300 py-2 px-0 text-gray-900 bg-transparent focus:outline-none focus:border-blue-600 peer"
-                placeholder=" " // important for peer-focus & floating label
-              />
-              <label className={`absolute left-0 text-gray-500 text-sm transition-all duration-200
-                ${payerName ? "-top-3 text-blue-600 text-xs" : "top-2"} 
-                peer-placeholder-shown:top-2 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm`}>
-                Payer Name
-              </label>
-            </div>
-
-            <div className="relative w-full">
-            <input
-              type="number"
-              required
-              value={amount}
-              onChange={(e) => {
-                const val = e.target.value;
-                setAmount(val);
-                setAmountError(Number(val) < 10 ? "Amount must be at least ₹10" : "");
-              }}
-              className="peer block w-full border-b-2 border-gray-300 py-2 px-0 text-gray-900 focus:border-blue-600 focus:outline-none placeholder-transparent"
-              placeholder=" "
-            />
-            <label
-              className="
-                absolute left-0 text-gray-500 text-sm 
-                transition-all duration-200
-                peer-placeholder-shown:top-2
-                peer-placeholder-shown:text-gray-400
-                peer-focus:-top-3
-                peer-focus:text-blue-600
-                peer-valid:-top-3
-                peer-valid:text-blue-600
-              "
-            >
-              Amount
-            </label>
-            {amountError && <p className="text-red-600 text-sm mt-1">{amountError}</p>}
-          </div>
+            {[
+              { label: "Payer Name", value: payerName, set: setPayerName, type: "text" },
+              { label: "Amount", value: amount, set: setAmount, type: "number" },
+              { label: "Mobile Number", value: payerMobile, set: setPayerMobile, type: "tel" },
+              { label: "Email", value: payerEmail, set: setPayerEmail, type: "email" },
+            ].map((field, i) => (
+              <div key={i} className="relative">
+                <input
+                  type={field.type}
+                  value={field.value}
+                  onChange={(e) => {
+                    field.set(e.target.value);
+                    if (field.label === "Amount") {
+                      setAmountError(
+                        Number(e.target.value) < 10 ? "Amount must be at least ₹10" : ""
+                      );
+                    }
+                  }}
+                  placeholder=" "
+                  className="peer w-full bg-transparent border-b border-white/30 text-white py-2 focus:outline-none focus:border-yellow-400"
+                />
+                <label
+                  className={`absolute left-0 text-sm transition-all ${
+                    field.value
+                      ? "-top-3 text-yellow-400"
+                      : "top-2 text-white/50"
+                  } peer-focus:-top-3 peer-focus:text-yellow-400`}
+                >
+                  {field.label}
+                </label>
+                {field.label === "Amount" && amountError && (
+                  <p className="text-red-400 text-sm mt-1">{amountError}</p>
+                )}
+              </div>
+            ))}
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-          {/* Mobile Number */}
-          <div className="relative w-full">
-            <input
-              type="tel"
-              required
-              value={payerMobile}
-              onChange={(e) => setPayerMobile(e.target.value)}
-              className="peer block w-full border-b-2 border-gray-300 py-2 px-0
-                        text-gray-900 focus:border-blue-600 focus:outline-none 
-                        placeholder-transparent"
-              placeholder=" "
-            />
-            <label
-              className="
-                absolute left-0 text-gray-500 text-sm transition-all duration-200
-
-                peer-placeholder-shown:top-2
-                peer-placeholder-shown:text-gray-400
-                
-                peer-focus:-top-3
-                peer-focus:text-blue-600
-
-                peer-valid:-top-3
-                peer-valid:text-blue-600
-              "
-            >
-              Mobile Number
-            </label>
-          </div>
-
-          {/* Email */}
-            <div className="relative w-full">
-              <input
-                type="email"
-                required
-                value={payerEmail}
-                onChange={(e) => setPayerEmail(e.target.value)}
-                className="peer block w-full border-b-2 border-gray-300 py-2 px-0
-                          text-gray-900 focus:border-blue-600 focus:outline-none 
-                          placeholder-transparent"
-                placeholder=" "
-              />
-
-              <label
-                className={`
-                  absolute left-0 text-gray-500 text-sm transition-all duration-200
-                  
-                  ${payerEmail ? "-top-3 text-blue-600" : "top-2 text-gray-400"}
-                  peer-focus:-top-3 peer-focus:text-blue-600
-                `}
-              >
-                Email
-              </label>
-            </div>
-        </div>
-
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center pt-4">
             <Button
               onClick={handlePayinSubmit}
-              className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-6 py-2 shadow-md"
+              className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-black font-semibold px-8 py-2 rounded-xl shadow-lg hover:opacity-90 transition"
             >
               {loading ? "Submitting..." : "Submit"}
             </Button>
@@ -239,30 +168,36 @@ export const PayinRequest = () => {
       {/* QR Code */}
       {qrUrl && (
         <div className="flex justify-center">
-          <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center border border-gray-200">
-            <h3 className="text-gray-800 font-semibold text-lg mb-4">Scan to Pay</h3>
-            <img src={qrUrl} alt="UPI QR Code" className="w-64 h-64 mb-4" />
-            <Button onClick={() => setQrUrl("")} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-6 flex flex-col items-center space-y-4">
+            <h3 className="text-[#ffd700] font-semibold text-lg">Scan to Pay</h3>
+            <img src={qrUrl} alt="QR" className="w-64 h-64 rounded-xl" />
+            <Button
+              onClick={() => setQrUrl("")}
+              className="bg-white/10 text-white px-4 py-2 rounded-lg hover:bg-white/20"
+            >
               Back
             </Button>
           </div>
         </div>
       )}
 
-      {/* Success / Fail */}
+      {/* Success */}
       {showSuccess && (
         <div className="flex justify-center">
-          <div className="bg-green-100 w-72 h-72 rounded-full shadow-lg flex flex-col items-center justify-center border border-green-300">
-            <h2 className="text-green-800 font-bold text-lg">Payment Successful!</h2>
+          <div className="bg-green-500/10 backdrop-blur-xl border border-green-400/20 rounded-full w-72 h-72 shadow-xl flex items-center justify-center">
+            <h2 className="text-green-400 font-bold text-xl">
+              Payment Successful!
+            </h2>
           </div>
         </div>
       )}
 
+      {/* Failed */}
       {showFailed && (
         <div className="flex justify-center">
-          <div className="bg-red-100 w-72 h-72 rounded-full shadow-lg flex flex-col items-center justify-center border border-red-300">
-            <h2 className="text-red-700 font-bold text-lg">Payment Failed!</h2>
-            <p className="text-red-600 text-sm mt-1">Please try again</p>
+          <div className="bg-red-500/10 backdrop-blur-xl border border-red-400/20 rounded-full w-72 h-72 shadow-xl flex flex-col items-center justify-center">
+            <h2 className="text-red-400 font-bold text-xl">Payment Failed</h2>
+            <p className="text-red-300 text-sm mt-1">Please try again</p>
           </div>
         </div>
       )}

@@ -70,9 +70,16 @@ export const Dashboard = () => {
         type: item.product,
         amount: item.amount,
         status: item.status.charAt(0).toUpperCase() + item.status.slice(1),
+        //  status:(<span
+        //     className={`px-2 py-1 rounded-full text-sm font-medium ${statusClasses[item.status] ?? "bg-gray-100 text-gray-800"}`}
+        //   >
+        //     {item?.status
+        //       ? item.status.charAt(0).toUpperCase() + item.status.slice(1)
+        //       : "N/A"}
+        //   </span>),
         datetime: formattedDate + " " + formattedTime,
       };
-    });
+    }); 
     setTransactionData(formattedTableData);
 
     const formattedLargeTransactionData = largeSource.map((item) => ({

@@ -3,3 +3,30 @@
 .bg-mainbg {
   background-color: #000411;
 }
+/* Tailwind + plain CSS for the datepicker popup */
+/* .datepicker-popper {
+  @apply z-[99999] !important;
+
+} */
+.datepicker-popper {
+  z-index: 50 !important;
+}
+/* Add this in your global CSS (e.g., index.css or tailwind.css) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000; /* Black background track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #444; /* Dark gray scrollbar thumb */
+  border-radius: 4px;
+  border: 2px solid #000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #666; /* Slightly lighter on hover */
+}

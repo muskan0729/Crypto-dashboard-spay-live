@@ -37,11 +37,9 @@ export const SchemeModal = ({
     editData ? `/update-scheme/${editData.id}` : ""
   );
 
-  // Initialize modal state when it opens
   useEffect(() => {
     if (showModal) {
       if (editData) {
-        // Pre-fill with edit data
         setName(editData.name || "");
         setPayin({
           type: editData.payin_commision_type,
@@ -72,7 +70,6 @@ export const SchemeModal = ({
         );
         setPercentage(editData.gst_amount || 18);
       } else {
-        // Reset for adding new scheme
         setName("");
         setPayin({ type: "percent", amount: 0 });
         setPayout({
@@ -123,7 +120,6 @@ export const SchemeModal = ({
         await updateScheme(payload);
         toast.success("Scheme updated successfully!");
       } else {
-        console.log("Payload of Scheme: ", payload);
         await createScheme(payload);
         toast.success("Scheme created successfully!");
       }
@@ -139,181 +135,158 @@ export const SchemeModal = ({
 
   return (
     <>
-     {/* Overlay */}
-<div
-  className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-md z-50"
-></div>
+      {/* Overlay */}
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center" />
 
-{/* Modal */}
-<div
-  className="fixed top-10 left-1/2 -translate-x-1/2 z-50 
-             w-full max-w-xl rounded-xl 
-             bg-gradient-to-b from-black via-[#0b0b0b] to-black 
-             border border-[#d4af37]/40 shadow-[0_0_25px_rgba(212,175,55,0.25)]"
-  onClick={(e) => e.stopPropagation()}
->
-
-  {/* Header */}
-  <div className="flex items-center justify-between px-6 py-4 
-                  rounded-t-xl 
-                  bg-gradient-to-r from-[#1a1a1a] to-black 
-                  border-b border-[#d4af37]/40">
-    <h3 className="text-lg font-semibold text-[#d4af37] tracking-wide">
-      {editData ? "Edit Scheme" : "Add New Scheme"}
-    </h3>
-
-    <Button
-      onClick={handleModal}
-      className="w-8 h-8 flex items-center justify-center 
-                 rounded-full bg-black 
-                 border border-[#d4af37] 
-                 text-[#d4af37] 
-                 hover:bg-[#d4af37] hover:text-black 
-                 transition"
-    >
-      <i className="fa-solid fa-xmark"></i>
-    </Button>
-  </div>
-
-  {/* Form */}
-  <form
-    className="p-6 bg-black rounded-b-xl"
-    onSubmit={handleSubmit}
-  >
-
-    {/* Scheme Name */}
-    <div className="mb-6">
-      <label className="block mb-2 text-sm font-medium text-[#d4af37]">
-        Scheme Name
-      </label>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Enter Scheme Name"
-        className="w-full bg-black border border-[#d4af37]/50 
-                   text-[#d4af37] 
-                   rounded-lg p-2 
-                   placeholder:text-[#d4af37]/40
-                   focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
-      />
-    </div>
-
-    {/* Tabs */}
-    <div className="border-b border-[#d4af37]/30 mb-4">
-      <ul className="flex text-sm font-medium">
-        {["tab1", "tab2", "tab3", "tab4"].map((tab, idx) => {
-          const labels = ["Payin", "Payout", "Rolling", "GST"];
-          const icons = [
-            "fa-money-bill-transfer",
-            "fa-credit-card",
-            "fa-rotate",
-            "fa-percent",
-          ];
-
-          return (
-            <li key={tab} className="mr-4">
-              <Button
-                type="button"
-                onClick={() => setActiveTab(tab)}
-                className={`flex items-center gap-2 px-4 py-3 
-                  border-b-2 transition
-                  ${
-                    activeTab === tab
-                      ? "border-[#d4af37] text-[#d4af37]"
-                      : "border-transparent text-gray-500 hover:text-[#d4af37]"
-                  }`}
-              >
-                <i className={`fa-solid ${icons[idx]}`} />
-                {labels[idx]}
-              </Button>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-
-    {/* Table */}
-    <div className="overflow-hidden rounded-lg border border-[#d4af37]/30">
-      <table className="w-full text-sm text-left">
-        <thead className="bg-[#111] text-[#d4af37] uppercase">
-          <tr>
-            <th className="px-6 py-3">Operator</th>
-            <th className="px-6 py-3">Type</th>
-            <th className="px-6 py-3">Amount / %</th>
-          </tr>
-        </thead>
-
-        <tbody className="divide-y divide-[#d4af37]/20">
-
-          {/* PAYIN */}
-          {activeTab === "tab1" && (
-            <tr>
-              <td className="px-6 py-4 text-gray-300">
-                Payin Commission Slab
-              </td>
-              <td className="px-6 py-4">
-                <select className="bg-black border border-[#d4af37]/40 text-[#d4af37] rounded-md px-2 py-1">
-                  <option value="flat">Flat</option>
-                  <option value="percent">Percent</option>
-                </select>
-              </td>
-              <td className="px-6 py-4">
-                <input
-                  type="number"
-                  className="w-full bg-black border border-[#d4af37]/40 
-                             text-[#d4af37] rounded-md px-2 py-1"
-                />
-              </td>
-            </tr>
-          )}
-
-          {/* GST */}
-          {activeTab === "tab4" && (
-            <tr>
-              <td className="px-6 py-4 text-gray-300">
-                Goods and Service Tax
-              </td>
-              <td className="px-6 py-4">
-                <select
-                  disabled
-                  className="bg-black border border-[#d4af37]/40 text-[#d4af37] rounded-md px-2 py-1"
-                >
-                  <option>Percent</option>
-                </select>
-              </td>
-              <td className="px-6 py-4">
-                <input
-                  type="number"
-                  value={percentage}
-                  onChange={(e) => setPercentage(e.target.value)}
-                  className="w-full bg-black border border-[#d4af37]/40 
-                             text-[#d4af37] rounded-md px-2 py-1"
-                />
-              </td>
-            </tr>
-          )}
-
-        </tbody>
-      </table>
-    </div>
-
-    {/* Submit */}
-    <div className="mt-6 text-right">
-      <Button
-        type="submit"
-        disabled={creating || updating}
-        className="px-6 py-2 rounded-lg 
-                   bg-gradient-to-r from-[#d4af37] to-[#b8962e] 
-                   text-black font-semibold 
-                   hover:opacity-90 transition"
+      {/* Modal */}
+      <div
+        className="
+          fixed top-10 left-1/2 -translate-x-1/2 z-50 
+          w-full max-w-xl
+          bg-white/5 backdrop-blur-xl border border-white/10 
+          rounded-2xl shadow-xl
+          overflow-hidden
+        "
+        onClick={(e) => e.stopPropagation()}
       >
-        {editData ? "Update" : "Submit"}
-      </Button>
-    </div>
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-black/20">
+          <h3 className="text-[#ffd700] font-semibold text-lg tracking-wide">
+            {editData ? "Edit Scheme" : "Add New Scheme"}
+          </h3>
+          <Button
+            onClick={handleModal}
+            className="w-8 h-8 flex items-center justify-center rounded-full 
+                       bg-black/20 border border-[#ffd700] text-[#ffd700] 
+                       hover:bg-[#ffd700] hover:text-black transition"
+          >
+            <i className="fa-solid fa-xmark"></i>
+          </Button>
+        </div>
 
-  </form>
-</div>
+        {/* Form */}
+        <form className="p-6 space-y-6" onSubmit={handleSubmit}>
+          {/* Scheme Name */}
+          <div>
+            <label className="block mb-2 text-sm font-medium text-[#ffd700]">
+              Scheme Name
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter Scheme Name"
+              className="
+                w-full bg-black/20 border border-white/10 
+                text-[#ffd700] rounded-lg p-2 placeholder:text-[#ffd700]/50
+                focus:outline-none focus:ring-1 focus:ring-[#ffd700]
+              "
+            />
+          </div>
+
+          {/* Tabs */}
+          <div className="border-b border-white/10">
+            <ul className="flex text-sm font-medium space-x-4">
+              {["tab1", "tab2", "tab3", "tab4"].map((tab, idx) => {
+                const labels = ["Payin", "Payout", "Rolling", "GST"];
+                const icons = [
+                  "fa-money-bill-transfer",
+                  "fa-credit-card",
+                  "fa-rotate",
+                  "fa-percent",
+                ];
+                return (
+                  <li key={tab}>
+                    <Button
+                      type="button"
+                      onClick={() => setActiveTab(tab)}
+                      className={`
+                        flex items-center gap-2 px-4 py-2 border-b-2 transition
+                        ${
+                          activeTab === tab
+                            ? "border-[#ffd700] text-[#ffd700]"
+                            : "border-transparent text-gray-400 hover:text-[#ffd700]"
+                        }
+                      `}
+                    >
+                      <i className={`fa-solid ${icons[idx]}`} />
+                      {labels[idx]}
+                    </Button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          {/* Table */}
+          <div className="overflow-hidden rounded-lg border border-white/10">
+            <table className="w-full text-sm text-left">
+              <thead className="bg-black/30 text-[#ffd700] uppercase">
+                <tr>
+                  <th className="px-6 py-3">Operator</th>
+                  <th className="px-6 py-3">Type</th>
+                  <th className="px-6 py-3">Amount / %</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/10">
+                {/* PAYIN */}
+                {activeTab === "tab1" && (
+                  <tr>
+                    <td className="px-6 py-4 text-gray-300">Payin Commission Slab</td>
+                    <td className="px-6 py-4">
+                      <select className="bg-black/20 border border-white/10 text-[#ffd700] rounded-md px-2 py-1">
+                        <option value="flat">Flat</option>
+                        <option value="percent">Percent</option>
+                      </select>
+                    </td>
+                    <td className="px-6 py-4">
+                      <input
+                        type="number"
+                        className="w-full bg-black/20 border border-white/10 text-[#ffd700] rounded-md px-2 py-1"
+                      />
+                    </td>
+                  </tr>
+                )}
+                {/* GST */}
+                {activeTab === "tab4" && (
+                  <tr>
+                    <td className="px-6 py-4 text-gray-300">Goods and Service Tax</td>
+                    <td className="px-6 py-4">
+                      <select disabled className="bg-black/20 border border-white/10 text-[#ffd700] rounded-md px-2 py-1">
+                        <option>Percent</option>
+                      </select>
+                    </td>
+                    <td className="px-6 py-4">
+                      <input
+                        type="number"
+                        value={percentage}
+                        onChange={(e) => setPercentage(e.target.value)}
+                        className="w-full bg-black/20 border border-white/10 text-[#ffd700] rounded-md px-2 py-1"
+                      />
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Submit Button */}
+          <div className="text-right">
+            <Button
+              type="submit"
+              disabled={creating || updating}
+              className="
+                px-6 py-2 rounded-lg 
+                bg-gradient-to-r from-[#ffd700]/90 to-[#d4af37]/90
+                text-black font-semibold 
+                hover:opacity-90 transition
+              "
+            >
+              {editData ? "Update" : "Submit"}
+            </Button>
+          </div>
+        </form>
+      </div>
     </>
   );
 };
