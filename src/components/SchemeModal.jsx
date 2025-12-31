@@ -329,63 +329,31 @@ export const SchemeModal = ({
                 {/* PAYIN */}
                 {activeTab === "tab1" && (
                   <tr>
-                    <td
-                      className="
-                        px-6 py-4
-                        text-gray-300
-                      "
-                    >
+                    <td className="px-6 py-4 text-gray-300">
                       Payin Commission Slab
                     </td>
-                    <td
-                      className="
-                        px-6 py-4
-                      "
-                    >
+
+                    <td className="px-6 py-4">
                       <select
-                        className="
-                          w-full
-                          px-4 py-2
-                          text-[#ffd700] text-sm
-                          bg-black/40
-                          border border-white/10 rounded-xl
-                          appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#ffd700]/40 focus:border-[#ffd700]/40 hover:border-white/20 transition
-                        "
+                        value={payin.type}
+                        onChange={(e) =>
+                          setPayin((p) => ({ ...p, type: e.target.value }))
+                        }
+                        className="w-full px-4 py-2 text-[#ffd700] bg-black/40 border border-white/10 rounded-xl"
                       >
-                        <option
-                          value="flat"
-                          className="
-                            text-white
-                            bg-black
-                          "
-                        >
-                          Flat
-                        </option>
-                        <option
-                          value="percent"
-                          className="
-                            text-white
-                            bg-black
-                          "
-                        >
-                          Percent
-                        </option>
+                        <option value="flat">Flat</option>
+                        <option value="percent">Percent</option>
                       </select>
                     </td>
-                    <td
-                      className="
-                        px-6 py-4
-                      "
-                    >
+
+                    <td className="px-6 py-4">
                       <input
                         type="number"
-                        className="
-                          w-full
-                          px-2 py-1
-                          text-[#ffd700]
-                          bg-black/20
-                          border border-white/10 rounded-md
-                        "
+                        value={payin.amount}
+                        onChange={(e) =>
+                          setPayin((p) => ({ ...p, amount: e.target.value }))
+                        }
+                        className="w-full px-2 py-1 text-[#ffd700] bg-black/20 border border-white/10 rounded-md"
                       />
                     </td>
                   </tr>
@@ -394,125 +362,78 @@ export const SchemeModal = ({
                 {/* PAYOUT */}
                 {activeTab === "tab2" && (
                   <>
+                    {/* Below 700 */}
                     <tr>
-                      <td
-                        className="
-                          px-6 py-4
-                          text-gray-300
-                        "
-                      >
+                      <td className="px-6 py-4 text-gray-300">
                         Payout Below 700
                       </td>
-                      <td
-                        className="
-                          px-6 py-4
-                        "
-                      >
+                      <td className="px-6 py-4">
                         <select
-                          className="
-                            w-full
-                            px-4 py-2
-                            text-[#ffd700] text-sm
-                            bg-black/40
-                            border border-white/10 rounded-xl
-                            appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#ffd700]/40 focus:border-[#ffd700]/40 hover:border-white/20 transition
-                          "
+                          value={payout.below700.type}
+                          onChange={(e) =>
+                            setPayout((p) => ({
+                              ...p,
+                              below700: { ...p.below700, type: e.target.value },
+                            }))
+                          }
+                          className="w-full px-4 py-2 text-[#ffd700] bg-black/40 border border-white/10 rounded-xl"
                         >
-                          <option
-                            value="flat"
-                            className="
-                              text-white
-                              bg-black
-                            "
-                          >
-                            Flat
-                          </option>
-                          <option
-                            value="percent"
-                            className="
-                              text-white
-                              bg-black
-                            "
-                          >
-                            Percent
-                          </option>
+                          <option value="flat">Flat</option>
+                          <option value="percent">Percent</option>
                         </select>
                       </td>
-                      <td
-                        className="
-                          px-6 py-4
-                        "
-                      >
+                      <td className="px-6 py-4">
                         <input
                           type="number"
-                          className="
-                            w-full
-                            px-2 py-1
-                            text-[#ffd700]
-                            bg-black/20
-                            border border-white/10 rounded-md
-                          "
+                          value={payout.below700.amount}
+                          onChange={(e) =>
+                            setPayout((p) => ({
+                              ...p,
+                              below700: {
+                                ...p.below700,
+                                amount: e.target.value,
+                              },
+                            }))
+                          }
+                          className="w-full px-2 py-1 text-[#ffd700] bg-black/20 border border-white/10 rounded-md"
                         />
                       </td>
                     </tr>
+
+                    {/* Above 700 */}
                     <tr>
-                      <td
-                        className="
-                          px-6 py-4
-                          text-gray-300
-                        "
-                      >
-                        Payout Below 700
+                      <td className="px-6 py-4 text-gray-300">
+                        Payout Above 700
                       </td>
-                      <td
-                        className="
-                          px-6 py-4
-                        "
-                      >
+                      <td className="px-6 py-4">
                         <select
-                          className="
-                            w-full
-                            px-4 py-2
-                            text-[#ffd700] text-sm
-                            bg-black/40
-                            border border-white/10 rounded-xl
-                            appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#ffd700]/40 focus:border-[#ffd700]/40 hover:border-white/20 transition
-                          "
+                          value={payout.above700.type}
+                          onChange={(e) =>
+                            setPayout((p) => ({
+                              ...p,
+                              above700: { ...p.above700, type: e.target.value },
+                            }))
+                          }
+                          className="w-full px-4 py-2 text-[#ffd700] bg-black/40 border border-white/10 rounded-xl"
                         >
-                          <option
-                            value="flat"
-                            className="
-                              text-white
-                              bg-black
-                            "
-                          >
-                            Flat
-                          </option>
-                          <option
-                            value="percent"
-                            className="
-                              text-white
-                              bg-black
-                            "
-                          >
-                            Percent
-                          </option>
+                          <option value="flat">Flat</option>
+                          <option value="percent">Percent</option>
                         </select>
                       </td>
-                      <td
-                        className="
-                          px-6 py-4
-                        "
-                      >
+                      <td className="px-6 py-4">
                         <input
                           type="number"
-                          className="
-                            w-full
-                            px-2 py-1
-                            text-[#ffd700]
-                            bg-black/20
-                            border border-white/10 rounded-md
-                          "
+                          value={payout.above700.amount}
+                          onChange={(e) =>
+                            setPayout((p) => ({
+                              ...p,
+                              above700: {
+                                ...p.above700,
+                                amount: e.target.value,
+                              },
+                            }))
+                          }
+                          className="w-full px-2 py-1 text-[#ffd700] bg-black/20 border border-white/10 rounded-md"
                         />
                       </td>
                     </tr>
@@ -523,124 +444,71 @@ export const SchemeModal = ({
                 {activeTab === "tab3" && (
                   <>
                     <tr>
-                      <td
-                        className="
-                          px-6 py-4
-                          text-gray-300
-                        "
-                      >
+                      <td className="px-6 py-4 text-gray-300">
                         Rolling Payin Amount
                       </td>
-                      <td
-                        className="
-                          px-6 py-4
-                        "
-                      >
+                      <td className="px-6 py-4">
                         <select
-                          className="
-                            w-full
-                            px-4 py-2
-                            text-[#ffd700] text-sm
-                            bg-black/40
-                            border border-white/10 rounded-xl
-                            appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#ffd700]/40 focus:border-[#ffd700]/40 hover:border-white/20 transition
-                          "
+                          value={rollingPayin.type}
+                          onChange={(e) =>
+                            setRollingPayin((r) => ({
+                              ...r,
+                              type: e.target.value,
+                            }))
+                          }
+                          className="w-full px-4 py-2 text-[#ffd700] bg-black/40 border border-white/10 rounded-xl"
                         >
-                          <option
-                            value="flat"
-                            className="
-                              text-white
-                              bg-black
-                            "
-                          >
-                            Flat
-                          </option>
-                          <option
-                            value="percent"
-                            className="
-                              text-white
-                              bg-black
-                            "
-                          >
-                            Percent
-                          </option>
+                          <option value="flat">Flat</option>
+                          <option value="percent">Percent</option>
                         </select>
                       </td>
-                      <td
-                        className="
-                          px-6 py-4
-                        "
-                      >
+                      <td className="px-6 py-4">
                         <input
                           type="number"
-                          className="
-                            w-full
-                            px-2 py-1
-                            text-[#ffd700]
-                            bg-black/20
-                            border border-white/10 rounded-md
-                          "
+                          value={rollingPayin.amountStr}
+                          onChange={(e) =>
+                            setRollingPayin((r) => ({
+                              ...r,
+                              amountStr: e.target.value,
+                              amount: parseFloat(e.target.value) || 0,
+                            }))
+                          }
+                          className="w-full px-2 py-1 text-[#ffd700] bg-black/20 border border-white/10 rounded-md"
                         />
                       </td>
                     </tr>
+
                     <tr>
-                      <td
-                        className="
-                          px-6 py-4
-                          text-gray-300
-                        "
-                      >
-                        Rolling fixed Amount
+                      <td className="px-6 py-4 text-gray-300">
+                        Rolling Fixed Amount
                       </td>
-                      <td
-                        className="
-                          px-6 py-4
-                        "
-                      >
+                      <td className="px-6 py-4">
                         <select
-                          className="
-                            w-full
-                            px-4 py-2
-                            text-[#ffd700] text-sm
-                            bg-black/40
-                            border border-white/10 rounded-xl
-                            appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#ffd700]/40 focus:border-[#ffd700]/40 hover:border-white/20 transition
-                          "
+                          value={rollingFixed.type}
+                          onChange={(e) =>
+                            setRollingFixed((r) => ({
+                              ...r,
+                              type: e.target.value,
+                            }))
+                          }
+                          className="w-full px-4 py-2 text-[#ffd700] bg-black/40 border border-white/10 rounded-xl"
                         >
-                          <option
-                            value="flat"
-                            className="
-                              text-white
-                              bg-black
-                            "
-                          >
-                            Flat
-                          </option>
-                          <option
-                            value="percent"
-                            className="
-                              text-white
-                              bg-black
-                            "
-                          >
-                            Percent
-                          </option>
+                          <option value="flat">Flat</option>
+                          <option value="percent">Percent</option>
                         </select>
                       </td>
-                      <td
-                        className="
-                          px-6 py-4
-                        "
-                      >
+                      <td className="px-6 py-4">
                         <input
                           type="number"
-                          className="
-                            w-full
-                            px-2 py-1
-                            text-[#ffd700]
-                            bg-black/20
-                            border border-white/10 rounded-md
-                          "
+                          value={rollingFixed.amountStr}
+                          onChange={(e) =>
+                            setRollingFixed((r) => ({
+                              ...r,
+                              amountStr: e.target.value,
+                              amount: parseFloat(e.target.value) || 0,
+                            }))
+                          }
+                          className="w-full px-2 py-1 text-[#ffd700] bg-black/20 border border-white/10 rounded-md"
                         />
                       </td>
                     </tr>
@@ -702,6 +570,9 @@ export const SchemeModal = ({
                         type="number"
                         value={percentage}
                         onChange={(e) => setPercentage(e.target.value)}
+
+
+
                         className="
                           w-full
                           px-2 py-1

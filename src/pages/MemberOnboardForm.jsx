@@ -58,6 +58,65 @@ export const MemberOnboardForm = () => {
     scheme_id: "",
   });
 
+  const companyFields = [
+    { name: "company_pan_no", label: "Company PAN" },
+    {
+      name: "company_pan_no_doc",
+      label: "PAN Image",
+      type: "file",
+      file: true,
+    },
+
+    { name: "company_gst_no", label: "GST Number" },
+    {
+      name: "company_gst_no_doc",
+      label: "GST Document",
+      type: "file",
+      file: true,
+    },
+
+    { name: "cin_llpin", label: "CIN / LLPIN" },
+
+    {
+      name: "company_type",
+      label: "Company Type",
+      type: "select",
+      options: [
+        "Proprietorship",
+        "Partnership",
+        "Private Limited",
+        "Public Limited",
+        "BOI",
+        "LLP",
+        "AOP",
+        "AJP",
+        "HUF",
+        "Society",
+        "Government",
+        "Trust",
+      ],
+    },
+
+    {
+      name: "date_of_incorporation",
+      label: "Date of Incorporation",
+      type: "date",
+    },
+
+    { name: "account_holder_name", label: "Account Holder Name" },
+    { name: "bank_account_no", label: "Account Number", type: "number" },
+    { name: "ifsc_code", label: "IFSC Code" },
+
+    {
+      name: "cancel_cheque_doc",
+      label: "Cancelled Cheque Image",
+      type: "file",
+      file: true,
+    },
+
+    { name: "website_url", label: "Website URL", type: "url" },
+  ];
+
   const stepRequiredFields = {
     1: [
       "name",
@@ -183,26 +242,134 @@ export const MemberOnboardForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // validation omitted for brevity
+
     try {
       const formData = new FormData();
-      // append form fields
-      await executeMember(formData);
-      toast.success("Form submitted successfully!");
-      navigate("/member-list");
+
+      // Append normal fields
+      Object.entries(memberFormData).forEach(([key, value]) => {
+        if (key === "director_info") return; // handle separately
+
+        if (value instanceof File) {
+          formData.append(key, value);
+        } else {
+          formData.append(key, value ?? "");
+        }
+      });
+
+      // Append directors
+      memberFormData.director_info.forEach((director, index) => {
+        Object.entries(director).forEach(([key, value]) => {
+          if (value instanceof File) {
+            formData.append(`director_info[${index}][${key}]`, value);
+          } else {
+            formData.append(`director_info[${index}][${key}]`, value ?? "");
+          }
+        });
+      });
+
+      // 🔥 PRINT SUBMITTED DATA
+      console.group("Submitted Member Onboard Data");
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+      console.groupEnd();
+
+      // API call
+
     } catch (err) {
+      console.error(err);
       toast.error("Something went wrong");
     }
   };
 
+  // const companyFields = [
+  //   { name: "company_pan_no", label: "Company PAN" },
+  //   {
+  //     name: "company_pan_no_doc",
+  //     label: "PAN Image",
+  //     type: "file",
+  //     file: true,
+  //   },
+
+  //   { name: "gst_no", label: "GST Number" },
+  //   { name: "gst_no_doc", label: "GST Document", type: "file", file: true },
+
+  //   { name: "cin_no", label: "CIN Number" },
+
+  //   {
+  //     name: "company_type",
+  //     label: "Company Type",
+  //     type: "select",
+  //     options: [
+  //       "Proprietorship",
+  //       "Partnership",
+  //       "Private Limited",
+  //       "Public Limited",
+  //       "BOI",
+  //       "LLP",
+  //       "AOP",
+  //       "AJP",
+  //       "HUF",
+  //       "Society",
+  //       "Government",
+  //       "Trust",
+  //     ],
+  //   },
+
+  //   {
+  //     name: "date_of_incorporation",
+  //     label: "Date of Incorporation",
+  //     type: "date",
+  //   },
+
+  //   { name: "account_holder_name", label: "Account Holder Name" },
+  //   { name: "account_number", label: "Account Number", type: "number" },
+  //   { name: "ifsc_code", label: "IFSC Code" },
+
+  //   {
+  //     name: "cancel_cheque_img",
+  //     label: "Cancelled Cheque Image",
+  //     type: "file",
+  //     file: true,
+  //   },
+
+  //   { name: "website_url", label: "Website URL", type: "url" },
+  // ];
+
   return (
-    <div className="min-h-screen bg-black p-6 relative">
+    <div
+      className="
+        min-h-screen
+        p-6
+        bg-black
+        relative
+      "
+    >
       {/* Radial warm glow behind form */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.15),transparent)] blur-3xl -z-10"></div>
+      <div
+        className="
+          bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.15),transparent)]
+          absolute inset-0 blur-3xl -z-10
+        "
+      ></div>
 
       {/* Header */}
-      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl flex justify-between items-center mb-6 p-4">
-        <h4 className="font-semibold text-[#FFD700] text-lg">
+      <div
+        className="
+          flex
+          mb-6 p-4
+          bg-white/5
+          border border-white/10 rounded-2xl
+          shadow-xl
+          backdrop-blur-xl justify-between items-center
+        "
+      >
+        <h4
+          className="
+            font-semibold text-[#FFD700] text-lg
+          "
+        >
           Add New Merchant Details
         </h4>
       </div>
@@ -212,11 +379,23 @@ export const MemberOnboardForm = () => {
       <form
         onSubmit={handleSubmit}
         encType="multipart/form-data"
-        className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-6 mt-4 space-y-6"
+        className="
+          p-6 mt-4 space-y-6
+          bg-white/5
+          border border-white/10 rounded-2xl
+          shadow-xl
+          backdrop-blur-xl
+        "
       >
         {/* STEP 1 */}
         {currentStep === 1 && (
-          <div className="grid gap-6 md:grid-cols-2">
+          <div
+            className="
+              grid
+              gap-6
+              md:grid-cols-2
+            "
+          >
             {[
               { name: "name", label: "Business Name" },
               { name: "mobile_no", label: "Business Mobile", type: "number" },
@@ -228,22 +407,55 @@ export const MemberOnboardForm = () => {
               { name: "pin_code", label: "Pincode", type: "number" },
               { name: "address", label: "Address" },
             ].map((field) => (
-              <div key={field.name} className="relative">
+              <div
+                key={field.name}
+                className="
+                  relative
+                "
+              >
                 <input
                   type={field.type || "text"}
                   name={field.name}
                   value={memberFormData[field.name]}
                   onChange={handleChange}
-                  className={`peer w-full rounded-2xl bg-black/20 backdrop-blur-md text-[#FFD700] border ${
-                    errors?.[field.name] ? "border-red-500" : "border-white/10"
-                  } px-4 pt-5 pb-2 text-sm`}
                   placeholder=" "
+                  className={`
+                    w-full
+                    px-4 pt-5 pb-2
+                    text-[#FFD700] text-sm
+                    bg-black/20
+                    rounded-2xl border
+                    peer backdrop-blur-md
+                    ${
+                      errors?.[field.name]
+                        ? "border-red-500"
+                        : "border-white/10"
+                    }
+                  `}
                 />
-                <label className="absolute left-4 top-1.5 text-sm text-[#FFD700]/70 bg-black/20 px-2 rounded peer-focus:text-[#FFD700]">
-                  {field.label} <span className="text-red-500">*</span>
+                <label
+                  className="
+                    px-2
+                    text-sm text-[#FFD700]/70
+                    bg-black/20
+                    absolute left-4 top-1.5 rounded peer-focus:text-[#FFD700]
+                  "
+                >
+                  {field.label}{" "}
+                  <span
+                    className="
+                      text-red-500
+                    "
+                  >
+                    *
+                  </span>
                 </label>
                 {errors?.[field.name] && (
-                  <span className="text-xs text-red-500">
+                  <span
+                    className="
+                      text-xs text-red-500
+                    "
+                  >
                     {errors[field.name]}
                   </span>
                 )}
@@ -254,27 +466,124 @@ export const MemberOnboardForm = () => {
 
         {/* STEP 2 */}
         {currentStep === 2 && (
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="relative">
-              <input
-                type="text"
-                name="company_pan_no"
-                value={memberFormData.company_pan_no}
-                onChange={handleChange}
-                className="peer w-full rounded-2xl bg-black/20 backdrop-blur-md text-[#FFD700] border border-white/10 px-4 pt-5 pb-2 text-sm"
-                placeholder=" "
-              />
-              <label className="absolute left-4 top-1.5 text-sm text-[#FFD700]/70 bg-black/20 px-2 rounded">
-                Company PAN <span className="text-red-500">*</span>
-              </label>
-            </div>
+          <div
+            className="
+              grid
+              gap-6
+              md:grid-cols-2
+            "
+          >
+            {companyFields.map((field) => (
+              <div
+                key={field.name}
+                className="
+                  relative
+                "
+              >
+                {/* FILE INPUT */}
+                {field.file ? (
+                  <input
+                    type="file"
+                    name={field.name}
+                    onChange={handleCompanyFileChange}
+                    className={`
+                      w-full
+                      px-4 py-2
+                      text-[#FFD700] text-sm
+                      bg-black/20
+                      rounded-2xl border
+                      backdrop-blur-md
+                      ${
+                        errors?.[field.name]
+                          ? "border-red-500"
+                          : "border-white/10"
+                      }
+                    `}
+                  />
+                ) : field.type === "select" ? (
+                  /* SELECT INPUT */
+                  <select
+                    name={field.name}
+                    value={memberFormData[field.name]}
+                    onChange={handleChange}
+                    className={`
+                      w-full
+                      px-4 pt-5 pb-2
+                      text-[#FFD700] text-sm
+                      bg-black/20
+                      rounded-2xl border
+                      peer backdrop-blur-md
+                      ${
+                        errors?.[field.name]
+                          ? "border-red-500"
+                          : "border-white/10"
+                      }
+                    `}
+                  >
+                    <option value="">Select {field.label}</option>
+                    {field.options.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  /* NORMAL INPUT */
+                  <input
+                    type={field.type || "text"}
+                    name={field.name}
+                    value={memberFormData[field.name]}
+                    onChange={handleChange}
+                    placeholder=" "
+                    className={`
+                      w-full
+                      px-4 pt-5 pb-2
+                      text-[#FFD700] text-sm
+                      bg-black/20
+                      rounded-2xl border
+                      peer backdrop-blur-md
+                      ${
+                        errors?.[field.name]
+                          ? "border-red-500"
+                          : "border-white/10"
+                      }
+                    `}
+                  />
+                )}
 
-            <input
-              type="file"
-              name="company_pan_no_doc"
-              onChange={handleCompanyFileChange}
-              className="w-full rounded-2xl bg-black/20 backdrop-blur-md text-[#FFD700] border border-white/10 px-4 py-2 text-sm"
-            />
+                {/* LABEL (hide for file input) */}
+                {!field.file && (
+                  <label
+                    className="
+                      px-2
+                      text-sm text-[#FFD700]/70
+                      bg-black/20
+                      absolute left-4 top-1.5 rounded peer-focus:text-[#FFD700]
+                    "
+                  >
+                    {field.label}{" "}
+                    <span
+                      className="
+                        text-red-500
+                      "
+                    >
+                      *
+                    </span>
+                  </label>
+                )}
+
+                {/* ERROR */}
+                {errors?.[field.name] && (
+                  <span
+                    className="
+                      text-xs text-red-500
+                    "
+                  >
+                    {errors[field.name]}
+                  </span>
+                )}
+              </div>
+            ))}
           </div>
         )}
 
@@ -283,23 +592,137 @@ export const MemberOnboardForm = () => {
           memberFormData.director_info.map((director, index) => (
             <div
               key={index}
-              className="grid gap-6 md:grid-cols-2 border-b border-white/10 pb-4"
+              className="
+                grid
+                pb-6
+                border-b border-white/10
+                gap-6
+                md:grid-cols-2
+              "
             >
+              {/* Director Name */}
               <input
                 type="text"
                 name="director_name"
                 value={director.director_name}
                 onChange={(e) => handleDirectorChange(index, e)}
-                className="bg-black/20 backdrop-blur-md text-[#FFD700] border border-white/10 rounded-2xl p-3"
                 placeholder="Director Name"
+                className="
+                  p-3
+                  text-[#FFD700]
+                  bg-black/20
+                  border border-white/10 rounded-2xl
+                  backdrop-blur-md
+                "
               />
 
+              {/* Gender */}
+              <select
+                name="gender"
+                value={director.gender}
+                onChange={(e) => handleDirectorChange(index, e)}
+                className="
+                  p-3
+                  text-[#FFD700]
+                  bg-black/20
+                  border border-white/10 rounded-2xl
+                  backdrop-blur-md
+                "
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+
+              {/* PAN Number */}
+              <input
+                type="text"
+                name="pan_no"
+                value={director.pan_no}
+                onChange={(e) => handleDirectorChange(index, e)}
+                placeholder="PAN Number"
+                className="
+                  p-3
+                  text-[#FFD700]
+                  bg-black/20
+                  border border-white/10 rounded-2xl
+                  backdrop-blur-md
+                "
+              />
+
+              {/* PAN Document */}
+              <input
+                type="file"
+                name="pan_doc"
+                onChange={(e) => handleDirectorFileChange(index, e)}
+                className="
+                  p-3
+                  text-[#FFD700]
+                  bg-black/20
+                  border border-white/10 rounded-2xl
+                  backdrop-blur-md
+                "
+              />
+
+              {/* Aadhaar Number */}
+              <input
+                type="text"
+                name="aadhar_no"
+                value={director.aadhar_no}
+                onChange={(e) => handleDirectorChange(index, e)}
+                placeholder="Aadhaar Number"
+                className="
+                  p-3
+                  text-[#FFD700]
+                  bg-black/20
+                  border border-white/10 rounded-2xl
+                  backdrop-blur-md
+                "
+              />
+
+              {/* Aadhaar Document */}
+              <input
+                type="file"
+                name="aadhar_doc"
+                onChange={(e) => handleDirectorFileChange(index, e)}
+                className="
+                  p-3
+                  text-[#FFD700]
+                  bg-black/20
+                  border border-white/10 rounded-2xl
+                  backdrop-blur-md
+                "
+              />
+
+              {/* Date of Birth */}
+              <input
+                type="date"
+                name="dob"
+                value={director.dob}
+                onChange={(e) => handleDirectorChange(index, e)}
+                className="
+                  p-3
+                  text-[#FFD700]
+                  bg-black/20
+                  border border-white/10 rounded-2xl
+                  backdrop-blur-md
+                "
+              />
+
+              {/* Delete Button */}
               <Button
                 type="button"
                 onClick={() => removeDirector(index)}
-                className="border border-red-500 text-red-500 hover:bg-red-600 hover:text-white rounded-2xl px-4 py-2"
+                className="
+                  px-4 py-2
+                  text-red-500
+                  border border-red-500 rounded-2xl
+                  hover:bg-red-600 hover:text-white
+                  md:col-span-2
+                "
               >
-                Remove
+                Delete Director
               </Button>
             </div>
           ))}
@@ -307,39 +730,65 @@ export const MemberOnboardForm = () => {
         {/* STEP 4 */}
         {currentStep === 4 && (
           <div className="grid gap-6 md:grid-cols-2">
+            {/* Pay-in at Onboard */}
             <select
               name="payin_at_onboard"
               value={memberFormData.payin_at_onboard}
               onChange={handleChange}
-              className="
-    w-full
-    appearance-none
-    bg-black/40
-    backdrop-blur-xl
-    text-[#FFD700]
-    border border-white/10
-    rounded-2xl
-    px-4 py-3
-    text-sm
-    focus:outline-none
-    focus:ring-2
-    focus:ring-[#FFD700]/40
-    focus:border-[#FFD700]/40
-    hover:border-white/20
-    transition
-  "
+              className="w-full px-4 py-3 text-[#FFD700] text-sm bg-black/40 border border-white/10 rounded-2xl appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#FFD700]/40 focus:border-[#FFD700]/40 hover:border-white/20 transition"
             >
-              <option value="" className="bg-black text-gray-400">
-                Select Payin Bank
+              <option value="" className="text-gray-400 bg-black">
+                Select Pay-in Bank
               </option>
-
               {payinBanks?.data.map((b) => (
                 <option
                   key={b.id}
                   value={b.onboard_payin_bank}
-                  className="bg-black text-white"
+                  className="text-white bg-black"
                 >
                   {b.onboard_payin_bank}
+                </option>
+              ))}
+            </select>
+
+            {/* Pay-out at Onboard */}
+            <select
+              name="payout_at_onboard"
+              value={memberFormData.payout_at_onboard}
+              onChange={handleChange}
+              className="w-full px-4 py-3 text-[#FFD700] text-sm bg-black/40 border border-white/10 rounded-2xl appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#FFD700]/40 focus:border-[#FFD700]/40 hover:border-white/20 transition"
+            >
+              <option value="" className="text-gray-400 bg-black">
+                Select Pay-out Bank
+              </option>
+              {payoutBanks?.data.map((b) => (
+                <option
+                  key={b.id}
+                  value={b.onboard_payout_bank}
+                  className="text-white bg-black"
+                >
+                  {b.onboard_payout_bank}
+                </option>
+              ))}
+            </select>
+
+            {/* Scheme */}
+            <select
+              name="scheme"
+              value={memberFormData.scheme}
+              onChange={handleChange}
+              className="w-full px-4 py-3 text-[#FFD700] text-sm bg-black/40 border border-white/10 rounded-2xl appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#FFD700]/40 focus:border-[#FFD700]/40 hover:border-white/20 transition md:col-span-2"
+            >
+              <option value="" className="text-gray-400 bg-black">
+                Select Scheme
+              </option>
+              {schemes?.data.map((s) => (
+                <option
+                  key={s.id}
+                  value={s.scheme_code}
+                  className="text-white bg-black"
+                >
+                  {s.scheme_name}
                 </option>
               ))}
             </select>
@@ -347,17 +796,33 @@ export const MemberOnboardForm = () => {
         )}
 
         {/* FOOTER ACTIONS */}
-        <div className="flex flex-wrap justify-between items-center gap-4 mt-6 border-t border-white/10 pt-4">
-          <div className="flex gap-3">
+        <div
+          className="
+            flex flex-wrap
+            mt-6 pt-4
+            border-t border-white/10
+            justify-between items-center gap-4
+          "
+        >
+          <div
+            className="
+              flex
+              gap-3
+            "
+          >
             <button
               type="button"
               onClick={handlePrev}
               disabled={currentStep === 1}
-              className={`px-5 py-2.5 rounded-2xl ${
-                currentStep === 1
-                  ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                  : "bg-black/20 border border-white/10 text-[#FFD700] hover:bg-[#FFD700] hover:text-black"
-              }`}
+              className={`
+                px-5 py-2.5
+                rounded-2xl
+                ${
+                  currentStep === 1
+                    ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                    : "bg-black/20 border border-white/10 text-[#FFD700] hover:bg-[#FFD700] hover:text-black"
+                }
+              `}
             >
               ← Prev
             </button>
@@ -366,7 +831,12 @@ export const MemberOnboardForm = () => {
               <button
                 type="button"
                 onClick={handleNext}
-                className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400 text-black font-semibold"
+                className="
+                  px-5 py-2.5
+                  text-black font-semibold
+                  bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400
+                  rounded-2xl
+                "
               >
                 Next →
               </button>
@@ -375,19 +845,35 @@ export const MemberOnboardForm = () => {
             {currentStep === 4 && (
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400 text-black font-semibold"
+                className="
+                  px-6 py-2.5
+                  text-black font-semibold
+                  bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400
+                  rounded-2xl
+                "
+              
               >
                 Submit
               </button>
             )}
           </div>
 
-          <div className="flex gap-3">
+          <div
+            className="
+              flex
+              gap-3
+            "
+          >
             {currentStep === 3 && (
               <Button
                 type="button"
                 onClick={addDirector}
-                className="border border-[#FFD700] text-[#FFD700] hover:bg-[#FFD700] hover:text-black rounded-2xl px-4 py-2"
+                className="
+                  px-4 py-2
+                  text-[#FFD700]
+                  border border-[#FFD700] rounded-2xl
+                  hover:bg-[#FFD700] hover:text-black
+                "
               >
                 + Add Director
               </Button>
@@ -396,7 +882,12 @@ export const MemberOnboardForm = () => {
             <Button
               type="button"
               onClick={() => setShowConfirmModal(true)}
-              className="border border-red-500 text-red-500 hover:bg-red-600 hover:text-white rounded-2xl px-5 py-2.5"
+              className="
+                px-5 py-2.5
+                text-red-500
+                border border-red-500 rounded-2xl
+                hover:bg-red-600 hover:text-white
+              "
             >
               Go Back
             </Button>
