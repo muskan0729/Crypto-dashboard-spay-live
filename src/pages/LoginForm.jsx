@@ -33,7 +33,7 @@ function LoginForm() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6 bg-black overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center px-6 bg-black/75 overflow-hidden">
       {/* Warm Gradient Glow Background */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-600/30 via-orange-500/20 to-yellow-400/10 -z-10"></div>
 
@@ -47,10 +47,10 @@ function LoginForm() {
       <div className="absolute w-[420px] h-[420px] bg-gradient-to-br from-red-500/30 via-orange-400/20 to-yellow-300/10 blur-3xl rounded-full -z-10"></div>
 
       {/* Login Card */}
-      <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-xl p-8">
+      <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-black/5 backdrop-blur-xl shadow-xl p-8">
         {/* Logo */}
         <div className="flex justify-center mb-6">
-          <div className="rounded-xl bg-black/40 backdrop-blur-md px-6 py-3 border border-white/10">
+          <div className="rounded-xl bg-black/40 backdrop-blur-md px-6 py-3 border border-black/10">
             <img className="w-28" src={logo} alt="logo" />
           </div>
         </div>
