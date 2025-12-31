@@ -88,12 +88,12 @@ export const Sidebar = ({ open, setOpen }) => {
           //   dropdown: "payout",
           //   items: [{ label: "Request", link: "/payout-request" }],
           // },
-          // {
-          //   label: "Payin",
-          //   icon: "fa-money-bill-transfer",
-          //   dropdown: "payin",
-          //   items: [{ label: "Request", link: "/payin-request" }],
-          // },
+          {
+            label: "Payin",
+            icon: "fa-money-bill-transfer",
+            dropdown: "payin",
+            items: [{ label: "Request", link: "/payin-request" }],
+          },
           {
             label: "Transaction History",
             icon: "fa-clock-rotate-left",
