@@ -3,6 +3,7 @@ import Table from "../components/Table";
 import { useGet } from "../hooks/useGet";
 import { MONTH_NAMES, REPORT_STATUSES } from "../constants/Constants";
 import { TableSkeleton } from "../components/TableSkeleton";
+import CryptoAmount from "../components/CryptoAmounts";
 
 const Acc_topup_settlement = () => {
   const [topupPayoutData, setTopupPayoutData] = useState([]);
@@ -38,11 +39,13 @@ const Acc_topup_settlement = () => {
           new Date(item.created_at).getFullYear() +
           " - " +
           new Date(item.created_at).toLocaleTimeString(),
-        amount: item.amount ?? "N/A",
+        amount: item.amount ? <CryptoAmount amount={item.amount} symbol="₹" /> : "N/A",
         numericAmount: parseFloat(item.amount) || 0,
         status: item.status,
-        payout_closing_balance: item.payout_closing_balance ?? "0.0",
-        payout_opening_balance: item.payout_opening_balance ?? "0.0",
+        payout_closing_balance: 
+        item.payout_closing_balance ? <CryptoAmount amount={item.payout_closing_balance} symbol="₹" /> : "₹0",
+        payout_opening_balance: 
+        item.payout_opening_balance ? <CryptoAmount amount={item.payout_opening_balance} symbol="₹" /> : "₹0",
         showstatus: (
           <span
             className={`px-2 py-1 rounded-full text-sm font-medium ${statusClasses[item.status] ?? "bg-gray-100 text-gray-800"}`}

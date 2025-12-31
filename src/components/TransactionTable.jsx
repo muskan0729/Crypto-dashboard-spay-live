@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CryptoAmount from "./CryptoAmounts";
 
 export default function TransactionTable({
   transactions,
@@ -65,7 +66,9 @@ export default function TransactionTable({
               <div className="space-y-1">
                 <div>
                   Amount:{" "}
-                  <span className="text-white font-medium">₹{tx.amount}</span>
+                  <span className="text-white font-medium">
+                    <CryptoAmount amount={tx.amount} symbol="₹" />
+                  </span>
                 </div>
                 <div>
                   TXN: <span className="text-white">{tx.txn}</span>

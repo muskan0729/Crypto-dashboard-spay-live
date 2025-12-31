@@ -3,6 +3,7 @@ import Table from "../components/Table";
 import { useGet } from "../hooks/useGet";
 import { MONTH_NAMES, REPORT_STATUSES } from "../constants/Constants";
 import { TableSkeleton } from "../components/TableSkeleton";
+import CryptoAmount from "../components/CryptoAmounts";
 
 const Acc_upi_setlement = () => {
   const [payinSettlementData, setPayinSettlementData] = useState([]);
@@ -30,7 +31,7 @@ const Acc_upi_setlement = () => {
         product_type: item.product ?? "N/A",
         merchant_details: item.user.name ?? "N/A",
         txnid: item.txnid ?? "N/A",
-        amount: item.amount ?? "N/A",
+        amount: item.amount ? <CryptoAmount amount={item.amount} symbol="₹" /> : "N/A",
         numericAmount: parseFloat(item.amount) || 0,
         date:
           new Date(item.created_at).getDate() +

@@ -3,6 +3,7 @@ import Table from "../components/Table";
 import { useGet } from "../hooks/useGet";
 import { MONTH_NAMES, REPORT_STATUSES } from "../constants/Constants";
 import { TableSkeleton } from "../components/TableSkeleton";
+import CryptoAmount from "../components/CryptoAmounts";
 
 const CryptoStatement = () => {
   const [upiData, setUpiData] = useState([]);
@@ -47,10 +48,10 @@ const CryptoStatement = () => {
         ),
         amount: (
           <div className="flex flex-col text-left text-slate-200 text-sm">
-            <span>Amount: <b>{item.amount}</b></span>
-            <span>GST: <b>{item.gst}</b></span>
-            <span>Charges: <b>{item.charge}</b></span>
-            <span>Payin Rolling Amount: <b>{item.payin_rolling_amount}</b></span>
+            <span>Amount: <b><CryptoAmount amount={item.amount} symbol="₹" /></b></span>
+            <span>GST: <b><CryptoAmount amount={item.gst} symbol="₹" /></b></span>
+            <span>Charges: <b><CryptoAmount amount={item.charge} symbol="₹" /></b></span>
+            <span>Payin Rolling Amount: <b><CryptoAmount amount={item.payin_rolling_amount} symbol="₹" /></b></span>
           </div>
         ),
         numericAmount: parseFloat(item.amount) || 0,
