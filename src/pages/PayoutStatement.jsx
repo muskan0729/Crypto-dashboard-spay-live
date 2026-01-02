@@ -139,6 +139,7 @@ const PayoutStatement = () => {
             showDeleteColumn={false}
             statusList={REPORT_STATUSES}
             className="rounded-xl overflow-hidden"
+            requiredExport={true}
           />
         )}
       </div>

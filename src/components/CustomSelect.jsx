@@ -31,45 +31,108 @@ export const CustomSelect = ({
   };
 
   return (
-    <div ref={dropdownRef} className="relative w-56">
-      {/* Select box */}
+    <div ref={dropdownRef} className="relative w-full sm:w-64">
+      {/* Select Box */}
       <div
-        className="border border-[#FFD700] rounded-lg bg-black text-[#d4af37] cursor-pointer px-3 py-2 text-sm shadow-md hover:bg-[#1a1a1a] transition"
         onClick={() => setIsOpen((prev) => !prev)}
+        className="
+          h-[44px]
+          cursor-pointer
+          px-4
+          rounded-2xl
+          bg-[#0b0f1a]
+          border border-[#1f2937]
+          shadow-lg
+          text-sm
+          flex items-center justify-between
+          transition
+          hover:bg-[#111827]
+          focus:ring-1 focus:ring-[#ffd700]
+        "
       >
         {value ? (
-          <span>{value.label}</span>
+          <span className="text-[#ffd700] truncate">{value.label}</span>
         ) : (
-          <span className="text-gray-400">{placeholder}</span>
+          <span className="text-slate-400">{placeholder}</span>
         )}
+
+        <svg
+          className={`w-4 h-4 ml-2 text-[#ffd700] transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
       </div>
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute w-full mt-1 border border-[#FFD700] rounded-lg bg-[#10172e] z-10 shadow-lg">
-          {/* Search input */}
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search..."
-            className="w-full border-b border-[#FFD700]/50 px-3 py-2 bg-[#10172e] text-[#d4af37] placeholder-gray-400 outline-none rounded-t-lg focus:ring-1 focus:ring-[#FFD700]"
-          />
+        <div
+          className="
+            absolute
+            mt-2
+            w-full
+            z-30
+            rounded-2xl
+            bg-[#0b0f1a]
+            border border-[#1f2937]
+            shadow-xl
+            overflow-hidden
+          "
+        >
+          {/* Search */}
+          <div className="p-2 border-b border-[#1f2937]">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search..."
+              className="
+                w-full
+                h-[38px]
+                px-3
+                rounded-xl
+                bg-[#020617]
+                text-white
+                placeholder-slate-500
+                outline-none
+                focus:ring-1 focus:ring-[#ffd700]
+              "
+            />
+          </div>
 
           {/* Options */}
-          <ul className="max-h-40 overflow-y-auto">
+          <ul className="max-h-48 overflow-y-auto">
             {filteredOptions.length ? (
               filteredOptions.map((opt) => (
                 <li
                   key={opt.value}
                   onClick={() => handleSelect(opt)}
-                  className="px-3 py-2 text-[#d4af37] hover:bg-[#FFD700]/20 cursor-pointer transition text-sm"
+                  className="
+                    px-4 py-2.5
+                    text-sm
+                    text-slate-200
+                    cursor-pointer
+                    transition
+                    hover:bg-[#111827]
+                    hover:text-[#ffd700]
+                  "
                 >
                   {opt.label}
                 </li>
               ))
             ) : (
-              <li className="px-3 py-2 text-gray-500 text-sm">No results</li>
+              <li className="px-4 py-3 text-sm text-slate-500">
+                No results found
+              </li>
             )}
           </ul>
         </div>
