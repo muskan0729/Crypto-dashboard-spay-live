@@ -89,6 +89,7 @@ const Acc_topup_settlement = () => {
         <div className="text-center py-6 text-red-500">Error: {error}</div>
       ) : (
         <Table
+        requiredExport={true}
           columns={topupPayoutColumn}
           data={topupPayoutData}
           showStatusFilter={true}
