@@ -30,7 +30,7 @@ const Acc_upi_setlement = () => {
         user_id: item.user_id,
         product_type: item.product ?? "N/A",
         merchant_details: item.user.name ?? "N/A",
-        txnid: item.txnid ?? "N/A",
+        txnid: item.txnid ? <span title={item.txnid} className="cursor-pointer">{item.txnid.length > 20 ? item.txnid.slice(0, 20) + "..." : item.txnid}</span> : "N/A",
         amount: item.amount ? <CryptoAmount amount={item.amount} symbol="₹" /> : "N/A",
         numericAmount: parseFloat(item.amount) || 0,
         date:

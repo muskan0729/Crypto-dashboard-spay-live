@@ -785,10 +785,10 @@ export const MemberOnboardForm = () => {
               {schemes?.data.map((s) => (
                 <option
                   key={s.id}
-                  value={s.scheme_code}
+                  value={s.id}
                   className="text-white bg-black"
                 >
-                  {s.scheme_name}
+                  {s.name}
                 </option>
               ))}
             </select>

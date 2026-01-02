@@ -30,7 +30,7 @@ const Acc_topup_settlement = () => {
         user_id: item.user_id,
         product_type: item.product ?? "N/A",
         merchant_details: item.user.name ?? "N/A",
-        txnid: item.txnid,
+        txnid: <span title={item.txnid} className="cursor-pointer text-white">{item.txnid.length > 20 ? item.txnid.slice(0, 20) + "..." : item.txnid}</span>,
         date:
           new Date(item.created_at).getDate() +
           " " +

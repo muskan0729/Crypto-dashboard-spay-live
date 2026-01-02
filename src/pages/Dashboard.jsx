@@ -24,7 +24,7 @@ export const Dashboard = () => {
   const { data: cardData, loading: recordLoading } =
     useAutoFetch("/collection-record");
   const { data: tableData } = useAutoFetch(
-    "/reportrecords-List?status=success"
+    "/reportrecords-List"
   );
   // const { data: cryptotableData } = useAutoFetch(
   //   "/crypto-reportrecords-list?status=success"
@@ -66,6 +66,10 @@ export const Dashboard = () => {
       return {
         sq: index + 1,
         txn: item.txnid,
+        trimmedTxn:
+          item.txnid.length > 20
+            ? item.txnid.slice(0, 20) + "..."
+            : item.txnid,
         name: item.user.name,
         type: item.product,
         amount: item.amount,

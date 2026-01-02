@@ -42,8 +42,8 @@ const CryptoStatement = () => {
           <div className="flex flex-col text-left text-slate-200 text-sm">
             <span>Payee VPA: <b>{item.payee_vpa ?? "null"}</b></span>
             <span>Payee Name: <b>{item.payer_name ?? "null"}</b></span>
-            <span>Payee Txnid: <b>{item.mytxnid}</b></span>
-            <span>TxnId: <b>{item.txnid}</b></span>
+            <span className="cursor-pointer" title={item.mytxnid}>Payee Txnid: <b>{item.mytxnid.length > 20 ? item.mytxnid.slice(0, 20) + "..." : item.mytxnid}</b></span>
+            <span className="cursor-pointer" title={item.txnid}>Txnid: <b>{item.txnid.length > 20 ? item.txnid.slice(0, 20) + "..." : item.txnid}</b></span>
           </div>
         ),
         amount: (
