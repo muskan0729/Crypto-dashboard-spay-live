@@ -6,6 +6,7 @@ import { useToast } from "../contexts/ToastContext";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { CustomSelect } from "./CustomSelect";
+import * as XLSX from "xlsx";
 
 const Table = ({
   columns,
@@ -20,11 +21,13 @@ const Table = ({
   refreshTable,
   setData,
   statusList,
+  requiredExport=false
 }) => {
   const toast = useToast();
+
   const [search, setSearch] = useState("");
   const [recordId, setRecordId] = useState(null);
-  const [entriesPerPage, setEntriesPerPage] = useState(5);
+  const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState("all");
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -33,6 +36,9 @@ const Table = ({
   const [selectData, setSelectData] = useState([]);
   const [selectedMerchant, setSelectedMerchant] = useState(null);
 
+  /* ---------------------------------- */
+  /* Merchant Select Data               */
+  /* ---------------------------------- */
   useEffect(() => {
     const dataForSelect = Array.from(
       new Map(
@@ -45,6 +51,16 @@ const Table = ({
     setSelectData(dataForSelect);
   }, [data]);
 
+  /* ---------------------------------- */
+  /* Reset Page on Filter Change        */
+  /* ---------------------------------- */
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, statusFilter, startDate, endDate, selectedMerchant]);
+
+  /* ---------------------------------- */
+  /* Delete Logic                       */
+  /* ---------------------------------- */
   const handleConfirmModal = (id) => {
     setRecordId(id);
     setShowConfirmModal(true);
@@ -52,18 +68,21 @@ const Table = ({
 
   const modifiedEndpoint =
     endPoint && recordId ? `${endPoint}/${recordId}` : null;
+
   const { execute: deleteRecord } = usePost(modifiedEndpoint || "");
 
   const handleDelete = async (e) => {
     e?.preventDefault();
     if (!recordId || !modifiedEndpoint) return;
+
     try {
       const res = await deleteRecord({});
       if (res) {
         toast.success("Record deleted successfully!");
-        if (setData)
+        if (setData) {
           setData((prev) => prev.filter((row) => row.id !== recordId));
-        if (refreshTable) refreshTable();
+        }
+        refreshTable?.();
         setShowConfirmModal(false);
         setRecordId(null);
       }
@@ -72,208 +91,333 @@ const Table = ({
     }
   };
 
+  /* ---------------------------------- */
+  /* Filtering                          */
+  /* ---------------------------------- */
   const filteredData = useMemo(() => {
     return data?.filter((row) => {
       const matchesSearch = Object.values(row).some((val) =>
         String(val).toLowerCase().includes(search.toLowerCase())
       );
+
       const matchesStatus =
         statusFilter === "all" ||
         String(row.status).toLowerCase() === statusFilter.toLowerCase();
-      const rowDate = new Date(row.date?.split("-")[0]);
+
+      const rowDate = row.date ? new Date(row.date.split("-")[0]) : null;
+
       const matchesDate =
-        (!startDate || rowDate >= startDate) &&
-        (!endDate || rowDate <= endDate);
+        (!startDate || (rowDate && rowDate >= startDate)) &&
+        (!endDate || (rowDate && rowDate <= endDate));
+
       const matchesMerchant =
         !selectedMerchant || row.user_id === selectedMerchant.value;
+
       return matchesSearch && matchesStatus && matchesDate && matchesMerchant;
     });
   }, [search, statusFilter, startDate, endDate, selectedMerchant, data]);
 
+  const paginatedData = filteredData?.slice(
+    (currentPage - 1) * entriesPerPage,
+    currentPage * entriesPerPage
+  );
+
+  const exportToXL = () => {
+    // paginatedData.append
+    // console.log(paginatedData);
+    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(workbook, "data.xlsx");
+  };
   return (
-    <div className="w-full space-y-6 text-white p-4 ">
-      {/* Glow Effects */}
-      {/* <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#1a3299] to-[#03c5fc] blur-[120px] opacity-20 -z-10" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#03c5fc] blur-[150px] opacity-10 -z-10" /> */}
+    <div className="w-full max-w-[1600px] mx-auto space-y-6 text-white p-4">
+      {/* ---------------- Filters ---------------- */}
+      <div className="flex flex-col xl:flex-row xl:items-center gap-4">
+        {/* Search */}
+        {showSearch && (
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="
+        h-[44px]
+        w-full sm:w-64 xl:w-72
+        px-4
+        rounded-2xl
+        
+        border
+        text-sm
+        text-white
+        placeholder-slate-400
+        shadow-xl
+        outline-none
+        transition
+        focus:ring-1 focus:ring-[#ffd700]
+      "
+          />
+        )}
 
-      {/* Filter Bar */}
-      <div className="">
-        <div className="flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center">
-          <div className="flex flex-wrap gap-4 w-full">
-            {showSearch && (
-              <input
-                type="text"
-                placeholder="Search..."
-                className="w-full sm:w-64 px-4 py-2.5 rounded-xl bg-white/10 border border-white/10 text-white placeholder-slate-400 focus:ring-1 focus:ring-[#ffd700] outline-none transition"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            )}
-
-            {showSelectUserFilter && (
-              <CustomSelect
-                options={selectData}
-                placeholder="Select Merchant"
-                value={selectedMerchant}
-                onChange={setSelectedMerchant}
-                className="w-full sm:w-64"
-              />
-            )}
-
-            {showDateFilter && (
-              <div className="flex gap-2 items-center">
-                <DatePicker
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
-                  placeholderText="Start Date"
-                  portalId="root-portal"
-                  className="px-4 py-2.5 bg-white/10 border border-white/10 rounded-xl text-white w-full sm:w-auto focus:ring-1 focus:ring-[#ffd700] outline-none cursor-pointer"
-                />
-                <span className="text-slate-400">to</span>
-                <DatePicker
-                  selected={endDate}
-                  onChange={(date) => setEndDate(date)}
-                  placeholderText="End Date"
-                  portalId="root-portal"
-                  className="px-4 py-2.5 bg-white/10 border border-white/10 rounded-xl text-white w-full sm:w-auto focus:ring-1 focus:ring-[#ffd700] outline-none cursor-pointer"
-                />
-              </div>
-            )}
-
-            {showStatusFilter && (
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-4 py-2.5 bg-white/10 border border-white/10 rounded-xl text-white w-full sm:w-auto focus:ring-1 focus:ring-[#ffd700] outline-none"
-              >
-                <option value="all">All Status</option>
-                {statusList?.map((item, i) => (
-                  <option key={i} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            )}
+        {/* Merchant Select */}
+        {showSelectUserFilter && (
+          <div className="h-[44px] w-full sm:w-64 xl:w-72">
+            <CustomSelect
+              options={selectData}
+              placeholder="Select Merchant"
+              value={selectedMerchant}
+              onChange={setSelectedMerchant}
+            />
           </div>
-        </div>
+        )}
+
+        {/* Date Range */}
+        {showDateFilter && (
+          <div className="flex items-center gap-2 h-[44px]">
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              placeholderText="Start Date"
+              className="
+          h-[44px]
+          px-4
+          rounded-2xl
+          bg-white/5
+          backdrop-blur-xl
+          border border-white/10
+          text-sm
+          text-white
+          shadow-xl
+          outline-none
+          focus:ring-1 focus:ring-[#ffd700]
+        "
+            />
+            <span className="text-slate-400 text-sm">to</span>
+            <DatePicker
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              placeholderText="End Date"
+              className="
+          h-[44px]
+          px-4
+          rounded-2xl
+          bg-white/5
+          backdrop-blur-xl
+          border border-white/10
+          text-sm
+          text-white
+          shadow-xl
+          outline-none
+          focus:ring-1 focus:ring-[#ffd700]
+        "
+            />
+          </div>
+        )}
+
+        {/* Status Filter */}
+        {showStatusFilter && (
+          <div className="relative h-[44px] w-full sm:w-48">
+            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#ffd700]/20 via-orange-500/10 to-red-500/10 blur-2xl rounded-2xl" />
+
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="
+          h-[44px]
+          w-full
+          px-4
+          rounded-2xl
+          bg-white/5
+          backdrop-blur-xl
+          border border-white/10
+          shadow-xl
+          text-sm
+          text-white
+          outline-none
+          cursor-pointer
+          transition
+          hover:bg-white/10
+          focus:ring-1 focus:ring-[#ffd700]
+        "
+            >
+              <option value="all" className="bg-black text-white">
+                All Status
+              </option>
+              {statusList?.map((item, i) => (
+                <option key={i} value={item} className="bg-black text-white">
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Export Button */}
+       {requiredExport &&  <button
+          onClick={exportToXL}
+          className="
+      h-[44px]
+      px-6
+      rounded-2xl
+      bg-gradient-to-r from-[#ffd700] via-orange-500 to-red-500
+      text-black
+      text-sm
+      font-semibold
+      shadow-xl
+      transition
+      hover:opacity-90
+      active:scale-[0.98]
+      whitespace-nowrap
+    "
+        >
+          Export
+        </button>}
       </div>
 
-      {/* Table Container */}
-      <div className="">
-        <div className="rounded-t-2xl  backdrop-blur-xl border border-white/10 shadow-xl overflow-x-auto overflow-y-auto relative">
-          <table className="min-w-full text-left border-collapse ">
-            <thead>
-              <tr className="bg-white/10 border-b border-white/10">
-                {columns.map((col, i) => (
-                  <th
-                    key={i}
-                    className="px-4 sm:px-6 py-3 text-sm font-bold uppercase tracking-wider text-[#ffd700]"
-                  >
-                    {col.header}
-                  </th>
-                ))}
-                {showDeleteColumn && (
-                  <th className="px-4 sm:px-6 py-3 text-sm font-bold uppercase tracking-wider text-[#ffd700]">
-                    Action
-                  </th>
-                )}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/10">
-              {filteredData?.length ? (
-                filteredData
-                  .slice(
-                    (currentPage - 1) * entriesPerPage,
-                    currentPage * entriesPerPage
-                  )
-                  .map((row) => (
-                    <tr
-                      key={row.id}
-                      className="hover:bg-white/10 transition-colors"
-                    >
-                      {columns.map((col, i) => (
-                        <td
-                          key={i}
-                          className="px-4 sm:px-6 py-3 text-sm text-slate-200 break-words"
-                        >
-                          {col.Cell
-                            ? col.Cell({ value: row[col.accessor], row })
-                            : row[col.accessor]}
-                        </td>
-                      ))}
-                      {showDeleteColumn && (
-                        <td className="px-4 sm:px-6 py-3">
-                          <button
-                            onClick={() => handleConfirmModal(row.id)}
-                            className="p-2 text-slate-400 hover:text-red-400 transition-colors"
-                          >
-                            <i className="fa-solid fa-trash" />
-                          </button>
-                        </td>
-                      )}
-                    </tr>
-                  ))
-              ) : (
-                <tr>
-                  <td
-                    colSpan={columns.length + 1}
-                    className="text-center py-12 text-slate-500"
-                  >
-                    No records found
-                  </td>
-                </tr>
+      {/* ---------------- Mobile Cards ---------------- */}
+      <div className="block lg:hidden space-y-4">
+        {paginatedData?.length ? (
+          paginatedData.map((row) => (
+            <div
+              key={row.id}
+              className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-2"
+            >
+              {columns.map((col, i) => (
+                <div key={i} className="flex justify-between gap-3 text-sm">
+                  <span className="text-slate-400">{col.header}</span>
+                  <span className="text-slate-200 text-right">
+                    {col.Cell
+                      ? col.Cell({ value: row[col.accessor], row })
+                      : row[col.accessor]}
+                  </span>
+                </div>
+              ))}
+
+              {showDeleteColumn && (
+                <button
+                  onClick={() => handleConfirmModal(row.id)}
+                  className="text-red-400 text-sm mt-2"
+                >
+                  <i className="fa-solid fa-trash mr-1" />
+                  Delete
+                </button>
               )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Pagination */}
-        {showPagination && (
-          <div className="flex flex-col sm:flex-row justify-between items-center px-4 sm:px-6 py-3 bg-black/80 border-t border-gray-800 gap-4 rounded-b-2xl">
-            {/* Entries Per Page */}
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-400">Show</span>
-              <select
-                value={entriesPerPage}
-                onChange={(e) => setEntriesPerPage(Number(e.target.value))}
-                className="bg-gray-900 text-white px-3 py-1 rounded-lg border border-gray-700 outline-none focus:ring-1 focus:ring-yellow-500 transition"
-              >
-                {[10, 50, 100, 150].map((n) => (
-                  <option key={n} value={n}>
-                    {n}
-                  </option>
-                ))}
-              </select>
             </div>
-
-            {/* Pagination Buttons */}
-            <div className="flex gap-2 sm:gap-3">
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                disabled={currentPage === 1}
-                className="px-3 sm:px-4 py-1.5 rounded-lg border border-gray-700 bg-gray-900 text-white hover:bg-gray-800 disabled:opacity-30 transition"
-              >
-                Prev
-              </button>
-              <button
-                onClick={() =>
-                  setCurrentPage((p) =>
-                    p < Math.ceil(filteredData.length / entriesPerPage)
-                      ? p + 1
-                      : p
-                  )
-                }
-                disabled={
-                  currentPage >= Math.ceil(filteredData.length / entriesPerPage)
-                }
-                className="px-3 sm:px-4 py-1.5 rounded-lg border border-gray-700 bg-gray-900 text-white hover:bg-gray-800 disabled:opacity-30 transition"
-              >
-                Next
-              </button>
-            </div>
+          ))
+        ) : (
+          <div className="text-center py-10 text-slate-500">
+            No records found
           </div>
         )}
       </div>
+
+      {/* ---------------- Desktop Table ---------------- */}
+      <div className="relative w-full overflow-x-auto rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-xl">
+        <table className="min-w-full w-max text-left border-collapse">
+          <thead className="sticky top-0 z-20 bg-black/90 backdrop-blur-xl">
+            <tr>
+              {columns.map((col, i) => (
+                <th
+                  key={i}
+                  className="px-6 py-3 text-sm uppercase text-[#ffd700] whitespace-nowrap"
+                >
+                  {col.header}
+                </th>
+              ))}
+
+              {showDeleteColumn && (
+                <th className="px-6 py-3 text-sm uppercase text-[#ffd700] whitespace-nowrap">
+                  Action
+                </th>
+              )}
+            </tr>
+          </thead>
+
+          <tbody className="divide-y divide-white/10">
+            {paginatedData?.length ? (
+              paginatedData.map((row) => (
+                <tr key={row.id} className="hover:bg-white/10 transition">
+                  {columns.map((col, i) => (
+                    <td
+                      key={i}
+                      className="px-6 py-3 text-sm text-slate-200 whitespace-nowrap"
+                    >
+                      {col.Cell
+                        ? col.Cell({ value: row[col.accessor], row })
+                        : row[col.accessor]}
+                    </td>
+                  ))}
+
+                  {showDeleteColumn && (
+                    <td className="px-6 py-3 whitespace-nowrap">
+                      <button
+                        onClick={() => handleConfirmModal(row.id)}
+                        className="text-red-400 hover:text-red-300 transition"
+                      >
+                        <i className="fa-solid fa-trash" />
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan={columns.length + 1}
+                  className="text-center py-12 text-slate-500"
+                >
+                  No records found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* ---------------- Pagination ---------------- */}
+      {showPagination && (
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-400">Show</span>
+            <select
+              value={entriesPerPage}
+              onChange={(e) => setEntriesPerPage(Number(e.target.value))}
+              className="bg-gray-900 text-white px-3 py-2 rounded-lg border border-gray-700"
+            >
+              {[10, 50, 100, 150].map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex gap-3">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 min-w-[80px] bg-gray-900 border border-gray-700 rounded-lg disabled:opacity-30"
+            >
+              Prev
+            </button>
+            <button
+              onClick={() =>
+                setCurrentPage((p) =>
+                  p < Math.ceil(filteredData.length / entriesPerPage)
+                    ? p + 1
+                    : p
+                )
+              }
+              disabled={
+                currentPage >= Math.ceil(filteredData.length / entriesPerPage)
+              }
+              className="px-4 py-2 min-w-[80px] bg-gray-900 border border-gray-700 rounded-lg disabled:opacity-30"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
 
       <ConfirmModal
         showConfirmModal={showConfirmModal}

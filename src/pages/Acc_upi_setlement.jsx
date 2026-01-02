@@ -93,6 +93,7 @@ const Acc_upi_setlement = () => {
       ) : (
         <div className="overflow-x-auto">
           <Table
+          requiredExport={true}
             columns={payinSettlementColumn}
             data={payinSettlementData}
             showStatusFilter={true}
