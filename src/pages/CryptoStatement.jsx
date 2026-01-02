@@ -108,6 +108,7 @@ const CryptoStatement = () => {
             showDeleteColumn={false}
             showSelectUserFilter={true}
             statusList={REPORT_STATUSES}
+            requiredExport={true}
           />
         </div>
       )}
