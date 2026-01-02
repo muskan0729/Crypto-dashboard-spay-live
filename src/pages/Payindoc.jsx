@@ -62,34 +62,95 @@ const PayinDoc = () => {
       },
     },
     {
-      id: "glide-payin-request",
+      id: "glide-payment-status-request",
       title: "Check Payment Status",
-      type: "",
-      endpoint: "",
+      type: "api",
+      endpoint: "POST https://live.spay.live/api/GLIDE/create-glide-widget-url",
       headers: "Content-Type: application/json",
-      parameters: [],
+      parameters: [
+        {
+          field: "token",
+          type: "String",
+          required: "Yes",
+          description: "API key/token provided by Spay",
+        },
+        {
+          field: "order_id",
+          type: "String",
+          required: "Yes",
+          description: "Unique transaction ID (merchant side) Max 20 Chars",
+        },
+        {
+          field: "amount",
+          type: "String",
+          required: "Yes",
+          description: "Transaction amount in INR",
+        },
+        {
+          field: "buyer_email",
+          type: "String",
+          required: "Yes",
+          description: "Customer's email address",
+        },
+        {
+          field: "buyer_phone",
+          type: "String",
+          required: "Yes",
+          description: "Customer's 10-digit mobile number",
+        },
+      ],
       request: {
-        curl: ``,
+        curl: `curl --location 'https://live.spay.live/api/GLIDE/create-glide-widget-url' --form 'token="L3szdVgxEHYqq433GIvwcaQOszSx5J"'`,
       },
       successResponse: {
-        curl: ``,
+        curl: `{ "status_code": 200, "status": "success", "data": { "url": "..." } }`,
       },
     },
     {
-      id: "glide-payin-request",
-      title: "Callbacck Reponse",
-      type: "",
-      endpoint: "",
+      id: "glide-callback-response",
+      title: "Callback Response",
+      type: "api",
+      endpoint: "POST https://live.spay.live/api/GLIDE/create-glide-widget-url",
       headers: "Content-Type: application/json",
-      parameters: [],
+      parameters: [
+        {
+          field: "token",
+          type: "String",
+          required: "Yes",
+          description: "API key/token provided by Spay",
+        },
+        {
+          field: "order_id",
+          type: "String",
+          required: "Yes",
+          description: "Unique transaction ID (merchant side) Max 20 Chars",
+        },
+        {
+          field: "amount",
+          type: "String",
+          required: "Yes",
+          description: "Transaction amount in INR",
+        },
+        {
+          field: "buyer_email",
+          type: "String",
+          required: "Yes",
+          description: "Customer's email address",
+        },
+        {
+          field: "buyer_phone",
+          type: "String",
+          required: "Yes",
+          description: "Customer's 10-digit mobile number",
+        },
+      ],
       request: {
-        curl: ``,
+        curl: `curl --location 'https://live.spay.live/api/GLIDE/create-glide-widget-url' --form 'token="L3szdVgxEHYqq433GIvwcaQOszSx5J"'`,
       },
       successResponse: {
-        curl: ``,
+        curl: `{ "status_code": 200, "status": "success", "data": { "url": "..." } }`,
       },
     },
-    
   ];
 
   useEffect(() => {
@@ -238,22 +299,28 @@ const PayinDoc = () => {
             </h2>
 
             <nav className="space-y-2">
-              {apiSections.map((section) => (
-                <button
-                  key={s.id}
-                  onClick={() => {
-                    setActiveSection(s.id);
-                    setIsSidebarOpen(false);
-                  }}
-                  className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition ${
-                    activeSection === section.id
-                      ? "bg-gradient-to-r from-red-500/40 via-orange-400/40 to-yellow-400/40 text-white shadow-lg"
-                      : "text-white/60 hover:bg-white/5 hover:text-white"
-                  }`}
-                >
-                  {s.title}
-                </button>
-              ))}
+              {apiSections.map((section, index) => {  
+                // Create a unique key by combining id and index
+                const key = `${section.id}-${index}`;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => {
+                      setActiveSection(section.id);
+                      setIsSidebarOpen(false);
+                      console.log("htfh");
+                      
+                    }}
+                    className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition ${
+                      activeSection === section.id
+                        ? "bg-gradient-to-r from-red-500/40 via-orange-400/40 to-yellow-400/40 text-white shadow-lg"
+                        : "text-white/60 hover:bg-white/5 hover:text-white"
+                    }`}
+                  >
+                    {section.title}
+                  </button>
+                );
+              })}
             </nav>
           </div>
         </aside>

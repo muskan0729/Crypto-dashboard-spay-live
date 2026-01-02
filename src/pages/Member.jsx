@@ -11,6 +11,7 @@ import { TableSkeleton } from "../components/TableSkeleton";
 import { useGet } from "../hooks/useGet";
 import { usePost } from "../hooks/usePost";
 import { useToast } from "../contexts/ToastContext";
+import CryptoAmount from "../components/CryptoAmounts";
 
 export const Member = () => {
   const toast = useToast();
@@ -128,17 +129,22 @@ export const Member = () => {
         payin: item.payin_status,
 
         payout: item.payout_status,
-        payincharge: Number(item.total_charge?.CRYPTO || 0).toFixed(20),
-        payoutcharge: Number(item.total_charge?.payout || 0).toFixed(20),
+        payincharge: <CryptoAmount amount={item.total_charge?.CRYPTO || 0} symbol="₹" />,
+        //Number(item.total_charge?.CRYPTO || 0).toFixed(20),
+        payoutcharge: <CryptoAmount amount={item.total_charge?.payout || 0} symbol="₹" />,
+        //Number(item.total_charge?.payout || 0).toFixed(20),
         //cryptocharge: Number(item.total_charge?.CRYPTO || 0).toFixed(2),
 
-        totalwalletpayin: Number(item.total_amount?.CRYPTO || 0).toFixed(20),
-        totalwalletpayout: Number(item.total_amount?.payout || 0).toFixed(20),
-        totalwallet: Number(item.total_payout || 0).toFixed(20),
+        totalwalletpayin: <CryptoAmount amount={item.total_amount?.CRYPTO || 0} symbol="₹" />,
+        //Number(item.total_amount?.CRYPTO || 0).toFixed(20),
+        totalwalletpayout: <CryptoAmount amount={item.total_amount?.payout || 0} symbol="₹" />,
+        //Number(item.total_amount?.payout || 0).toFixed(20),
+        totalwallet: <CryptoAmount amount={item.total_payout || 0} symbol="₹" />,
+        //Number(item.total_payout || 0).toFixed(20),
         account: item.account_status,
 
-        walletpayin: item.payin_wallet,
-        walletpayout: item.payout_wallet,
+        walletpayin: <CryptoAmount amount={item.payin_wallet || 0} symbol="₹" />,
+        walletpayout: <CryptoAmount amount={item.payout_wallet || 0} symbol="₹" />,
         date:
           new Date(item.created_at).getDate() +
           " " +

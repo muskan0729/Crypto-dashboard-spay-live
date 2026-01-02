@@ -5,6 +5,7 @@ import { useToast } from "../contexts/ToastContext";
 import { useGet } from "../hooks/useGet";
 import { usePost } from "../hooks/usePost";
 import { TableSkeleton } from "../components/TableSkeleton";
+import CryptoAmount from "../components/CryptoAmounts";
 
 const PayinSettlement = () => {
   const [showModal, setShowModal] = useState(false);
@@ -26,7 +27,7 @@ const PayinSettlement = () => {
       sqno: index + 1,
       id: item.id,
       name: item.name,
-      payin_wallet: item.payin_wallet,
+      payin_wallet: <CryptoAmount amount={item.payin_wallet} symbol="₹" />,
     }));
     setPayinSettlementData(formattedData || []);
   }, [initialDataOfPayinWallet]);

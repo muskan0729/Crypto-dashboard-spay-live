@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useGet } from "../hooks/useGet";
 
-const PayoutDoc = () => {
-  const [activeSection, setActiveSection] = useState("payout-request");
+const PayinDoc = () => {
+  const [activeSection, setActiveSection] = useState("payin-request");
   const [apiSections, setApiSections] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const { data: getmerchant } = useGet("/show-merchant/current");
-  const [payoutGateway, setpayoutGateway] = useState(null);
+  const [payinGateway, setpayinGateway] = useState(null);
 
   useEffect(() => {
     if (getmerchant?.data) {
-      setpayoutGateway(getmerchant.data.payout_at_onboard);
+      setpayinGateway(getmerchant.data.payin_at_onboard);
     }
   }, [getmerchant]);
 
   const GLIDE_SECTIONS = [
     {
-      id: "glide-payout-request",
-      title: "Create payout Payment Request",
+      id: "glide-payin-request",
+      title: "Create Payin Payment Request",
       type: "api",
       endpoint: "POST https://live.spay.live/api/GLIDE/create-glide-widget-url",
       headers: "Content-Type: application/json",
@@ -62,105 +62,44 @@ const PayoutDoc = () => {
       },
     },
     {
-      id: "glide-payment-status-request",
+      id: "glide-payin-request",
       title: "Check Payment Status",
-      type: "api",
-      endpoint: "POST https://live.spay.live/api/GLIDE/create-glide-widget-url",
+      type: "",
+      endpoint: "",
       headers: "Content-Type: application/json",
-      parameters: [
-        {
-          field: "token",
-          type: "String",
-          required: "Yes",
-          description: "API key/token provided by Spay",
-        },
-        {
-          field: "order_id",
-          type: "String",
-          required: "Yes",
-          description: "Unique transaction ID (merchant side) Max 20 Chars",
-        },
-        {
-          field: "amount",
-          type: "String",
-          required: "Yes",
-          description: "Transaction amount in INR",
-        },
-        {
-          field: "buyer_email",
-          type: "String",
-          required: "Yes",
-          description: "Customer's email address",
-        },
-        {
-          field: "buyer_phone",
-          type: "String",
-          required: "Yes",
-          description: "Customer's 10-digit mobile number",
-        },
-      ],
+      parameters: [],
       request: {
-        curl: `curl --location 'https://live.spay.live/api/GLIDE/create-glide-widget-url' --form 'token="L3szdVgxEHYqq433GIvwcaQOszSx5J"'`,
+        curl: ``,
       },
       successResponse: {
-        curl: `{ "status_code": 200, "status": "success", "data": { "url": "..." } }`,
+        curl: ``,
       },
     },
     {
-      id: "glide-callback-response",
+      id: "glide-payin-request",
       title: "Callback Response",
-      type: "api",
-      endpoint: "POST https://live.spay.live/api/GLIDE/create-glide-widget-url",
+      type: "",
+      endpoint: "",
       headers: "Content-Type: application/json",
-      parameters: [
-        {
-          field: "token",
-          type: "String",
-          required: "Yes",
-          description: "API key/token provided by Spay",
-        },
-        {
-          field: "order_id",
-          type: "String",
-          required: "Yes",
-          description: "Unique transaction ID (merchant side) Max 20 Chars",
-        },
-        {
-          field: "amount",
-          type: "String",
-          required: "Yes",
-          description: "Transaction amount in INR",
-        },
-        {
-          field: "buyer_email",
-          type: "String",
-          required: "Yes",
-          description: "Customer's email address",
-        },
-        {
-          field: "buyer_phone",
-          type: "String",
-          required: "Yes",
-          description: "Customer's 10-digit mobile number",
-        },
-      ],
+      parameters: [],
       request: {
-        curl: `curl --location 'https://live.spay.live/api/GLIDE/create-glide-widget-url' --form 'token="L3szdVgxEHYqq433GIvwcaQOszSx5J"'`,
+        curl: ``,
       },
       successResponse: {
-        curl: `{ "status_code": 200, "status": "success", "data": { "url": "..." } }`,
+        curl: ``,
       },
     },
+    
   ];
 
   useEffect(() => {
-    if (payoutGateway === "Glide") {
+    if (payinGateway === "Glide") {
       setApiSections(GLIDE_SECTIONS);
-      setActiveSection("glide-payout-request");
+      setActiveSection("glide-payin-request");
     } else {
       setApiSections(GLIDE_SECTIONS);
     }
-  }, [payoutGateway]);
+  }, [payinGateway]);
 
   const activeApi = apiSections.find((s) => s.id === activeSection);
 
@@ -308,8 +247,6 @@ const PayoutDoc = () => {
                     onClick={() => {
                       setActiveSection(section.id);
                       setIsSidebarOpen(false);
-                      console.log("htfh");
-                      
                     }}
                     className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition ${
                       activeSection === section.id
@@ -332,4 +269,4 @@ const PayoutDoc = () => {
   );
 };
 
-export default PayoutDoc;
+export default PayinDoc;

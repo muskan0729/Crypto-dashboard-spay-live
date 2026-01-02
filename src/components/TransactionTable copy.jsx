@@ -1,4 +1,4 @@
-import React, { useState } from "react"; 
+import React, { useState } from "react";
 import CryptoAmount from "./CryptoAmounts";
 
 export default function TransactionTable({
@@ -7,54 +7,17 @@ export default function TransactionTable({
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
-  const [statusFilter, setStatusFilter] = useState("All");
 
-  const handleRowsPerPageChange = (e) => {
-    setRowsPerPage(Number(e.target.value));
-    setCurrentPage(1);
-  };
-
-  const handleStatusChange = (e) => {
-    setStatusFilter(e.target.value);
-    setCurrentPage(1);
-  };
-
-  const filteredTransactions =
-    statusFilter === "All"
-      ? transactions
-      : transactions.filter(
-          (tx) => tx.status.toLowerCase() === statusFilter.toLowerCase()
-        );
-
-  const totalPages = Math.ceil(filteredTransactions.length / rowsPerPage);
+  const totalPages = Math.ceil(transactions.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
-  const currentTransactions = filteredTransactions.slice(
+  const currentTransactions = transactions.slice(
     startIndex,
     startIndex + rowsPerPage
   );
 
-  // Status colors mapping
-  const statusColors = {
-    Success: "bg-green-500/20 text-green-400",
-    Failed: "bg-red-500/20 text-red-400",
-    Pending: "bg-yellow-500/20 text-yellow-400",
-    Refund: "bg-purple-500/20 text-purple-400",
-    Initiated: "bg-blue-500/20 text-blue-400",
-    Reversed: "bg-orange-500/20 text-orange-400",
-    Completed: "bg-teal-500/20 text-teal-400",
-    All: "bg-gray-700 text-white",
-  };
-
-  // Glowing border class for dropdown based on selected filter
-  const glowClass = {
-    Success: "focus:ring-green-400",
-    Failed: "focus:ring-red-400",
-    Pending: "focus:ring-yellow-400",
-    Refund: "focus:ring-purple-400",
-    Initiated: "focus:ring-blue-400",
-    Reversed: "focus:ring-orange-400",
-    Completed: "focus:ring-teal-400",
-    All: "focus:ring-gray-400",
+  const handleRowsPerPageChange = (e) => {
+    setRowsPerPage(Number(e.target.value));
+    setCurrentPage(1);
   };
 
   return (
@@ -63,25 +26,21 @@ export default function TransactionTable({
       <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 via-red-500/10 to-transparent blur-3xl pointer-events-none" />
 
       <div className="flex items-center justify-between w-full gap-4">
+        {/* Heading */}
         <h2 className="text-sm font-medium text-[#ffd700]">
           Recent Transactions
         </h2>
 
-        {/* Status Dropdown with glow effect */}
-        <select
-          value={statusFilter}
-          onChange={handleStatusChange}
-          className={`bg-gray-900 text-white px-3 py-1.5 rounded-lg border border-gray-700 outline-none transition focus:ring-2 ${glowClass[statusFilter]}`}
-        >
-          {Object.keys(statusColors).map((status) => (
-            <option
-              key={status}
-              value={status}
-              className={`bg-gray-900 ${statusColors[status]}`}
-            >
-              {status}
-            </option>
-          ))}
+        {/* Select Dropdown */}
+        <select className="bg-gray-900 text-white px-3 py-1.5 rounded-lg border border-gray-700 outline-none focus:ring-1 focus:ring-yellow-500 transition">
+          <option value="Success">Success</option>
+          <option value="All">All</option>
+          <option value="Pending">Pending</option>
+          <option value="Refund">Refunded</option>
+          <option value="Initiated">Initiated</option>
+          <option value="Failed">Failed</option>
+          <option value="Reversed">Reversed</option>
+          <option value="Completed">Completed</option>
         </select>
       </div>
 
@@ -112,13 +71,7 @@ export default function TransactionTable({
                   </span>
                 </div>
                 <div>
-                  TXN:{" "}
-                  <span
-                    title={tx.txn}
-                    className="cursor-pointer text-white"
-                  >
-                    {tx.trimmedTxn}
-                  </span>
+                  TXN: <span title={tx.txn} className="cursor-pointer text-white">{tx.trimmedTxn}</span>
                 </div>
               </div>
 
@@ -131,13 +84,17 @@ export default function TransactionTable({
                   Date/Time: <span className="text-white">{tx.datetime}</span>
                 </div>
               </div>
-
               {/* Status */}
               <div className="flex items-center justify-start lg:justify-end">
                 <span
-                  className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                    statusColors[tx.status] || "bg-yellow-500/20 text-yellow-400"
-                  }`}
+                  className={`text-xs font-semibold px-3 py-1 rounded-full
+                    ${
+                      tx.status === "Success"
+                        ? "bg-green-500/20 text-green-400"
+                        : tx.status === "Failed"
+                        ? "bg-red-500/20 text-red-400"
+                        : "bg-yellow-500/20 text-yellow-400"
+                    }`}
                 >
                   {tx.status}
                 </span>
@@ -145,17 +102,11 @@ export default function TransactionTable({
             </div>
           </div>
         ))}
-
-        {/* No Transactions Found */}
-        {currentTransactions.length === 0 && (
-          <div className="text-center text-white/80 py-8">
-            No transactions found for "{statusFilter}"
-          </div>
-        )}
       </div>
 
       {/* Pagination */}
       <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
+        {/* Rows per page */}
         <div className="flex items-center gap-2 text-xs text-[#ffd700]">
           <span>Rows per page</span>
           <select
@@ -171,6 +122,7 @@ export default function TransactionTable({
           </select>
         </div>
 
+        {/* Page controls */}
         <div className="flex items-center gap-3 text-xs">
           <button
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}

@@ -5,6 +5,7 @@ import { useGet } from "../hooks/useGet";
 import { usePost } from "../hooks/usePost";
 import { useToast } from "../contexts/ToastContext";
 import { TableSkeleton } from "../components/TableSkeleton";
+import CryptoAmount from "../components/CryptoAmounts";
 
 const LoadWallet = () => {
   const [showModal, setShowModal] = useState(false);
@@ -29,7 +30,7 @@ const LoadWallet = () => {
       sqno: index + 1,
       id: item.id,
       name: item.name,
-      payout_wallet: item.payout_wallet,
+      payout_wallet: <CryptoAmount amount={item.payout_wallet} symbol="₹" />,
     }));
     setWalletData(formattedTableData || []);
   }, [initialDataOfWallet]);
