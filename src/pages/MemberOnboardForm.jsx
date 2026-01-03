@@ -779,8 +779,8 @@ export const MemberOnboardForm = () => {
 
             {/* Scheme */}
             <select
-              name="scheme"
-              value={memberFormData.scheme}
+              name="scheme_id"
+              value={memberFormData.scheme_id}
               onChange={handleChange}
               className="w-full px-4 py-3 text-[#FFD700] text-sm bg-black/40 border border-white/10 rounded-2xl appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#FFD700]/40 focus:border-[#FFD700]/40 hover:border-white/20 transition md:col-span-2"
             >
