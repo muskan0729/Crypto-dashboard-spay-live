@@ -276,6 +276,11 @@ export const MemberOnboardForm = () => {
       console.groupEnd();
 
       // API call
+      console.log("===== Form Submission End =====");
+
+      await executeMember(formData);
+      toast.success("Form submitted successfully!");
+      navigate("/member-list");
 
     } catch (err) {
       console.error(err);
@@ -618,8 +623,8 @@ export const MemberOnboardForm = () => {
 
               {/* Gender */}
               <select
-                name="gender"
-                value={director.gender}
+                name="director_gender"
+                value={director.director_gender}
                 onChange={(e) => handleDirectorChange(index, e)}
                 className="
                   p-3
@@ -638,8 +643,8 @@ export const MemberOnboardForm = () => {
               {/* PAN Number */}
               <input
                 type="text"
-                name="pan_no"
-                value={director.pan_no}
+                name="director_pan_no"
+                value={director.director_pan_no}
                 onChange={(e) => handleDirectorChange(index, e)}
                 placeholder="PAN Number"
                 className="
@@ -654,7 +659,7 @@ export const MemberOnboardForm = () => {
               {/* PAN Document */}
               <input
                 type="file"
-                name="pan_doc"
+                name="user_pan_doc"
                 onChange={(e) => handleDirectorFileChange(index, e)}
                 className="
                   p-3
@@ -668,8 +673,8 @@ export const MemberOnboardForm = () => {
               {/* Aadhaar Number */}
               <input
                 type="text"
-                name="aadhar_no"
-                value={director.aadhar_no}
+                name="director_aadhar_no"
+                value={director.director_aadhar_no}
                 onChange={(e) => handleDirectorChange(index, e)}
                 placeholder="Aadhaar Number"
                 className="
@@ -684,7 +689,7 @@ export const MemberOnboardForm = () => {
               {/* Aadhaar Document */}
               <input
                 type="file"
-                name="aadhar_doc"
+                name="user_addhar_doc"
                 onChange={(e) => handleDirectorFileChange(index, e)}
                 className="
                   p-3
@@ -698,8 +703,8 @@ export const MemberOnboardForm = () => {
               {/* Date of Birth */}
               <input
                 type="date"
-                name="dob"
-                value={director.dob}
+                name="director_dob"
+                value={director.director_dob}
                 onChange={(e) => handleDirectorChange(index, e)}
                 className="
                   p-3
