@@ -1,5 +1,4 @@
 import { useState, useMemo, useEffect } from "react";
-import Button from "./Button";
 import { ConfirmModal } from "./ConfirmModal";
 import { usePost } from "../hooks/usePost";
 import { useToast } from "../contexts/ToastContext";
@@ -21,7 +20,7 @@ const Table = ({
   refreshTable,
   setData,
   statusList,
-  requiredExport=false
+  requiredExport = false,
 }) => {
   const toast = useToast();
 
@@ -36,9 +35,7 @@ const Table = ({
   const [selectData, setSelectData] = useState([]);
   const [selectedMerchant, setSelectedMerchant] = useState(null);
 
-  /* ---------------------------------- */
-  /* Merchant Select Data               */
-  /* ---------------------------------- */
+  /* ---------------- Merchant Select ---------------- */
   useEffect(() => {
     const dataForSelect = Array.from(
       new Map(
@@ -51,16 +48,12 @@ const Table = ({
     setSelectData(dataForSelect);
   }, [data]);
 
-  /* ---------------------------------- */
-  /* Reset Page on Filter Change        */
-  /* ---------------------------------- */
+  /* ---------------- Reset Page ---------------- */
   useEffect(() => {
     setCurrentPage(1);
   }, [search, statusFilter, startDate, endDate, selectedMerchant]);
 
-  /* ---------------------------------- */
-  /* Delete Logic                       */
-  /* ---------------------------------- */
+  /* ---------------- Delete ---------------- */
   const handleConfirmModal = (id) => {
     setRecordId(id);
     setShowConfirmModal(true);
@@ -79,9 +72,7 @@ const Table = ({
       const res = await deleteRecord({});
       if (res) {
         toast.success("Record deleted successfully!");
-        if (setData) {
-          setData((prev) => prev.filter((row) => row.id !== recordId));
-        }
+        setData?.((prev) => prev.filter((row) => row.id !== recordId));
         refreshTable?.();
         setShowConfirmModal(false);
         setRecordId(null);
@@ -91,9 +82,7 @@ const Table = ({
     }
   };
 
-  /* ---------------------------------- */
-  /* Filtering                          */
-  /* ---------------------------------- */
+  /* ---------------- Filtering ---------------- */
   const filteredData = useMemo(() => {
     return data?.filter((row) => {
       const matchesSearch = Object.values(row).some((val) =>
@@ -123,45 +112,28 @@ const Table = ({
   );
 
   const exportToXL = () => {
-    // paginatedData.append
-    // console.log(paginatedData);
     const worksheet = XLSX.utils.json_to_sheet(filteredData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
     XLSX.writeFile(workbook, "data.xlsx");
   };
+
   return (
-    <div className="w-full max-w-[1600px] mx-auto space-y-6 text-white p-4">
+    <div className="w-full space-y-6 text-white">
       {/* ---------------- Filters ---------------- */}
-      <div className="flex flex-col xl:flex-row xl:items-center gap-4">
-        {/* Search */}
+      <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-4 flex flex-wrap gap-3 items-end">
         {showSearch && (
           <input
             type="text"
             placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="
-        h-[44px]
-        w-full sm:w-64 xl:w-72
-        px-4
-        rounded-2xl
-        
-        border
-        text-sm
-        text-white
-        placeholder-slate-400
-        shadow-xl
-        outline-none
-        transition
-        focus:ring-1 focus:ring-[#ffd700]
-      "
+            className="h-[44px] w-full sm:w-64 px-4 rounded-xl bg-black/40 border border-white/10 text-sm outline-none focus:ring-1 focus:ring-[#ffd700]"
           />
         )}
 
-        {/* Merchant Select */}
         {showSelectUserFilter && (
-          <div className="h-[44px] w-full sm:w-64 xl:w-72">
+          <div className="h-[44px] w-full sm:w-64">
             <CustomSelect
               options={selectData}
               placeholder="Select Merchant"
@@ -171,116 +143,55 @@ const Table = ({
           </div>
         )}
 
-        {/* Date Range */}
         {showDateFilter && (
-          <div className="flex items-center gap-2 h-[44px]">
+          <div className="flex gap-2">
             <DatePicker
               selected={startDate}
-              onChange={(date) => setStartDate(date)}
+              onChange={setStartDate}
               placeholderText="Start Date"
-              className="
-          h-[44px]
-          px-4
-          rounded-2xl
-          bg-white/5
-          backdrop-blur-xl
-          border border-white/10
-          text-sm
-          text-white
-          shadow-xl
-          outline-none
-          focus:ring-1 focus:ring-[#ffd700]
-        "
+              className="h-[44px] px-4 rounded-xl bg-black/40 border border-white/10 text-sm"
             />
-            <span className="text-slate-400 text-sm">to</span>
             <DatePicker
               selected={endDate}
-              onChange={(date) => setEndDate(date)}
+              onChange={setEndDate}
               placeholderText="End Date"
-              className="
-          h-[44px]
-          px-4
-          rounded-2xl
-          bg-white/5
-          backdrop-blur-xl
-          border border-white/10
-          text-sm
-          text-white
-          shadow-xl
-          outline-none
-          focus:ring-1 focus:ring-[#ffd700]
-        "
+              className="h-[44px] px-4 rounded-xl bg-black/40 border border-white/10 text-sm"
             />
           </div>
         )}
 
-        {/* Status Filter */}
         {showStatusFilter && (
-          <div className="relative h-[44px] w-full sm:w-48">
-            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#ffd700]/20 via-orange-500/10 to-red-500/10 blur-2xl rounded-2xl" />
-
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="
-          h-[44px]
-          w-full
-          px-4
-          rounded-2xl
-          bg-white/5
-          backdrop-blur-xl
-          border border-white/10
-          shadow-xl
-          text-sm
-          text-white
-          outline-none
-          cursor-pointer
-          transition
-          hover:bg-white/10
-          focus:ring-1 focus:ring-[#ffd700]
-        "
-            >
-              <option value="all" className="bg-black text-white">
-                All Status
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="h-[44px] px-4 rounded-xl bg-black/40 border border-white/10 text-sm"
+          >
+            <option value="all">All Status</option>
+            {statusList?.map((item, i) => (
+              <option key={i} value={item}>
+                {item}
               </option>
-              {statusList?.map((item, i) => (
-                <option key={i} value={item} className="bg-black text-white">
-                  {item}
-                </option>
-              ))}
-            </select>
-          </div>
+            ))}
+          </select>
         )}
 
-        {/* Export Button */}
-       {requiredExport &&  <button
-          onClick={exportToXL}
-          className="
-      h-[44px]
-      px-6
-      rounded-2xl
-      bg-gradient-to-r from-[#ffd700] via-orange-500 to-red-500
-      text-black
-      text-sm
-      font-semibold
-      shadow-xl
-      transition
-      hover:opacity-90
-      active:scale-[0.98]
-      whitespace-nowrap
-    "
-        >
-          Export
-        </button>}
+        {requiredExport && (
+          <button
+            onClick={exportToXL}
+            className="h-[44px] px-6 rounded-xl bg-[#ffd700]/20 border border-[#ffd700]/50 text-[#ffd700] font-semibold hover:bg-[#ffd700]/40 transition"
+          >
+            Export
+          </button>
+        )}
       </div>
 
       {/* ---------------- Mobile Cards ---------------- */}
-      <div className="block lg:hidden space-y-4">
+      <div className="lg:hidden space-y-4">
         {paginatedData?.length ? (
           paginatedData.map((row) => (
             <div
               key={row.id}
-              className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-2"
+              className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 space-y-2 shadow-lg"
             >
               {columns.map((col, i) => (
                 <div key={i} className="flex justify-between gap-3 text-sm">
@@ -292,16 +203,6 @@ const Table = ({
                   </span>
                 </div>
               ))}
-
-              {showDeleteColumn && (
-                <button
-                  onClick={() => handleConfirmModal(row.id)}
-                  className="text-red-400 text-sm mt-2"
-                >
-                  <i className="fa-solid fa-trash mr-1" />
-                  Delete
-                </button>
-              )}
             </div>
           ))
         ) : (
@@ -312,91 +213,73 @@ const Table = ({
       </div>
 
       {/* ---------------- Desktop Table ---------------- */}
-      <div className="relative w-full overflow-x-auto rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-xl">
-        <table className="min-w-full w-max text-left border-collapse">
-          <thead className="sticky top-0 z-20 bg-black/90 backdrop-blur-xl">
+      <div className="hidden z-[-10] lg:block w-full overflow-x-auto rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-xl">
+        <table className="w-full min-w-max whitespace-nowrap table-auto">
+          <thead className="bg-black/80 ">
             <tr>
-              {columns.map((col, i) => (
+              {columns.map((col) => (
                 <th
-                  key={i}
-                  className="px-6 py-3 text-sm uppercase text-[#ffd700] whitespace-nowrap"
+                  key={col.accessor}
+                  className="px-2 py-1 text-xs font-semibold text-[#ffd700] text-left"
                 >
                   {col.header}
                 </th>
               ))}
-
               {showDeleteColumn && (
-                <th className="px-6 py-3 text-sm uppercase text-[#ffd700] whitespace-nowrap">
+                <th className="px-2 py-2 text-xs font-semibold text-[#ffd700] text-left">
                   Action
                 </th>
               )}
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-white/10">
-            {paginatedData?.length ? (
-              paginatedData.map((row) => (
-                <tr key={row.id} className="hover:bg-white/10 transition">
-                  {columns.map((col, i) => (
-                    <td
-                      key={i}
-                      className="px-6 py-3 text-sm text-slate-200 whitespace-nowrap"
+          <tbody>
+            {paginatedData?.map((row, i) => (
+              <tr
+                key={row.id}
+                className={`transition ${i % 2 === 0 ? "bg-white/5" : "bg-white/10"
+                  } hover:bg-white/20`}
+              >
+                {columns.map((col) => (
+                  <td key={col.accessor} className="px-2 py-3 text-xs">
+                    {col.Cell
+                      ? col.Cell({ value: row[col.accessor], row })
+                      : row[col.accessor]}
+                  </td>
+                ))}
+                {showDeleteColumn && (
+                  <td className="px-2 py-3">
+                    <button
+                      onClick={() => handleConfirmModal(row.id)}
+                      className="text-red-400 hover:text-red-300 transition"
                     >
-                      {col.Cell
-                        ? col.Cell({ value: row[col.accessor], row })
-                        : row[col.accessor]}
-                    </td>
-                  ))}
-
-                  {showDeleteColumn && (
-                    <td className="px-6 py-3 whitespace-nowrap">
-                      <button
-                        onClick={() => handleConfirmModal(row.id)}
-                        className="text-red-400 hover:text-red-300 transition"
-                      >
-                        <i className="fa-solid fa-trash" />
-                      </button>
-                    </td>
-                  )}
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan={columns.length + 1}
-                  className="text-center py-12 text-slate-500"
-                >
-                  No records found
-                </td>
+                      Delete
+                    </button>
+                  </td>
+                )}
               </tr>
-            )}
+            ))}
           </tbody>
         </table>
       </div>
 
       {/* ---------------- Pagination ---------------- */}
       {showPagination && (
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-400">Show</span>
-            <select
-              value={entriesPerPage}
-              onChange={(e) => setEntriesPerPage(Number(e.target.value))}
-              className="bg-gray-900 text-white px-3 py-2 rounded-lg border border-gray-700"
-            >
-              {[10, 50, 100, 150].map((n) => (
-                <option key={n} value={n}>
-                  {n}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <select
+            value={entriesPerPage}
+            onChange={(e) => setEntriesPerPage(Number(e.target.value))}
+            className="bg-black/40 border border-white/10 px-3 py-2 rounded-xl"
+          >
+            {[10, 50, 100].map((n) => (
+              <option key={n}>{n}</option>
+            ))}
+          </select>
 
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             <button
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-4 py-2 min-w-[80px] bg-gray-900 border border-gray-700 rounded-lg disabled:opacity-30"
+              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20"
             >
               Prev
             </button>
@@ -408,10 +291,7 @@ const Table = ({
                     : p
                 )
               }
-              disabled={
-                currentPage >= Math.ceil(filteredData.length / entriesPerPage)
-              }
-              className="px-4 py-2 min-w-[80px] bg-gray-900 border border-gray-700 rounded-lg disabled:opacity-30"
+              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20"
             >
               Next
             </button>

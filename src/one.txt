@@ -26,8 +26,6 @@ Use consistent styling across all sections.
 Ensure visual consistency with a modern fintech/admin dashboard UI.
 Component to convert:
 
-
-
           {/* Fixed Background Gradient */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#ff4d4d]/40 via-[#ffb84d]/20 to-[#b33c00] bg-fixed"></div>
 

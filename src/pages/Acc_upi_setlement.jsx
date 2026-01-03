@@ -70,13 +70,13 @@ const Acc_upi_setlement = () => {
   ];
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl mx-auto">
+    <div className="p-6 space-y-6  mx-auto">
       {/* Header */}
       <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-4 flex justify-between items-center relative overflow-hidden">
         {/* Gradient glow */}
         <div className="absolute -z-10 w-48 h-48 top-[-2rem] right-[-2rem] bg-gradient-to-tr from-red-500/30 via-orange-400/20 to-yellow-400/20 blur-[120px] rounded-full"></div>
  {/* Ambient Glow */}
-          <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-r from-[#ff4d4d]/30 to-[#ffb84d]/30 blur-3xl rounded-full"></div>
+          <div className="absolute top-20 left-1/2 -translate-x-1/2  bg-gradient-to-r from-[#ff4d4d]/30 to-[#ffb84d]/30 blur-3xl rounded-full"></div>
 
         <h4 className="font-bold text-[#ffd700] text-lg sm:text-xl">
           Payin Settlement Statement
@@ -103,7 +103,7 @@ const Acc_upi_setlement = () => {
             showDateFilter={true}
             showDeleteColumn={false}
             statusList={REPORT_STATUSES}
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl min-w-[700px] sm:min-w-full overflow-hidden"
+            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl sm:min-w-full overflow-hidden"
             rowClassName={(rowIndex) =>
               rowIndex % 2 === 0
                 ? "bg-white/10 hover:bg-white/20 transition"

@@ -173,7 +173,7 @@ const Payoutrequest = () => {
           {/* <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#ff4d4d]/40 via-[#ffb84d]/20 to-[#b33c00] bg-fixed"></div> */}
 
           {/* Ambient Glow */}
-          <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-r from-[#ff4d4d]/30 to-[#ffb84d]/30 blur-3xl rounded-full"></div>
+          <div className="absolute top-20 left-1/2 -translate-x-1/2  bg-gradient-to-r from-[#ff4d4d]/30 to-[#ffb84d]/30 blur-3xl rounded-full"></div>
 
       {/* Header */}
       <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl flex justify-between items-center p-4">
