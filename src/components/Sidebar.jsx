@@ -19,7 +19,7 @@ export const Sidebar = ({ open, setOpen }) => {
   // -----------------------------------------
   const menu = [
     // DASHBOARD (visible to all)
-    { label: "Dashboard", icon: "fa-chart-pie", link: "/dashboard" },
+    { label: "Dashboard", icon: "fa-chart-pie", link: "/krypto-dashboard" },
 
     // ---------------------- ADMIN MENUS ----------------------
     ...(role === "admin"
@@ -186,7 +186,7 @@ export const Sidebar = ({ open, setOpen }) => {
 
         {/* Logo */}
         <div className="relative flex justify-center items-center w-25 h-25 rounded-full  overflow-hidden bg-white shadow-md ml-15 mb-5">
-          <Link to="/dashboard">
+          <Link to="/krypto-dashboard">
             <img
               src={Logo}
               className="w-full h-full object-cover"
