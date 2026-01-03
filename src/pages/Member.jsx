@@ -43,7 +43,7 @@ export const Member = () => {
   useEffect(() => {
     if (!merchants.length) return;
 
-    const formattedMerchantData = initialDataOfMerchants.map((item, index) => {
+    const formatted = merchants.map((item, index) => {
       const payinBank = item.payin_at_onboard;
 
       return {
