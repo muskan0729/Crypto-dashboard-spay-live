@@ -8,6 +8,10 @@ import useAutoFetch from "../hooks/useAutoFetch";
 import { usePut } from "../hooks/usePut";
 import { MONTH_NAMES } from "../constants/Constants";
 import { TableSkeleton } from "../components/TableSkeleton";
+import { useGet } from "../hooks/useGet";
+import { usePost } from "../hooks/usePost";
+import { useToast } from "../contexts/ToastContext";
+import CryptoAmount from "../components/CryptoAmounts";
 
 export const Member = () => {
   const navigate = useNavigate();
@@ -39,38 +43,52 @@ export const Member = () => {
   useEffect(() => {
     if (!merchants.length) return;
 
-    const formatted = merchants.map((item, index) => ({
-      sqno: index + 1,
-      id: item.id,
-      name: (
-        <span
-          className="text-blue-400 cursor-pointer hover:underline"
-          onClick={() => {
-            localStorage.setItem("merchantId", item.id);
-            memberDetails(`/MerchantDetails/${item.id}`);
-          }}
-        >
-          {item.name}
-        </span>
-      ),
-      payin: item.payin_status,
-      payout: item.payout_status,
-      walletpayin: item.payin_wallet,
-      walletpayout: item.payout_wallet,
-      totalwalletpayin: Number(item.total_amount?.CRYPTO || 0).toFixed(2),
-      totalwalletpayout: Number(item.total_amount?.payout || 0).toFixed(2),
-      totalwallet: Number(item.total_payout || 0).toFixed(2),
-      payincharge: Number(item.total_charge?.CRYPTO || 0).toFixed(2),
-      payoutcharge: Number(item.total_charge?.payout || 0).toFixed(2),
-      payin_bank: item.payin_at_onboard,
-      account: item.account_status,
-      date:
-        new Date(item.created_at).getDate() +
-        " " +
-        MONTH_NAMES[new Date(item.created_at).getMonth()] +
-        " " +
-        new Date(item.created_at).getFullYear(),
-    }));
+    const formattedMerchantData = initialDataOfMerchants.map((item, index) => {
+      const payinBank = item.payin_at_onboard;
+
+      return {
+        sqno: index + 1,
+        id: item.id,
+        // name: item.name,
+        name: (
+          <span
+            className="text-blue-600 cursor-pointer"
+            onClick={() => {
+              localStorage.setItem("merchantId", item.id);
+              memberDetails(`/MerchantDetails/${item.id}`);
+            }}
+          >
+            {item.name}
+          </span>
+        ),
+        payin_bank: payinBank,
+        payin: item.payin_status,
+
+        payout: item.payout_status,
+        payincharge: <CryptoAmount amount={item.total_charge?.CRYPTO || 0} symbol="₹" />,
+        //Number(item.total_charge?.CRYPTO || 0).toFixed(20),
+        payoutcharge: <CryptoAmount amount={item.total_charge?.payout || 0} symbol="₹" />,
+        //Number(item.total_charge?.payout || 0).toFixed(20),
+        //cryptocharge: Number(item.total_charge?.CRYPTO || 0).toFixed(2),
+
+        totalwalletpayin: <CryptoAmount amount={item.total_amount?.CRYPTO || 0} symbol="₹" />,
+        //Number(item.total_amount?.CRYPTO || 0).toFixed(20),
+        totalwalletpayout: <CryptoAmount amount={item.total_amount?.payout || 0} symbol="₹" />,
+        //Number(item.total_amount?.payout || 0).toFixed(20),
+        totalwallet: <CryptoAmount amount={item.total_payout || 0} symbol="₹" />,
+        //Number(item.total_payout || 0).toFixed(20),
+        account: item.account_status,
+
+        walletpayin: <CryptoAmount amount={item.payin_wallet || 0} symbol="₹" />,
+        walletpayout: <CryptoAmount amount={item.payout_wallet || 0} symbol="₹" />,
+        date:
+          new Date(item.created_at).getDate() +
+          " " +
+          MONTH_NAMES[new Date(item.created_at).getMonth()] +
+          " " +
+          new Date(item.created_at).getFullYear(),
+      };
+    });
 
     setMerchantData(formatted);
   }, [merchants, memberDetails]);

@@ -1,5 +1,6 @@
 import React from "react";
 import TransactionStatusPie from "../components/TransactionStatusPie";
+import CryptoAmount from "../components/CryptoAmounts";
 
 export default function DashboardSummary({
   today,
@@ -16,8 +17,6 @@ export default function DashboardSummary({
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-white">Dashboard Summary</h3>
-
-       
       </div>
 
       {/* SUMMARY GRID */}
@@ -77,7 +76,10 @@ export default function DashboardSummary({
         Pay-IN Collection
       </h5>
       <h6 className="text-3xl font-bold text-white">
-        ₹ {today ? normalCards.totalPayIn : normalCards.todayPayIn}
+        <CryptoAmount 
+          amount={today ? normalCards.totalPayIn : normalCards.todayPayIn} 
+          symbol="₹" 
+        />
       </h6>
     </div>
   </div>
@@ -90,7 +92,10 @@ export default function DashboardSummary({
         Pay-OUT Collection
       </h5>
       <h6 className="text-3xl font-bold text-white">
-        ₹ {today ? normalCards.totalPayOut : normalCards.todayPayOut}
+        <CryptoAmount 
+          amount={today ? normalCards.totalPayOut : normalCards.todayPayOut} 
+          symbol="₹" 
+        />
       </h6>
     </div>
   </div>

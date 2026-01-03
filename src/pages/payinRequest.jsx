@@ -3,7 +3,7 @@ import Button from "../components/Button";
 import { usePost } from "../hooks/usePost";
 
 export const PayinRequest = () => {
-  const [payerName, setPayerName] = useState("");
+  //const [payerName, setPayerName] = useState("");
   const [amount, setAmount] = useState("");
   const [amountError, setAmountError] = useState("");
   const [payerMobile, setPayerMobile] = useState("");
@@ -11,55 +11,56 @@ export const PayinRequest = () => {
   const [payerOrderId, setPayerOrderId] = useState("");
   const [orderId, setOrderId] = useState("");
   const [qrUrl, setQrUrl] = useState("");
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [token, setToken] = useState("");
+  //const [showSuccess, setShowSuccess] = useState(false);
   const [showFailed, setShowFailed] = useState(false);
+  //const intervalRef = useRef(null);
 
-  const intervalRef = useRef(null);
-
-  const { execute: executePayin, loading } = usePost("/Airpay/request");
-  const { execute: executeCheckStatus } = usePost("/AP/payin/checkstatus");
+  const { execute: executePayin, loading } = usePost("/GLIDE/create-glide-widget-url");
+  //const { execute: executeCheckStatus } = usePost("/AP/payin/checkstatus");
 
   useEffect(() => {
     const uniqueOrderId = `DSB${Date.now()}${Math.floor(Math.random() * 1000)}`;
     setPayerOrderId(uniqueOrderId);
   }, []);
 
-  useEffect(() => {
-    if (orderId) {
-      intervalRef.current = setInterval(checkPaymentStatus, 5000);
-    }
-    return () => clearInterval(intervalRef.current);
-  }, [orderId]);
+  // useEffect(() => {
+  //   if (orderId) {
+  //     intervalRef.current = setInterval(checkPaymentStatus, 5000);
+  //   }
+  //   return () => clearInterval(intervalRef.current);
+  // }, [orderId]);
 
-  useEffect(() => {
-    if (showSuccess || showFailed) {
-      const timer = setTimeout(() => {
-        setShowSuccess(false);
-        setShowFailed(false);
-        setQrUrl("");
-        setAmount("");
-        setPayerName("");
-        setPayerMobile("");
-        setPayerEmail("");
-        const uniqueOrderId = `DSB${Date.now()}${Math.floor(Math.random() * 1000)}`;
-        setPayerOrderId(uniqueOrderId);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [showSuccess, showFailed]);
+  // useEffect(() => {
+  //   if (showSuccess || showFailed) {
+  //     const timer = setTimeout(() => {
+  //       setShowSuccess(false);
+  //       setShowFailed(false);
+  //       setQrUrl("");
+  //       setAmount("");
+  //       //setPayerName("");
+  //       setPayerMobile("");
+  //       setPayerEmail("");
+  //       const uniqueOrderId = `DSB${Date.now()}${Math.floor(Math.random() * 1000)}`;
+  //       setPayerOrderId(uniqueOrderId);
+  //     }, 5000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [showSuccess, showFailed]);
 
   const handlePayinSubmit = async () => {
-    if (Number(amount) < 10) {
-      setAmountError("Amount must be at least ₹10");
+    if (Number(amount) < 0) {
+      setAmountError("Amount must be at least ₹1");
       return;
     }
     try {
       const payload = {
-        buyer_name: payerName,
+        //buyer_name: payerName,
         buyer_phone: payerMobile,
         buyer_email: payerEmail,
         amount,
         orderid: payerOrderId,
+        token: token
       };
       const data = await executePayin(payload);
       if (data.status === "success") {
@@ -69,7 +70,7 @@ export const PayinRequest = () => {
           )}`
         );
         setOrderId(data.data.orderid);
-        setShowSuccess(false);
+        //setShowSuccess(false);
         setShowFailed(false);
       } else {
         setShowFailed(true);
@@ -81,27 +82,27 @@ export const PayinRequest = () => {
     }
   };
 
-  const checkPaymentStatus = async () => {
-    try {
-      if (!orderId) return;
-      const formData = new FormData();
-      formData.append("orderid", orderId);
-      const statusData = await executeCheckStatus(formData);
-      if (statusData?.status === "SUCCESS") {
-        clearInterval(intervalRef.current);
-        setShowSuccess(true);
-        setShowFailed(false);
-        setQrUrl("");
-      } else if (statusData?.status === "FAILED") {
-        clearInterval(intervalRef.current);
-        setShowFailed(true);
-        setShowSuccess(false);
-        setQrUrl("");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const checkPaymentStatus = async () => {
+  //   try {
+  //     if (!orderId) return;
+  //     const formData = new FormData();
+  //     formData.append("orderid", orderId);
+  //     const statusData = await executeCheckStatus(formData);
+  //     if (statusData?.status === "SUCCESS") {
+  //       clearInterval(intervalRef.current);
+  //       setShowSuccess(true);
+  //       setShowFailed(false);
+  //       setQrUrl("");
+  //     } else if (statusData?.status === "FAILED") {
+  //       clearInterval(intervalRef.current);
+  //       setShowFailed(true);
+  //       setShowSuccess(false);
+  //       setQrUrl("");
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   return (
     <div className="bg-black min-h-screen p-6 space-y-6">
@@ -114,14 +115,14 @@ export const PayinRequest = () => {
       </div>
 
       {/* Form */}
-      {!qrUrl && !showSuccess && !showFailed && (
+      {!qrUrl && (
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-6 space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              { label: "Payer Name", value: payerName, set: setPayerName, type: "text" },
               { label: "Amount", value: amount, set: setAmount, type: "number" },
               { label: "Mobile Number", value: payerMobile, set: setPayerMobile, type: "tel" },
               { label: "Email", value: payerEmail, set: setPayerEmail, type: "email" },
+              { label: "Token", value: token, set: setToken, type: "text" },
             ].map((field, i) => (
               <div key={i} className="relative">
                 <input
@@ -131,7 +132,7 @@ export const PayinRequest = () => {
                     field.set(e.target.value);
                     if (field.label === "Amount") {
                       setAmountError(
-                        Number(e.target.value) < 10 ? "Amount must be at least ₹10" : ""
+                        Number(e.target.value) < 0 ? "Amount must be at least ₹1" : ""
                       );
                     }
                   }}
@@ -182,7 +183,7 @@ export const PayinRequest = () => {
       )}
 
       {/* Success */}
-      {showSuccess && (
+      {/* {showSuccess && (
         <div className="flex justify-center">
           <div className="bg-green-500/10 backdrop-blur-xl border border-green-400/20 rounded-full w-72 h-72 shadow-xl flex items-center justify-center">
             <h2 className="text-green-400 font-bold text-xl">
@@ -190,7 +191,7 @@ export const PayinRequest = () => {
             </h2>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Failed */}
       {showFailed && (

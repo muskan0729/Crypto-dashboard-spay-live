@@ -47,7 +47,7 @@ const AppRoutes = () => {
                     }
                 />
                 <Route 
-                    path="/dashboard" 
+                    path="/krypto-dashboard" 
                     element={
                         <PrivateRoute>
                             <Dashboard />

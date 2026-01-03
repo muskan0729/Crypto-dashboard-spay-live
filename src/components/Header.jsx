@@ -4,6 +4,7 @@ import { usePost } from "../hooks/usePost";
 import useAutoFetch from "../hooks/useAutoFetch";
 import { useGet } from "../hooks/useGet";
 import "../css/header.css";
+import CryptoAmount from "./CryptoAmounts";
 
 export const Header = ({ onMenuClick }) => {
   const navigate = useNavigate();
@@ -89,7 +90,7 @@ export const Header = ({ onMenuClick }) => {
                     <i className={`${item.icon} fa-lg text-[#ffd700]`} />
                     <span className="text-white/70">{item.label}:</span>
                     <span className="font-semibold text-white">
-                      {item.value}
+                      <CryptoAmount amount={item.value} symbol="₹" />
                     </span>
                   </div>
                 ))}
@@ -118,7 +119,7 @@ export const Header = ({ onMenuClick }) => {
                           {item.label}
                         </div>
                         <div className="font-semibold text-white">
-                          {item.value}
+                          <CryptoAmount amount={item.value} symbol="₹" />
                         </div>
                       </div>
                     )}
