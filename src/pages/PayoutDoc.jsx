@@ -20,7 +20,7 @@ const PayoutDoc = () => {
       id: "glide-payout-request",
       title: "Create payout Payment Request",
       type: "api",
-      endpoint: "POST https://live.spay.live/api/GLIDE/create-glide-widget-url",
+      endpoint: "POST https://dashboard.spaykrypto.com/api/GLIDE/create-glide-payout-widget",
       headers: "Content-Type: application/json",
       parameters: [
         {
@@ -30,10 +30,10 @@ const PayoutDoc = () => {
           description: "API key/token provided by Spay",
         },
         {
-          field: "order_id",
+          field: "orderid",
           type: "String",
           required: "Yes",
-          description: "Unique transaction ID (merchant side) Max 20 Chars",
+          description: "Unique order ID (merchant side) Max 20 Chars",
         },
         {
           field: "amount",
@@ -53,102 +53,88 @@ const PayoutDoc = () => {
           required: "Yes",
           description: "Customer's 10-digit mobile number",
         },
+        {
+          field: "buyer_wallet",
+          type: "String",
+          required: "Yes",
+          description: "0xc3301B3fDBFCB535AF691e0Fc53B13A859cC0057"
+        }
       ],
       request: {
-        curl: `curl --location 'https://live.spay.live/api/GLIDE/create-glide-widget-url' --form 'token="L3szdVgxEHYqq433GIvwcaQOszSx5J"'`,
+        curl: `curl -X POST "http://127.0.0.1:8000/api/GLIDE/create-glide-payout-widget" \
+  -H "x-glide-project-id: b2373-a1e1-c5ac0d6efc83" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer 88|pRVgQ9J9ZQuNu98izybeb43c6a" \
+  -d '{
+    "token": "L3szdVgxEHcaQOszSx5J",
+    "orderid": "zB2C9z6q3e0jhO",
+    "amount": "0.001",
+    "buyer_email": "amar@spay.live",
+    "buyer_phone": "9967184313",
+    "buyer_wallet": "0xc3301B391e0Fc53B13A859cC0057"
+  }'`,
       },
       successResponse: {
         curl: `{ "status_code": 200, "status": "success", "data": { "url": "..." } }`,
       },
     },
-    {
-      id: "glide-payment-status-request",
-      title: "Check Payment Status",
-      type: "api",
-      endpoint: "POST https://live.spay.live/api/GLIDE/create-glide-widget-url",
-      headers: "Content-Type: application/json",
-      parameters: [
-        {
-          field: "token",
-          type: "String",
-          required: "Yes",
-          description: "API key/token provided by Spay",
-        },
-        {
-          field: "order_id",
-          type: "String",
-          required: "Yes",
-          description: "Unique transaction ID (merchant side) Max 20 Chars",
-        },
-        {
-          field: "amount",
-          type: "String",
-          required: "Yes",
-          description: "Transaction amount in INR",
-        },
-        {
-          field: "buyer_email",
-          type: "String",
-          required: "Yes",
-          description: "Customer's email address",
-        },
-        {
-          field: "buyer_phone",
-          type: "String",
-          required: "Yes",
-          description: "Customer's 10-digit mobile number",
-        },
-      ],
-      request: {
-        curl: `curl --location 'https://live.spay.live/api/GLIDE/create-glide-widget-url' --form 'token="L3szdVgxEHYqq433GIvwcaQOszSx5J"'`,
-      },
-      successResponse: {
-        curl: `{ "status_code": 200, "status": "success", "data": { "url": "..." } }`,
-      },
-    },
+    // {
+    //   id: "glide-payment-status-request",
+    //   title: "Check Payment Status",
+    //   type: "api",
+    //   endpoint: "POST https://live.spay.live/api/GLIDE/create-glide-widget-url",
+    //   headers: "Content-Type: application/json",
+    //   parameters: [
+    //     {
+    //       field: "token",
+    //       type: "String",
+    //       required: "Yes",
+    //       description: "API key/token provided by Spay",
+    //     },
+    //     {
+    //       field: "order_id",
+    //       type: "String",
+    //       required: "Yes",
+    //       description: "Unique transaction ID (merchant side) Max 20 Chars",
+    //     },
+    //     {
+    //       field: "amount",
+    //       type: "String",
+    //       required: "Yes",
+    //       description: "Transaction amount in INR",
+    //     },
+    //     {
+    //       field: "buyer_email",
+    //       type: "String",
+    //       required: "Yes",
+    //       description: "Customer's email address",
+    //     },
+    //     {
+    //       field: "buyer_phone",
+    //       type: "String",
+    //       required: "Yes",
+    //       description: "Customer's 10-digit mobile number",
+    //     },
+    //   ],
+    //   request: {
+    //     curl: `curl --location 'https://live.spay.live/api/GLIDE/create-glide-widget-url' --form 'token="L3szdVgxEHYqq433GIvwcaQOszSx5J"'`,
+    //   },
+    //   successResponse: {
+    //     curl: `{ "status_code": 200, "status": "success", "data": { "url": "..." } }`,
+    //   },
+    // },
     {
       id: "glide-callback-response",
       title: "Callback Response",
       type: "api",
-      endpoint: "POST https://live.spay.live/api/GLIDE/create-glide-widget-url",
+      endpoint: "POST https://dashboard.spaykrypto.com/api/GLIDE/webhook/transaction",
       headers: "Content-Type: application/json",
       parameters: [
-        {
-          field: "token",
-          type: "String",
-          required: "Yes",
-          description: "API key/token provided by Spay",
-        },
-        {
-          field: "order_id",
-          type: "String",
-          required: "Yes",
-          description: "Unique transaction ID (merchant side) Max 20 Chars",
-        },
-        {
-          field: "amount",
-          type: "String",
-          required: "Yes",
-          description: "Transaction amount in INR",
-        },
-        {
-          field: "buyer_email",
-          type: "String",
-          required: "Yes",
-          description: "Customer's email address",
-        },
-        {
-          field: "buyer_phone",
-          type: "String",
-          required: "Yes",
-          description: "Customer's 10-digit mobile number",
-        },
+        
       ],
-      request: {
-        curl: `curl --location 'https://live.spay.live/api/GLIDE/create-glide-widget-url' --form 'token="L3szdVgxEHYqq433GIvwcaQOszSx5J"'`,
-      },
+      request: { },
       successResponse: {
-        curl: `{ "status_code": 200, "status": "success", "data": { "url": "..." } }`,
+        curl: `{ {"webhookId":"cf6dd72e-6394-455a-b88e-d6fc0d14d9e5","type":"SESSION_UPDATE","payload":{"sessionId":"fa6eaa6b-132d-4816-b56e-29da2e546077","createdAt":"2025-12-30T12:35:35.481837Z","expiresAt":"2025-12-30T12:45:35.481837Z","expired":false,"paymentStatus":"paid","paymentChainId":"eip155:137","paymentChainName":"Polygon","paymentChainLogoUrl":"https://static.paywithglide.xyz/logos/polygon-9146df3f.png","paymentCurrency":"eip155:137/erc20:0x3c499c542cef5e3811e1192ce70d8cc03d5c3359","paymentCurrencySymbol":"USDC","paymentCurrencyLogoUrl":"https://static.buildwithglide.com/logos/usdc-8aaf5df7.png","paymentCurrencyTier":"tier1","paymentAmount":"0.001076","paymentAmountUSD":"0.001076","payerAccount":"0xc3301B3fDBFCB535AF691e0Fc53B13A859cC0057","payerAccounts":["0xc3301B3fDBFCB535AF691e0Fc53B13A859cC0057"],"payerWalletAddress":"0xc3301B3fDBFCB535AF691e0Fc53B13A859cC0057","enableRefundEmails":false,"paymentAction":"signTypedData","paymentTransactionHash":"0xc6e652f48ec62e65a998c971e4bef60c599c14ef7c34c8db5aebdcb85ba85d92","paymentTransactionUrl":"https://polygonscan.com/tx/0xc6e652f48ec62e65a998c971e4bef60c599c14ef7c34c8db5aebdcb85ba85d92","unsignedTypedData":{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Permit":[{"name":"owner","type":"address"},{"name":"spender","type":"address"},{"name":"value","type":"uint256"},{"name":"nonce","type":"uint256"},{"name":"deadline","type":"uint256"}]},"primaryType":"Permit","domain":{"name":"USD Coin","version":"2","chainId":"0x89","verifyingContract":"0x3c499c542cef5e3811e1192ce70d8cc03d5c3359","salt":""},"message":{"deadline":"1767098735","nonce":"2","owner":"0xc3301B3fDBFCB535AF691e0Fc53B13A859cC0057","spender":"0x078Bf499222bFcbbFB50EbB191270A9baC93ce44","value":"1076"}},"sponsoredTransactionChainId":"eip155:8453","sponsoredTransactionChainName":"Base","sponsoredTransactionChainLogoUrl":"https://static.paywithglide.xyz/logos/base-b7acabea.png","sponsoredTransactionStatus":"success","sponsoredTransactionHash":"0xe4c49a44dc9c67fb533a231919463d3e40ba9696cb054f80cbc2464984f5979d","sponsoredTransactionUrl":"https://basescan.org/tx/0xe4c49a44dc9c67fb533a231919463d3e40ba9696cb054f80cbc2464984f5979d","sponsoredTransaction":{"to":"0xf706a9b5594a423012245ca46cf6092690418951","value":"0x0","input":"0xa9059cbb00000000000000000000000064b6043c48cce5a8ecb53d25d80fa117a1cf344e0000000000000000000000000000000000000000000000000000000000000000"},"sponsoredTransactionAmount":"0","sponsoredTransactionCurrency":"eip155:8453/erc20:0xf706a9b5594a423012245ca46cf6092690418951","sponsoredTransactionCurrencySymbol":"GTT","sponsoredTransactionCurrencyLogoUrl":"https://static.buildwithglide.com/logos/favicon_color-c2211627.png","sponsoredTransactionAmountUSD":"0","gasRefuelAmount":"0","gasRefuelUSD":"0","gasRefuelTransactionStatus":"","gasRefuelTransactionHash":null,"gasRefuelTransactionUrl":null,"gasCurrencySymbol":"","gasCurrencyLogoUrl":"","gasFeeUSD":"0.0010723536","paymentTransactionGasFeeUSD":"0.00218381349507826428","serviceFeeUSD":"0.000002680884","totalFeeUSD":"0.00325884797907826428","etaInSeconds":10,"metadata":"eNodkctuqzAARH_JhlKJZQmPwI3t4PgB3mFA1wY7QSVtKV9f2t3ozGZ0ZvyulsGWr6VLjA4M7h29aijmzleFlEunWEL5vY-vt3It78ros3Dl9LBCDs8-wJzLTTCGttvZLKSIMnKK31ERNThMApG3kcyUGUJsx7MAkrmrAPmFA3zCYFkHLp7jlCAKRKqyXFFXWerjEIH8fWyWjAiKkTRr7-GqiyGjGaQ9_wprKR56rkOVwahnTo5eEc3waTz2ap6Holn-dVnklK9qnRkhZfnCg-HRz8-JyuWi-QYGZsIB9uDmN8PtCjunllG4j1qaT9K4D-YUJ1wBdsb3tjGS2vizn6vXLp9fbo24lPbLaplPvy6wbHeSGo9TDlWaTK1vIZ7mTTEE8OGm3d-OPBi0v0U4RQFm9MjGkKLecVFClP7fccAjcvC_zh_M_vqmRn0f39gq_gF3-I8E","allowArbitraryDeposit":false,"actualPaymentChainId":"eip155:137","actualPaymentChainName":"Polygon","actualPaymentChainLogoUrl":"https://static.paywithglide.xyz/logos/polygon-9146df3f.png","actualPaymentCurrency":"eip155:137/erc20:0x3c499c542cef5e3811e1192ce70d8cc03d5c3359","actualPaymentCurrencySymbol":"USDC","actualPaymentCurrencyLogoUrl":"https://static.buildwithglide.com/logos/usdc-8aaf5df7.png","actualPaymentCurrencyTier":"tier1","actualPaymentAmount":"0.001076","actualPaymentAmountUSD":"0.0010750344840000000328","widgetConfig":{"appMetadata":{"id":"spay.live","name":"Spay","logoUrl":"https://spay.live/public/images/Spay TM Logo (Black).webp","faviconUrl":"https://spay.live/public/images/Spay TM Logo (Black).webp"},"theme":{"colorScheme":"normal","fontSrcCss":"","fontFamily":"","modalBorderWidth":"1px","modalBorderRadius":"16px","buttonPrimaryForeground":"#ffffff","buttonPrimaryBackground":"#262626","buttonPrimaryBorderColor":"transparent","buttonPrimaryBorderWidth":"0px","buttonPrimaryBorderRadius":"8px","buttonPrimaryPadding":"8px","buttonSecondaryBackground":"#f5f5f5","buttonSecondaryBorderColor":"transparent","buttonSecondaryBorderWidth":"0px","buttonSecondaryBorderRadius":"6px","buttonSecondaryPadding":"8px","alertBackground":"#f5f5f5","alertBorderWidth":"0px","colorModalBackdrop":"#f5f5f5","colorModalBackground":"#ffffff","colorModalBackgroundLinearGradient":"","colorModalBorder":"#f5f5f5","colorTextPrimary":"#171717","colorTextSecondary":"#a3a3a3","colorBackgroundSecondary":"#f5f5f5","colorAlertBackground":"#f5f5f5","colorAlertAccent":"#171717","colorAlertWarningBackground":"#ffedd5","colorAlertWarningAccent":"#f97316","colorAlertBorder":"transparent","appLogoHeight":"32px"}}},"entityId":"fa6eaa6b-132d-4816-b56e-29da2e546077"} }`,
       },
     },
   ];
