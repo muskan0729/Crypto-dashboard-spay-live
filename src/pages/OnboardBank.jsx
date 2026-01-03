@@ -100,7 +100,7 @@ const OnboardBank = () => {
   ];
 
   return (
-    <div className="p-6 bg-black min-h-screen space-y-6">
+    <div className="p-6 bg-black  space-y-6">
       {/* Header */}
       <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl flex justify-between items-center px-6 py-4">
         <h4 className="font-bold text-[#ffd700] text-2xl">Onboard Bank</h4>

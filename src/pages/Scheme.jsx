@@ -114,12 +114,13 @@ const Scheme = () => {
         <Table
           columns={schemecolumn}
           data={schemedata}
-          className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl overflow-hidden"
           rowClassName={(rowIndex) =>
             rowIndex % 2 === 0
               ? "bg-white/10 hover:bg-white/20 transition"
               : "bg-white/5 hover:bg-white/20 transition"
           }
+          className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl overflow-hidden"
+        
           paginationClassName="flex justify-end gap-2 mt-4"
           previousClassName="bg-[#ffd700]/30 hover:bg-[#ffd700]/50 text-[#ffd700] px-3 py-1 rounded-xl shadow-sm cursor-pointer transition"
           nextClassName="bg-[#ffd700]/30 hover:bg-[#ffd700]/50 text-[#ffd700] px-3 py-1 rounded-xl shadow-sm cursor-pointer transition"

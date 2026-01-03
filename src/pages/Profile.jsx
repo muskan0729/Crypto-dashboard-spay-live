@@ -37,10 +37,9 @@ export const Profile = () => {
       company_pan_no: initialMerchantData?.company_pan_no,
       company_gst_no: initialMerchantData?.company_gst_no,
       cin_llpin: initialMerchantData?.cin_llpin,
-      date_of_incorporation:
-        initialMerchantData?.date_of_incorporation
-          ? initialMerchantData.date_of_incorporation.split("T")[0]
-          : "",
+      date_of_incorporation: initialMerchantData?.date_of_incorporation
+        ? initialMerchantData.date_of_incorporation.split("T")[0]
+        : "",
       account_holder_name: initialMerchantData?.account_holder_name,
       bank_account_no: initialMerchantData?.bank_account_no,
       ifsc_code: initialMerchantData?.ifsc_code,
@@ -120,19 +119,34 @@ export const Profile = () => {
     <div className="min-h-screen bg-black p-4 md:p-6 md:flex gap-6">
       {/* Sidebar */}
       <div className="w-full md:w-64 space-y-2">
-        <div className={tabClass("profile")} onClick={() => setActiveTab("profile")}>
+        <div
+          className={tabClass("profile")}
+          onClick={() => setActiveTab("profile")}
+        >
           <i className="fa-solid fa-user" /> Profile Info
         </div>
-        <div className={tabClass("director")} onClick={() => setActiveTab("director")}>
+        <div
+          className={tabClass("director")}
+          onClick={() => setActiveTab("director")}
+        >
           <i className="fa-solid fa-people-roof" /> Directors Info
         </div>
-        <div className={tabClass("company")} onClick={() => setActiveTab("company")}>
+        <div
+          className={tabClass("company")}
+          onClick={() => setActiveTab("company")}
+        >
           <i className="fa-solid fa-building" /> Company Info
         </div>
-        <div className={tabClass("account")} onClick={() => setActiveTab("account")}>
+        <div
+          className={tabClass("account")}
+          onClick={() => setActiveTab("account")}
+        >
           <i className="fa-solid fa-folder-closed" /> Account Details
         </div>
-        <div className={tabClass("password")} onClick={() => setActiveTab("password")}>
+        <div
+          className={tabClass("password")}
+          onClick={() => setActiveTab("password")}
+        >
           <i className="fa-solid fa-rotate" /> Change Password
         </div>
       </div>
@@ -166,7 +180,9 @@ export const Profile = () => {
                       <input
                         name={field}
                         value={userData?.[field] || ""}
-                        onChange={role === "admin" ? handleInputChange : undefined}
+                        onChange={
+                          role === "admin" ? handleInputChange : undefined
+                        }
                         disabled={role !== "admin"}
                         className={`${inputClass} peer ${
                           role !== "admin" ? "opacity-70" : ""
@@ -189,9 +205,51 @@ export const Profile = () => {
               </div>
             )}
 
+            {activeTab === "director" && (
+              <div className={cardClass}>
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 via-yellow-500/10 to-red-500/10 blur-2xl" />
+                <h3 className="relative text-xl font-bold text-[#ffd700] capitalize">
+                  {activeTab.replace("_", " ")}
+                </h3>
+                {/* Existing JSX preserved */}
+                   {[
+                    ["name", "Name"],
+                    ["email", "Email"],
+                    ["mobile_no", "Phone Number"],
+                    ["address", "Address"],
+                    ["city", "City"],
+                    ["district", "District"],
+                    ["state", "State"],
+                    ["pin_code", "Pin Code"],
+                  ].map(([field, label]) => (
+                    <div key={field} className="relative">
+                      <input
+                        name={field}
+                        value={userData?.[field] || ""}
+                        onChange={
+                          role === "admin" ? handleInputChange : undefined
+                        }
+                        disabled={role !== "admin"}
+                        className={`${inputClass} peer ${
+                          role !== "admin" ? "opacity-70" : ""
+                        }`}
+                        placeholder=" "
+                      />
+                      <label className={labelClass}>{label}</label>
+                    </div>
+                  ))}
+              </div>
+            )}
+
+            {
+              activeTab === "company" && <div>
+                
+              </div>
+            }
+
             {/* DIRECTOR / COMPANY / ACCOUNT / PASSWORD */}
-            {(activeTab === "director" ||
-              activeTab === "company" ||
+            {// activeTab === "director" ||
+            (
               activeTab === "account" ||
               activeTab === "password") && (
               <div className={cardClass}>
@@ -202,7 +260,10 @@ export const Profile = () => {
 
                 {/* Existing JSX preserved */}
                 {activeTab === "password" && (
-                  <form onSubmit={handleChangePassword} className="relative grid md:grid-cols-2 gap-4">
+                  <form
+                    onSubmit={handleChangePassword}
+                    className="relative grid md:grid-cols-2 gap-4"
+                  >
                     {["old_password", "new_password"].map((field) => (
                       <div key={field} className="relative">
                         <input
@@ -219,7 +280,9 @@ export const Profile = () => {
                           placeholder=" "
                         />
                         <label className={labelClass}>
-                          {field === "old_password" ? "Old Password" : "New Password"}
+                          {field === "old_password"
+                            ? "Old Password"
+                            : "New Password"}
                         </label>
                       </div>
                     ))}

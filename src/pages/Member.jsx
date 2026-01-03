@@ -14,98 +14,34 @@ import { useToast } from "../contexts/ToastContext";
 import CryptoAmount from "../components/CryptoAmounts";
 
 export const Member = () => {
-  const toast = useToast();
-  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const memberDetails = useNavigate();
+
   const [merchantData, setMerchantData] = useState([]);
   const [initialLoad, setInitialLoad] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   const { executePut: updateSingle } = usePut("/update-user-statuses");
   const { executePut: updateAll } = usePut("/payin-payout-statuses");
-  //const { execute: updateCredential } = usePost("/update-credential");
 
   const {
     data: dataOfMerchants,
-    refetch: refetchOfMerchants,
-    loading: merchantLoading,
+    loading,
+    refetch,
   } = useAutoFetch("/get-merchants", 20000);
 
-  console.log("payoutdata", dataOfMerchants);
-  
-  const initialDataOfMerchants = useMemo(
+  const merchants = useMemo(
     () => dataOfMerchants?.data ?? [],
     [dataOfMerchants]
   );
 
   useEffect(() => {
-    if (!merchantLoading && dataOfMerchants) setInitialLoad(false);
-  }, [merchantLoading, dataOfMerchants]);
+    if (!loading) setInitialLoad(false);
+  }, [loading]);
 
-  const handlePayinToggle = async (v, rowId, accountStatus) => {
-    try {
-      if (accountStatus)
-        await updateSingle({ user_id: rowId, payin_status: v });
-    } catch (err) {
-      console.log("Payin Toggle Failed: ", err);
-    }
-  };
-
-  const handlePayoutToggle = async (v, rowId, accountStatus) => {
-    try {
-      if (accountStatus)
-        await updateSingle({ user_id: rowId, payout_status: v });
-    } catch (err) {
-      console.log("Payout Toggle Failed: ", err);
-    }
-  };
-
-  const handleAccountToggle = async (v, rowId) => {
-    try {
-      const response = await updateSingle({
-        user_id: rowId,
-        payin_status: false,
-        payout_status: false,
-        account_status: v,
-      });
-      if (response) refetchOfMerchants();
-    } catch (err) {
-      console.log("Account Toggle Failed: ", err);
-    }
-  };
-
-  const handleAllPayinToggle = async (v) => {
-    try {
-      const x = v ? 1 : 0;
-      const response = await updateAll({ payin_status: x });
-
-      if (response) {
-        setMerchantData((prev) =>
-          prev.map((item) => ({ ...item, payin: item.account ? v : false }))
-        );
-      }
-    } catch (err) {
-      console.log("All Payin Toggle Failed: ", err);
-    }
-  };
-
-  const handleAllPayoutToggle = async (v) => {
-    try {
-      const x = v ? 1 : 0;
-      const response = await updateAll({ payout_status: x });
-
-      if (response) {
-        setMerchantData((prev) =>
-          prev.map((item) => ({ ...item, payout: item.account ? v : false }))
-        );
-      }
-    } catch (err) {
-      console.log("All Payout Toggle Failed: ", err);
-    }
-  };
-
+  /* ---------------- Format Data ---------------- */
   useEffect(() => {
-    if (!initialDataOfMerchants ) return;
+    if (!merchants.length) return;
 
     const formattedMerchantData = initialDataOfMerchants.map((item, index) => {
       const payinBank = item.payin_at_onboard;
@@ -154,16 +90,36 @@ export const Member = () => {
       };
     });
 
-    setMerchantData(formattedMerchantData);
-  }, [initialDataOfMerchants]);
+    setMerchantData(formatted);
+  }, [merchants, memberDetails]);
 
-  const memberColumns = [
-    { header: "SQNo", accessor: "sqno" },
+  /* ---------------- Toggles ---------------- */
+  const handlePayinToggle = async (v, id, account) => {
+    if (!account) return;
+    await updateSingle({ user_id: id, payin_status: v });
+  };
+
+  const handlePayoutToggle = async (v, id, account) => {
+    if (!account) return;
+    await updateSingle({ user_id: id, payout_status: v });
+  };
+
+  const handleAllPayinToggle = async (v) => {
+    await updateAll({ payin_status: v ? 1 : 0 });
+    refetch();
+  };
+
+  const handleAllPayoutToggle = async (v) => {
+    await updateAll({ payout_status: v ? 1 : 0 });
+    refetch();
+  };
+
+  /* ---------------- Columns ---------------- */
+  const columns = [
+    { header: "SQ No", accessor: "sqno" },
     { header: "Name", accessor: "name" },
     { header: "Payin", accessor: "payin" },
-
     { header: "Payout", accessor: "payout" },
-
     { header: "Payin Wallet", accessor: "walletpayin" },
     { header: "Payout Wallet", accessor: "walletpayout" },
     { header: "Total Payin Wallet", accessor: "totalwalletpayin" },
@@ -171,11 +127,10 @@ export const Member = () => {
     { header: "Total Payout Wallet", accessor: "totalwalletpayout" },
     { header: "Payout Charge", accessor: "payoutcharge" },
     { header: "Total Wallet", accessor: "totalwallet" },
-
     { header: "Payin Onboarded Bank", accessor: "payin_bank" },
   ];
 
-  const tableDataWithActions = merchantData?.map((row) => ({
+  const tableData = merchantData.map((row) => ({
     ...row,
     payin: (
       <Toggle
@@ -191,81 +146,57 @@ export const Member = () => {
         disabled={!row.account}
       />
     ),
-//     sqno: (
-// <span>
-//         <span className="text-sm font-semibold">{row.sqno}</span>
-//         <Toggle
-//           defaultChecked={row.account}
-//           onChange={(v) => handleAccountToggle(v, row.id)}
-//           className="mt-1"
-//         />
-//         <span className="text-xs text-blue-400 font-semibold mt-1">
-//           {row.date}
-//         </span>
-//         </span>
-    // ),
   }));
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-4 space-y-6 w-full ">
+      {/* ---------------- Header (MATCHES SCHEME) ---------------- */}
+      <div className="border  w-full relative bg-white/5 backdrop-blur-xl rounded-2xl shadow-xl flex flex-wrap gap-4 justify-between p-4">
+        <div>
+          <h4 className="font-bold text-[#ffd700] text-xl">Member Manager</h4>
 
-      
-      {/* Header */}
-      <div className="bg-[#10172e] rounded-lg flex justify-between items-center p-4 shadow-[0px_4px_10px_rgba(255,215,0,0.6)] border border-[#FFD700]">
-        <h4 className="font-bold text-white text-xl">Member List</h4>
+          <div className="flex flex-wrap items-center gap-4 mt-2">
+            <div className="flex items-center gap-2 text-sm text-white">
+              <span>All Payin</span>
+              <Toggle onChange={handleAllPayinToggle} />
+            </div>
 
-        {/* All Payin Toggle */}
-        <div className="flex items-center space-x-2">
-          <span className="font-bold text-white">All Payin ON/OFF</span>
-          <Toggle
-            onChange={handleAllPayinToggle}
-            className="bg-[#FFD700] rounded-full p-1"
-          />
+            <div className="flex items-center gap-2 text-sm text-white">
+              <span>All Payout</span>
+              <Toggle onChange={handleAllPayoutToggle} />
+            </div>
+
+            <Button
+              className="bg-white/10 border border-[#ffd700]/50 text-[#ffd700] font-semibold px-4 py-2 rounded-2xl shadow-md hover:bg-white/20 hover:border-[#ffd700] transition"
+              onClick={() => navigate("/member-create")}
+            >
+              + ADD NEW
+            </Button>
+          </div>
         </div>
 
-        {/* All Payout Toggle */}
-        <div className="flex items-center space-x-2">
-          <span className="font-bold text-white">All Payout ON/OFF</span>
-          <Toggle
-            onChange={handleAllPayoutToggle}
-            className="bg-[#FFD700] rounded-full p-1"
-          />
-        </div>
+        {/* ---------------- Table ---------------- */}
+        <div className="w-full flex justify-center mt-4">
+          <div className="w-[95%]">
+            {initialLoad ? (
+              <TableSkeleton />
+            ) : (
+              <Table
+                columns={columns}
+                data={tableData}
+                endPoint="/delete-merchant"
+                setData={setMerchantData}
+                className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl overflow-hidden"
+              />
+            )}
 
-        {/* Create New Button */}
-        <Button
-          onClick={() => navigate("/member-create")}
-          className="bg-[#FFD700] text-black font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-yellow-200 hover:text-black transition-all duration-200"
-        >
-          + Create New
-        </Button>
+            <SchemeModal
+              showModal={showModal}
+              handleModal={() => setShowModal(!showModal)}
+            />
+          </div>
+        </div>
       </div>
-
-      {/* Table */}
-      {initialLoad ? (
-        <TableSkeleton />
-      ) : (
-        <Table
-          columns={memberColumns}
-          data={tableDataWithActions}
-          className="bg-[#10172e] rounded-lg overflow-hidden border border-[#FFD700]"
-          rowClassName={(rowIndex) =>
-            rowIndex % 2 === 0
-              ? "bg-[#10172e] text-white hover:bg-[#0f1a2b]"
-              : "bg-[#1a2436] text-white hover:bg-[#0f1a2b]"
-          }
-          paginationClassName="flex justify-end gap-2 mt-4"
-          previousClassName="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm cursor-pointer transition"
-          nextClassName="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm cursor-pointer transition"
-          endPoint="/delete-merchant"
-          setData={setMerchantData}
-        />
-      )}
-
-      <SchemeModal
-        showModal={showModal}
-        handleModal={() => setShowModal(!showModal)}
-      />
     </div>
   );
 };

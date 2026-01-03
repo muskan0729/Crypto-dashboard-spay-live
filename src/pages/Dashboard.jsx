@@ -154,10 +154,10 @@ export const Dashboard = () => {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#ff4d4d]/40 via-[#ffb84d]/20 to-[#b33c00] bg-fixed"></div>
 
           {/* Ambient Glow */}
-          <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-r from-[#ff4d4d]/30 to-[#ffb84d]/30 blur-3xl rounded-full"></div>
+          <div className="absolute top-20 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#ff4d4d]/30 to-[#ffb84d]/30 blur-3xl rounded-full"></div>
 
           {/* Content Wrapper */}
-          <div className="relative w-full max-w-[1140px] px-4 lg:px-6 z-10">
+          <div className="relative w-full px-4 lg:px-6 z-10">
             {/* -------- TOP CARDS + DONUT/LINE CHART -------- */}
             <div className="mb-8">
               <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-xl p-6">

@@ -23,13 +23,13 @@ export default function DashboardSummary({
      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
   {/* PIE CHART */}
   <div className="flex justify-center items-start">
-    <div className="w-full max-w-[320px] rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-6 relative overflow-hidden">
+    <div className="w-full rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-6 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-red-500/20 via-yellow-400/20 to-transparent blur-3xl" />
       <div className="relative">
         <h4 className="mb-4 text-sm font-medium text-[#ffd700]">
           Transaction Status
         </h4>
-        <TransactionStatusPie statusCounts={donutChart} />
+        <TransactionStatusPie statusCounts={donutChart}/>
       </div>
     </div>
   </div>
