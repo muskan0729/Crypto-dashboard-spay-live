@@ -52,7 +52,7 @@ export const Member = () => {
         // name: item.name,
         name: (
           <span
-            className="text-blue-600 cursor-pointer"
+            className="text-white cursor-pointer"
             onClick={() => {
               localStorage.setItem("merchantId", item.id);
               memberDetails(`/MerchantDetails/${item.id}`);
@@ -186,6 +186,7 @@ export const Member = () => {
                 data={tableData}
                 endPoint="/delete-merchant"
                 setData={setMerchantData}
+                showDateFilter={false}
                 className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl overflow-hidden"
               />
             )}

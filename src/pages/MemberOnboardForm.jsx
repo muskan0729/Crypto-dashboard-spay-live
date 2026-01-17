@@ -281,7 +281,6 @@ export const MemberOnboardForm = () => {
       await executeMember(formData);
       toast.success("Form submitted successfully!");
       navigate("/member-list");
-
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong");
@@ -716,19 +715,23 @@ export const MemberOnboardForm = () => {
               />
 
               {/* Delete Button */}
-              <Button
-                type="button"
-                onClick={() => removeDirector(index)}
-                className="
+              {memberFormData.director_info.length === 1 ? (
+                <span></span>
+              ) : (
+                <Button
+                  type="button"
+                  onClick={() => removeDirector(index)}
+                  className="
                   px-4 py-2
                   text-red-500
                   border border-red-500 rounded-2xl
                   hover:bg-red-600 hover:text-white
                   md:col-span-2
                 "
-              >
-                Delete Director
-              </Button>
+                >
+                  Delete Director
+                </Button>
+              )}
             </div>
           ))}
 
@@ -779,7 +782,7 @@ export const MemberOnboardForm = () => {
 
             {/* Scheme */}
             <select
-              name="scheme"
+              name="scheme_id"
               value={memberFormData.scheme}
               onChange={handleChange}
               className="w-full px-4 py-3 text-[#FFD700] text-sm bg-black/40 border border-white/10 rounded-2xl appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#FFD700]/40 focus:border-[#FFD700]/40 hover:border-white/20 transition md:col-span-2"
@@ -788,11 +791,7 @@ export const MemberOnboardForm = () => {
                 Select Scheme
               </option>
               {schemes?.data.map((s) => (
-                <option
-                  key={s.id}
-                  value={s.id}
-                  className="text-white bg-black"
-                >
+                <option key={s.id} value={s.id} className="text-white bg-black">
                   {s.name}
                 </option>
               ))}
@@ -856,7 +855,6 @@ export const MemberOnboardForm = () => {
                   bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400
                   rounded-2xl
                 "
-              
               >
                 Submit
               </button>

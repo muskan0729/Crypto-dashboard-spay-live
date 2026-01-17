@@ -145,303 +145,233 @@ export const SchemeModal = ({
       />
 
       {/* Modal */}
-      <div
-        onClick={(e) => e.stopPropagation()}
+    <div
+  onClick={(e) => e.stopPropagation()}
+  className="
+    fixed top-12 left-1/2 -translate-x-1/2 z-50
+    w-full max-w-xl mx-4
+    bg-white/5 backdrop-blur-xl
+    border border-white/10
+    rounded-2xl
+    shadow-2xl
+    overflow-hidden
+  "
+>
+  {/* Header */}
+  <div className="relative px-6 py-4">
+    {/* Glow */}
+    <div className="
+      absolute inset-0
+      blur-2xl opacity-80
+    " />
+
+    <div className="relative flex items-center justify-between">
+      <h3 className="
+        text-[#FFD700] text-lg font-semibold tracking-wide
+        drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]
+      ">
+        {editData ? "Edit Scheme" : "Add New Scheme"}
+      </h3>
+
+      <Button
+        onClick={handleModal}
         className="
-          z-50 overflow-hidden
-          w-full max-w-xl
-          bg-white/5
-          border border-white/10 rounded-2xl
-          shadow-xl
-          fixed top-10 left-1/2 -translate-x-1/2 backdrop-blur-xl
+          w-9 h-9 flex items-center justify-center
+          rounded-full
+          bg-black/30 border border-white/10
+          text-white
+          transition-all duration-200
+          hover:bg-red-500 hover:scale-105
+          hover:shadow-lg hover:shadow-red-500/40
+          active:scale-95
         "
       >
-        {/* Header */}
-        <div
-          className="
-            flex
-            px-6 py-4
-            bg-black/20
-            border-b border-white/10
-            items-center justify-between
-          "
-        >
-          <h3
-            className="
-              text-[#ffd700] font-semibold text-lg tracking-wide
-            "
-          >
-            {editData ? "Edit Scheme" : "Add New Scheme"}
-          </h3>
-          <Button
-            onClick={handleModal}
-            className="
-              flex
-              w-8 h-8
-              text-[#ffd700]
-              bg-black/20
-              rounded-full border border-[#ffd700]
-              items-center justify-center hover:bg-[#ffd700] hover:text-black transition
-            "
-          >
-            <i
-              className="
-                fa-solid fa-xmark
-              "
-            ></i>
-          </Button>
-        </div>
+        <i className="fa-solid fa-xmark" />
+      </Button>
+    </div>
 
-        {/* Form */}
-        <form
-          onSubmit={handleSubmit}
-          className="
-            p-6 space-y-6
-          "
-        >
-          {/* Scheme Name */}
-          <div>
-            <label
-              className="
-                block
-                mb-2
-                text-sm font-medium text-[#ffd700]
-              "
-            >
-              Scheme Name
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter Scheme Name"
-              className="
-                w-full
-                p-2
-                text-[#ffd700]
-                bg-black/20
-                border border-white/10 rounded-lg
-                placeholder:text-[#ffd700]/50 focus:outline-none focus:ring-1 focus:ring-[#ffd700]
-              "
-            />
-          </div>
+    <div className="mt-4 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+  </div>
 
-          {/* Tabs */}
-          <div
-            className="
-              border-b border-white/10
-            "
-          >
-            <ul
-              className="
-                flex
-                space-x-4
-                text-sm font-medium
-              "
-            >
-              {["tab1", "tab2", "tab3", "tab4"].map((tab, idx) => {
-                const labels = ["Payin", "Payout", "Rolling", "GST"];
-                const icons = [
-                  "fa-money-bill-transfer",
-                  "fa-credit-card",
-                  "fa-rotate",
-                  "fa-percent",
-                ];
-                return (
-                  <li key={tab}>
-                    <Button
-                      type="button"
-                      onClick={() => setActiveTab(tab)}
-                      className={`
-                        flex
-                        px-4 py-2
-                        border-b-2
-                        items-center gap-2 transition
-                        ${
-                          activeTab === tab
-                            ? "border-[#ffd700] text-[#ffd700]"
-                            : "border-transparent text-gray-400 hover:text-[#ffd700]"
-                        }
-                      `}
-                    >
-                      <i
-                        className={`
-                          fa-solid ${icons[idx]}
-                        `}
-                      />
-                      {labels[idx]}
-                    </Button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+  {/* Form */}
+  <form onSubmit={handleSubmit} className="p-6 space-y-6">
 
-          {/* Table */}
-          <div
-            className="
-              overflow-hidden
-              rounded-lg border border-white/10
-            "
-          >
-            <table
-              className="
-                w-full
-                text-sm text-left
-              "
-            >
-              <thead
-                className="
-                  text-[#ffd700]
-                  bg-black/30
-                  uppercase
-                "
+    {/* Scheme Name */}
+    <div>
+      <label className="block mb-2 text-sm font-medium text-[#FFD700]">
+        Scheme Name
+      </label>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Enter Scheme Name"
+        className="
+          w-full px-4 py-2
+          bg-black/30 text-[#FFD700]
+          border border-white/10
+          rounded-xl
+          placeholder:text-[#FFD700]/40
+          focus:outline-none
+          focus:ring-2 focus:ring-yellow-400/50
+          transition
+        "
+      />
+    </div>
+
+    {/* Tabs */}
+    <div className="border-b border-white/10">
+      <ul className="flex space-x-4 text-sm font-medium">
+        {["tab1", "tab2", "tab3", "tab4"].map((tab, idx) => {
+          const labels = ["Payin", "Payout", "Rolling", "GST"];
+          const icons = [
+            "fa-money-bill-transfer",
+            "fa-credit-card",
+            "fa-rotate",
+            "fa-percent",
+          ];
+          return (
+            <li key={tab}>
+              <Button
+                type="button"
+                onClick={() => setActiveTab(tab)}
+                className={`
+                  flex items-center gap-2 px-4 py-2
+                  border-b-2 transition-all duration-200
+                  ${
+                    activeTab === tab
+                      ? "border-[#FFD700] text-[#FFD700]"
+                      : "border-transparent text-white/50 hover:text-[#FFD700]"
+                  }
+                `}
               >
-                <tr>
-                  <th
-                    className="
-                      px-6 py-3
-                    "
+                <i className={`fa-solid ${icons[idx]}`} />
+                {labels[idx]}
+              </Button>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+
+    {/* Table */}
+    <div className="overflow-hidden rounded-xl border border-white/10 bg-black/20">
+      <table className="w-full text-sm text-left">
+        <thead className="bg-black/40 text-[#FFD700] uppercase text-xs tracking-wider">
+          <tr>
+            <th className="px-6 py-3">Operator</th>
+            <th className="px-6 py-3">Type</th>
+            <th className="px-6 py-3">Amount / %</th>
+          </tr>
+        </thead>
+
+        <tbody className="divide-y divide-white/10">
+
+          {/* PAYIN */}
+          {activeTab === "tab1" && (
+            <tr>
+              <td className="px-6 py-4 text-white/70">Payin Commission Slab</td>
+              <td className="px-6 py-4">
+                <select
+                  value={payin.type}
+                  onChange={(e) => setPayin(p => ({ ...p, type: e.target.value }))}
+                  className="
+                    w-full px-4 py-2
+                    bg-black/40 text-[#FFD700]
+                    border border-white/10
+                    rounded-xl
+                    focus:ring-2 focus:ring-yellow-400/40
+                  "
+                >
+                  <option value="flat">Flat</option>
+                  <option value="percent">Percent</option>
+                </select>
+              </td>
+              <td className="px-6 py-4">
+                <input
+                  type="number"
+                  value={payin.amount}
+                  onChange={(e) => setPayin(p => ({ ...p, amount: e.target.value }))}
+                  className="
+                    w-full px-3 py-2
+                    bg-black/30 text-[#FFD700]
+                    border border-white/10
+                    rounded-lg
+                  "
+                />
+              </td>
+            </tr>
+          )}
+
+          {/* PAYOUT */}
+          {activeTab === "tab2" && (
+            <>
+              <tr>
+                <td className="px-6 py-4 text-white/70">Payout Below 700</td>
+                <td className="px-6 py-4">
+                  <select
+                    value={payout.below700.type}
+                    onChange={(e) =>
+                      setPayout(p => ({
+                        ...p,
+                        below700: { ...p.below700, type: e.target.value },
+                      }))
+                    }
+                    className="w-full px-4 py-2 bg-black/40 text-[#FFD700] rounded-xl border border-white/10"
                   >
-                    Operator
-                  </th>
-                  <th
-                    className="
-                      px-6 py-3
-                    "
+                    <option value="flat">Flat</option>
+                    <option value="percent">Percent</option>
+                  </select>
+                </td>
+                <td className="px-6 py-4">
+                  <input
+                    type="number"
+                    value={payout.below700.amount}
+                    onChange={(e) =>
+                      setPayout(p => ({
+                        ...p,
+                        below700: { ...p.below700, amount: e.target.value },
+                      }))
+                    }
+                    className="w-full px-3 py-2 bg-black/30 text-[#FFD700] rounded-lg border border-white/10"
+                  />
+                </td>
+              </tr>
+
+              <tr>
+                <td className="px-6 py-4 text-white/70">Payout Above 700</td>
+                <td className="px-6 py-4">
+                  <select
+                    value={payout.above700.type}
+                    onChange={(e) =>
+                      setPayout(p => ({
+                        ...p,
+                        above700: { ...p.above700, type: e.target.value },
+                      }))
+                    }
+                    className="w-full px-4 py-2 bg-black/40 text-[#FFD700] rounded-xl border border-white/10"
                   >
-                    Type
-                  </th>
-                  <th
-                    className="
-                      px-6 py-3
-                    "
-                  >
-                    Amount / %
-                  </th>
-                </tr>
-              </thead>
-              <tbody
-                className="
-                  divide-y divide-white/10
-                "
-              >
-                {/* PAYIN */}
-                {activeTab === "tab1" && (
-                  <tr>
-                    <td className="px-6 py-4 text-gray-300">
-                      Payin Commission Slab
-                    </td>
-
-                    <td className="px-6 py-4">
-                      <select
-                        value={payin.type}
-                        onChange={(e) =>
-                          setPayin((p) => ({ ...p, type: e.target.value }))
-                        }
-                        className="w-full px-4 py-2 text-[#ffd700] bg-black/40 border border-white/10 rounded-xl"
-                      >
-                        <option value="flat">Flat</option>
-                        <option value="percent">Percent</option>
-                      </select>
-                    </td>
-
-                    <td className="px-6 py-4">
-                      <input
-                        type="number"
-                        value={payin.amount}
-                        onChange={(e) =>
-                          setPayin((p) => ({ ...p, amount: e.target.value }))
-                        }
-                        className="w-full px-2 py-1 text-[#ffd700] bg-black/20 border border-white/10 rounded-md"
-                      />
-                    </td>
-                  </tr>
-                )}
-
-                {/* PAYOUT */}
-                {activeTab === "tab2" && (
-                  <>
-                    {/* Below 700 */}
-                    <tr>
-                      <td className="px-6 py-4 text-gray-300">
-                        Payout Below 700
-                      </td>
-                      <td className="px-6 py-4">
-                        <select
-                          value={payout.below700.type}
-                          onChange={(e) =>
-                            setPayout((p) => ({
-                              ...p,
-                              below700: { ...p.below700, type: e.target.value },
-                            }))
-                          }
-                          className="w-full px-4 py-2 text-[#ffd700] bg-black/40 border border-white/10 rounded-xl"
-                        >
-                          <option value="flat">Flat</option>
-                          <option value="percent">Percent</option>
-                        </select>
-                      </td>
-                      <td className="px-6 py-4">
-                        <input
-                          type="number"
-                          value={payout.below700.amount}
-                          onChange={(e) =>
-                            setPayout((p) => ({
-                              ...p,
-                              below700: {
-                                ...p.below700,
-                                amount: e.target.value,
-                              },
-                            }))
-                          }
-                          className="w-full px-2 py-1 text-[#ffd700] bg-black/20 border border-white/10 rounded-md"
-                        />
-                      </td>
-                    </tr>
-
-                    {/* Above 700 */}
-                    <tr>
-                      <td className="px-6 py-4 text-gray-300">
-                        Payout Above 700
-                      </td>
-                      <td className="px-6 py-4">
-                        <select
-                          value={payout.above700.type}
-                          onChange={(e) =>
-                            setPayout((p) => ({
-                              ...p,
-                              above700: { ...p.above700, type: e.target.value },
-                            }))
-                          }
-                          className="w-full px-4 py-2 text-[#ffd700] bg-black/40 border border-white/10 rounded-xl"
-                        >
-                          <option value="flat">Flat</option>
-                          <option value="percent">Percent</option>
-                        </select>
-                      </td>
-                      <td className="px-6 py-4">
-                        <input
-                          type="number"
-                          value={payout.above700.amount}
-                          onChange={(e) =>
-                            setPayout((p) => ({
-                              ...p,
-                              above700: {
-                                ...p.above700,
-                                amount: e.target.value,
-                              },
-                            }))
-                          }
-                          className="w-full px-2 py-1 text-[#ffd700] bg-black/20 border border-white/10 rounded-md"
-                        />
-                      </td>
-                    </tr>
-                  </>
-                )}
-
-                {/* ROLLING AMOUNT */}
-                {activeTab === "tab3" && (
+                    <option value="flat">Flat</option>
+                    <option value="percent">Percent</option>
+                  </select>
+                </td>
+                <td className="px-6 py-4">
+                  <input
+                    type="number"
+                    value={payout.above700.amount}
+                    onChange={(e) =>
+                      setPayout(p => ({
+                        ...p,
+                        above700: { ...p.above700, amount: e.target.value },
+                      }))
+                    }
+                    className="w-full px-3 py-2 bg-black/30 text-[#FFD700] rounded-lg border border-white/10"
+                  />
+                </td>
+              </tr>
+            </>
+          )}
+  {activeTab === "tab3" && (
                   <>
                     <tr>
                       <td className="px-6 py-4 text-gray-300">
@@ -514,102 +444,55 @@ export const SchemeModal = ({
                     </tr>
                   </>
                 )}
+          {/* GST */}
+          {activeTab === "tab4" && (
+            <tr>
+              <td className="px-6 py-4 text-white/70">Goods and Service Tax</td>
+              <td className="px-6 py-4">
+                <select className="w-full px-4 py-2 bg-black/40 text-[#FFD700] rounded-xl border border-white/10">
+                  <option value="flat">Flat</option>
+                  <option value="percent">Percent</option>
+                </select>
+              </td>
+              <td className="px-6 py-4">
+                <input
+                  type="number"
+                  value={percentage}
+                  onChange={(e) => setPercentage(e.target.value)}
+                  className="w-full px-3 py-2 bg-black/30 text-[#FFD700] rounded-lg border border-white/10"
+                />
+              </td>
+            </tr>
+          )}
 
-                {/* GST */}
-                {activeTab === "tab4" && (
-                  <tr>
-                    <td
-                      className="
-                        px-6 py-4
-                        text-gray-300
-                      "
-                    >
-                      Goods and Service Tax
-                    </td>
-                    <td
-                      className="
-                        px-6 py-4
-                      "
-                    >
-                      <select
-                        className="
-                          w-full
-                          px-4 py-2
-                          text-[#ffd700] text-sm
-                          bg-black/40
-                          border border-white/10 rounded-xl
-                          appearance-none backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-[#ffd700]/40 focus:border-[#ffd700]/40 hover:border-white/20 transition
-                        "
-                      >
-                        <option
-                          value="flat"
-                          className="
-                            text-white
-                            bg-black
-                          "
-                        >
-                          Flat
-                        </option>
-                        <option
-                          value="percent"
-                          className="
-                            text-white
-                            bg-black
-                          "
-                        >
-                          Percent
-                        </option>
-                      </select>
-                    </td>
-                    <td
-                      className="
-                        px-6 py-4
-                      "
-                    >
-                      <input
-                        type="number"
-                        value={percentage}
-                        onChange={(e) => setPercentage(e.target.value)}
+        </tbody>
+      </table>
+    </div>
 
+    {/* Submit */}
+    <div className="text-right">
+      <Button
+        type="submit"
+        disabled={creating || updating}
+        className="
+          px-8 py-2.5
+          bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400
+          text-black font-semibold
+          rounded-xl
+          shadow-lg
+          hover:opacity-90
+          hover:shadow-yellow-400/40
+          transition-all duration-200
+          active:scale-95
+        "
+      >
+        {editData ? "Update" : "Submit"}
+      </Button>
+    </div>
 
+  </form>
+</div>
 
-                        className="
-                          w-full
-                          px-2 py-1
-                          text-[#ffd700]
-                          bg-black/20
-                          border border-white/10 rounded-md
-                        "
-                      />
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Submit Button */}
-          <div
-            className="
-              text-right
-            "
-          >
-            <Button
-              type="submit"
-              disabled={creating || updating}
-              className="
-                px-6 py-2
-                text-black font-semibold
-                bg-gradient-to-r from-[#ffd700]/90 to-[#d4af37]/90
-                rounded-lg
-                hover:opacity-90 transition
-              "
-            >
-              {editData ? "Update" : "Submit"}
-            </Button>
-          </div>
-        </form>
-      </div>
     </>
   );
 };
