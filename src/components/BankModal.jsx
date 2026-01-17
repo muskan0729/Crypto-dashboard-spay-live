@@ -49,34 +49,50 @@ export const BankModal = ({
     <>
       {showModal && (
         <div
-          className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
           onClick={() => handleModal(false)}
         >
           <div
-            className="bg-black border border-[#d4af37]/60 rounded-lg shadow-lg max-w-3xl w-full mx-2 p-6 transform transition-all scale-100"
             onClick={(e) => e.stopPropagation()}
+            className="
+      relative w-full max-w-3xl mx-4
+      bg-white/5 backdrop-blur-xl
+      border border-white/10
+      rounded-2xl shadow-2xl
+      overflow-hidden transition-all
+    "
           >
             {/* Header */}
-            <div
-              className="flex justify-between items-center px-5 py-3 rounded-t-lg 
-                   bg-gradient-to-r from-[#d4af37] via-[#b8962e] to-[#d4af37] text-black font-semibold"
-            >
-              <h4 className="text-lg font-bold">
+            <div className="relative flex justify-between items-center px-6 py-4">
+              {/* Gradient Glow */}
+              <div className="absolute inset-0 " />
+
+              <h4 className="relative text-lg font-bold text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]">
                 {activeTab === "payin" ? "Add Payin Bank" : "Add Payout Bank"}
               </h4>
+
               <Button
                 onClick={() => handleModal(false)}
-                className="flex items-center justify-center w-8 h-8 rounded-full bg-black text-[#d4af37] font-bold text-lg shadow-md hover:bg-[#d4af37] hover:text-black transition"
+                className="
+          relative w-9 h-9 flex items-center justify-center
+          rounded-full bg-black/30 border border-white/10
+          text-white transition-all duration-200
+          hover:bg-red-500 hover:text-black hover:scale-105
+          active:scale-95 shadow-sm
+        "
               >
-                <i className="fa-solid fa-xmark fa-lg"></i>
+                <i className="fa-solid fa-xmark fa-lg" />
               </Button>
             </div>
 
-            {/* Form */}
+            {/* Divider */}
+            <div className="h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+
+            {/* Form Body */}
             <form className="p-6" onSubmit={handleSubmit}>
-              <div className="grid md:grid-cols-1 gap-6 px-4">
+              <div className="grid md:grid-cols-1 gap-6">
                 {/* Bank Name */}
-                <div className="relative z-0 w-full mb-5 group">
+                <div className="relative w-full group">
                   <input
                     type="text"
                     name={
@@ -87,17 +103,29 @@ export const BankModal = ({
                     id="floating_bank"
                     value={bankName}
                     onChange={(e) => setBankName(e.target.value)}
-                    className={`block py-2.5 px-0 w-full text-sm text-[#d4af37] bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer ${
-                      error?.error
-                        ? "border-red-500 focus:border-red-500"
-                        : "border-[#d4af37]/50 focus:border-[#d4af37]"
-                    }`}
                     placeholder=" "
                     required
+                    className={`
+              block w-full py-2.5 px-0 text-sm text-[#FFD700]
+              bg-black/20 border-0 border-b-2 rounded-md
+              appearance-none focus:outline-none focus:ring-0
+              peer transition-colors
+              ${
+                error?.error
+                  ? "border-red-500 focus:border-red-500"
+                  : "border-[#FFD700]/50 focus:border-[#FFD700]"
+              }
+            `}
                   />
                   <label
                     htmlFor="floating_bank"
-                    className={`absolute text-sm text-[#d4af37]/70 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-[#d4af37] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6`}
+                    className="
+              absolute text-sm text-[#FFD700]/70 duration-300
+              transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+              peer-focus:scale-75 peer-focus:-translate-y-6
+              peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+              peer-focus:text-[#FFD700]
+            "
                   >
                     Bank Name
                   </label>
@@ -107,11 +135,11 @@ export const BankModal = ({
                 </div>
 
                 {/* Bank Type */}
-                <div className="relative z-0 w-full mb-5 group">
-                  <label className="block text-sm font-medium text-[#d4af37]/70 mb-1">
+                <div className="relative w-full">
+                  <label className="block text-sm font-medium text-[#FFD700]/70 mb-1">
                     Bank Type
                   </label>
-                  <div className="w-full border border-[#d4af37]/50 rounded-md p-2 text-sm bg-black text-[#d4af37]">
+                  <div className="w-full border border-[#FFD700]/50 rounded-md p-2 text-sm bg-black/20 text-[#FFD700]">
                     {activeTab === "payin" ? "Payin" : "Payout"}
                   </div>
                 </div>
@@ -122,9 +150,15 @@ export const BankModal = ({
                 <Button
                   type="submit"
                   disabled={loading}
-                  className={`cursor-pointer text-black bg-gradient-to-r from-[#d4af37] via-[#b8962e] to-[#d4af37] hover:from-[#b8962e] hover:to-[#d4af37] font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center ${
-                    loading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
+                  className={`
+            w-full sm:w-auto px-5 py-2.5 text-sm font-medium
+            rounded-2xl
+            bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400
+            text-black shadow-md
+            transition-all duration-200
+            hover:opacity-90 hover:shadow-lg
+            ${loading ? "opacity-50 cursor-not-allowed" : ""}
+          `}
                 >
                   {loading ? "Saving..." : "Save"}
                 </Button>

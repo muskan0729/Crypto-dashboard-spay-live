@@ -122,7 +122,9 @@ const LoadWallet = () => {
 
       {/* Header Card */}
       <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-6 flex justify-between items-center">
-        <h4 className="font-bold text-[#FFD700] text-xl sm:text-2xl">Load Wallet</h4>
+        <h4 className="font-bold text-[#FFD700] text-xl sm:text-2xl">
+          Load Wallet
+        </h4>
       </div>
 
       {/* Table */}
@@ -130,73 +132,155 @@ const LoadWallet = () => {
         <TableSkeleton />
       ) : (
         // <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-4">
-          <Table
-            columns={membercolumn}
-            data={tableDataWithActions}
-            showStatusFilter={false}
-            showDateFilter={false}
-            showDeleteColumn={false}
-          />
+        <Table
+          columns={membercolumn}
+          data={tableDataWithActions}
+          showStatusFilter={false}
+          showDateFilter={false}
+          showDeleteColumn={false}
+        />
         // </div>
       )}
 
       {/* Modal */}
       {showModal && (
         <div
-          className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50"
+          className="
+    fixed inset-0 z-50
+    flex items-center justify-center
+    bg-black/60 backdrop-blur-sm
+  "
           onClick={() => setShowModal(false)}
         >
+          {/* Modal Container */}
           <div
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl max-w-md w-full mx-2 transform transition-all"
             onClick={(e) => e.stopPropagation()}
+            className="
+      relative
+      w-full max-w-md mx-4
+      bg-white/5 backdrop-blur-xl
+      border border-white/10
+      rounded-2xl
+      shadow-2xl
+      overflow-hidden
+      transform transition-all
+    "
           >
-            {/* Modal Header */}
-            <div className="flex justify-between items-center bg-gradient-to-r from-[#FFD700] via-orange-400 to-[#FFD700] text-black font-semibold rounded-t-2xl px-5 py-3 shadow-md">
-              <h3 className="text-lg font-bold">
-                {modalType === "load"
-                  ? `Load Wallet for ${selectedUser?.name}`
-                  : `Reverse Topup for ${selectedUser?.name}`}
-              </h3>
-              <Button
-                onClick={() => setShowModal(false)}
-                className="flex items-center justify-center w-8 h-8 rounded-full bg-black/20 text-white border border-black/30 text-lg shadow hover:bg-red-600 hover:text-white transition"
-              >
-                <i className="fa-solid fa-xmark fa-lg"></i>
-              </Button>
+            {/* Header */}
+            <div className="relative px-6 py-4 overflow-hidden">
+              {/* Warm glow */}
+              <div
+                className="
+          absolute inset-0
+          blur-2xl opacity-80
+        "
+              />
+
+              {/* Header content */}
+              <div className="relative flex items-center justify-between">
+                <h3
+                  className="
+            text-[#FFD700]
+            font-semibold tracking-wide text-lg
+            drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]
+          "
+                >
+                  {modalType === "load" ? "Load Wallet" : "Reverse Topup"}
+                  <span className="ml-2 text-[#FFD700]/70 font-normal">
+                    — {selectedUser?.name}
+                  </span>
+                </h3>
+
+                <Button
+                  onClick={() => setShowModal(false)}
+                  className="
+            w-9 h-9
+            flex items-center justify-center
+            rounded-full
+            bg-black/30
+            border border-white/10
+            text-white
+            transition-all duration-200
+            hover:bg-red-500 hover:scale-105
+            hover:shadow-lg hover:shadow-red-500/40
+            active:scale-95
+          "
+                >
+                  ✕
+                </Button>
+              </div>
+
+              {/* Divider */}
+              <div className="mt-4 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
             </div>
 
-            {/* Modal Body */}
+            {/* Body */}
             <form
-              className="p-6 space-y-4"
-              onSubmit={modalType === "load" ? handleSubmitLoadWallet : handleSubmitReverseTopup}
+              onSubmit={
+                modalType === "load"
+                  ? handleSubmitLoadWallet
+                  : handleSubmitReverseTopup
+              }
+              className="p-6 space-y-5"
             >
+              {/* Amount */}
               <div>
-                <label className="block mb-1 text-sm font-medium text-gray-300">Amount</label>
+                <label className="block mb-1 text-sm text-white/70">
+                  Amount
+                </label>
                 <input
-                  name="payout_wallet"
                   type="number"
+                  name="payout_wallet"
                   value={walletFormData.payout_wallet}
                   onChange={handleChange}
-                  placeholder="Enter Amount"
-                  className="w-full bg-black/40 text-white border border-white/10 rounded-xl p-2 text-sm focus:ring-2 focus:ring-[#FFD700] outline-none"
+                  placeholder="Enter amount"
+                  className="
+            w-full
+            bg-black/30 text-white
+            border border-white/20
+            rounded-xl
+            px-3 py-2
+            focus:outline-none
+            focus:ring-2 focus:ring-yellow-400
+          "
                 />
               </div>
 
+              {/* Remark */}
               <div>
-                <label className="block mb-1 text-sm font-medium text-gray-300">Remark</label>
+                <label className="block mb-1 text-sm text-white/70">
+                  Remark
+                </label>
                 <textarea
                   rows="3"
                   name="remark"
                   value={walletFormData.remark}
                   onChange={handleChange}
-                  placeholder="Enter Remark"
-                  className="w-full bg-black/40 text-white border border-white/10 rounded-xl p-2 text-sm focus:ring-2 focus:ring-[#FFD700] outline-none"
+                  placeholder="Enter remark"
+                  className="
+            w-full
+            bg-black/30 text-white
+            border border-white/20
+            rounded-xl
+            px-3 py-2
+            focus:outline-none
+            focus:ring-2 focus:ring-yellow-400
+          "
                 />
               </div>
 
+              {/* Submit */}
               <Button
                 type="submit"
-                className="w-full bg-[#FFD700] hover:bg-yellow-500 text-black font-semibold px-5 py-2 rounded-xl shadow-md transition"
+                className="
+          w-full
+          bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400
+          text-black font-semibold
+          py-2.5 rounded-xl
+          shadow-lg
+          transition
+          hover:opacity-90 hover:shadow-yellow-400/40
+        "
               >
                 Submit
               </Button>

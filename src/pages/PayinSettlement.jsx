@@ -127,20 +127,53 @@ const PayinSettlement = () => {
                        rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden"
           >
             {/* Modal Header */}
-            <div className="relative px-6 py-4">
-              <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 via-orange-400/20 to-red-400/20 blur-xl" />
-              <div className="relative flex justify-between items-center">
-                <h3 className="text-[#ffd700] font-bold text-lg">
-                  Payin Settlement — {selectedUser?.name}
+            <div className="relative px-6 py-4 overflow-hidden rounded-t-2xl">
+              {/* Soft animated glow */}
+              <div
+                className="
+      absolute inset-0
+     
+      blur-2xl opacity-80
+    "
+              />
+
+              {/* Content */}
+              <div className="relative flex items-center justify-between">
+                <h3
+                  className="
+        text-[#FFD700]
+        font-semibold tracking-wide
+        text-lg
+        drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]
+      "
+                >
+                  Payin Settlement
+                  <span className="ml-2 text-[#FFD700]/80 font-normal">
+                    — {selectedUser?.name}
+                  </span>
                 </h3>
+
                 <Button
                   onClick={() => setShowModal(false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full 
-                             bg-white/10 text-white hover:bg-red-500 transition"
+                  className="
+        w-9 h-9
+        flex items-center justify-center
+        rounded-full
+        bg-black/30
+        border border-white/10
+        text-white
+        transition-all duration-200
+        hover:bg-red-500 hover:scale-105
+        hover:shadow-lg hover:shadow-red-500/40
+        active:scale-95
+      "
                 >
                   ✕
                 </Button>
               </div>
+
+              {/* Bottom divider */}
+              <div className="mt-4 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
             </div>
 
             {/* Modal Body */}
