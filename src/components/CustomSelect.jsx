@@ -31,47 +31,64 @@ export const CustomSelect = ({
   };
 
   return (
-    <div ref={dropdownRef} className="relative w-full sm:w-64">
+    <div
+      ref={dropdownRef}
+      className="relative w-full sm:w-64 font-sans text-white"
+      style={{ fontFeatureSettings: "'calt' 1, 'ss01' 1" }}
+    >
       {/* Select Box */}
-      <div
+      <button
+        type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         className="
-          h-[44px]
+          h-[44px] w-full
           cursor-pointer
-          px-4
+          px-5
           rounded-2xl
-          bg-[#0b0f1a]
-          border border-[#1f2937]
-          shadow-lg
-          text-sm
+          bg-white/5
+          backdrop-blur-xl
+          border border-transparent
+          ring-1 ring-white/10
+          shadow-inner shadow-cyan-900/40
+          text-cyan-300
+          tracking-wide
           flex items-center justify-between
           transition
-          hover:bg-[#111827]
-          focus:ring-1 focus:ring-[#ffd700]
+          duration-300
+          ease-in-out
+          hover:ring-cyan-400 hover:shadow-[0_0_15px_cyan]
+          focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:shadow-[0_0_20px_cyan]
+          select-none
+          transform-gpu
+          hover:scale-[1.02]
         "
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
       >
         {value ? (
-          <span className="text-[#ffd700] truncate">{value.label}</span>
+          <span className="truncate text-cyan-400">{value.label}</span>
         ) : (
-          <span className="text-slate-400">{placeholder}</span>
+          <span className="truncate text-slate-400">{placeholder}</span>
         )}
 
         <svg
-          className={`w-4 h-4 ml-2 text-[#ffd700] transition-transform ${
+          className={`w-5 h-5 ml-3 text-cyan-400 transition-transform duration-300 ease-in-out ${
             isOpen ? "rotate-180" : ""
           }`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
         >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeWidth={2}
+            strokeWidth={3}
             d="M19 9l-7 7-7-7"
           />
         </svg>
-      </div>
+      </button>
 
       {/* Dropdown */}
       {isOpen && (
@@ -80,16 +97,20 @@ export const CustomSelect = ({
             absolute
             mt-2
             w-full
-            z-30
+            z-50
             rounded-2xl
-            bg-[#0b0f1a]
-            border border-[#1f2937]
-            shadow-xl
+            bg-white/5
+            backdrop-blur-xl
+            border border-cyan-600/50
+            shadow-[0_0_20px_cyan]
             overflow-hidden
+            select-text
           "
+          role="listbox"
+          tabIndex={-1}
         >
           {/* Search */}
-          <div className="p-2 border-b border-[#1f2937]">
+          <div className="p-3 border-b border-cyan-600/30">
             <input
               type="text"
               value={search}
@@ -97,40 +118,65 @@ export const CustomSelect = ({
               placeholder="Search..."
               className="
                 w-full
-                h-[38px]
-                px-3
+                h-[40px]
+                px-4
                 rounded-xl
-                bg-[#020617]
-                text-white
-                placeholder-slate-500
+                bg-white/10
+                backdrop-blur-md
+                text-cyan-200
+                placeholder-cyan-500
                 outline-none
-                focus:ring-1 focus:ring-[#ffd700]
+                ring-1 ring-transparent
+                transition
+                duration-300
+                ease-in-out
+                focus:ring-2 focus:ring-cyan-500 focus:ring-offset-1 focus:ring-offset-transparent
+                shadow-[inset_0_0_8px_cyan]
+                tracking-wide
+                font-medium
               "
+              autoFocus
+              aria-label="Search options"
             />
           </div>
 
           {/* Options */}
-          <ul className="max-h-48 overflow-y-auto">
+          <ul className="max-h-52 overflow-y-auto scrollbar-thin scrollbar-thumb-cyan-500/60 scrollbar-track-transparent">
             {filteredOptions.length ? (
               filteredOptions.map((opt) => (
                 <li
                   key={opt.value}
                   onClick={() => handleSelect(opt)}
                   className="
-                    px-4 py-2.5
+                    px-5 py-3
                     text-sm
-                    text-slate-200
+                    text-cyan-300
                     cursor-pointer
                     transition
-                    hover:bg-[#111827]
-                    hover:text-[#ffd700]
+                    duration-300
+                    ease-in-out
+                    hover:bg-cyan-700/40
+                    hover:shadow-[0_0_12px_cyan]
+                    hover:text-cyan-100
+                    focus:bg-cyan-600/50
+                    focus:text-cyan-100
+                    rounded-lg
+                    outline-none
+                    select-none
                   "
+                  role="option"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      handleSelect(opt);
+                    }
+                  }}
                 >
                   {opt.label}
                 </li>
               ))
             ) : (
-              <li className="px-4 py-3 text-sm text-slate-500">
+              <li className="px-5 py-4 text-sm text-cyan-600 select-none">
                 No results found
               </li>
             )}

@@ -6,9 +6,7 @@ const TransactionsChart = ({ chartData }) => {
 
   if (!chartData) return null;
 
-  // Helper to convert numeric array to {x, y} objects
-  const toPoints = (arr) =>
-    (arr || []).map((y, i) => ({ x: i + 1, y }));
+  const toPoints = (arr) => (arr || []).map((y, i) => ({ x: i + 1, y }));
 
   const payInAmount = toPoints(chartData?.[toggle]?.PayIn?.amount);
   const payOutAmount = toPoints(chartData?.[toggle]?.PayOut?.amount);
@@ -23,15 +21,7 @@ const TransactionsChart = ({ chartData }) => {
   ];
 
   const categories = Array.from(
-    {
-      length: Math.max(
-        payInAmount.length,
-        payOutAmount.length,
-        payInCount.length,
-        payOutCount.length,
-        1
-      ),
-    },
+    { length: Math.max(payInAmount.length, payOutAmount.length, payInCount.length, payOutCount.length, 1) },
     (_, i) => `Point ${i + 1}`
   );
 
@@ -40,99 +30,64 @@ const TransactionsChart = ({ chartData }) => {
       height: 350,
       type: "area",
       stacked: false,
-      background: "#0b0b0b",
-      foreColor: "#FFD700",
+      background: "transparent", // Transparent to show glassmorphism behind
+      foreColor: "#00FFFF", // Neon cyan for labels
       toolbar: { show: false },
     },
-    colors: ["#facc15", "#f97316", "#22c55e", "#38bdf8"],
-    stroke: {
-      width: [2, 2, 3, 3],
-      curve: "smooth",
-      dashArray: [0, 0, 4, 4],
-    },
+    colors: ["#22c55e", "#38bdf8", "#0ff", "#06b6d4"],
+    stroke: { width: [2, 2, 3, 3], curve: "smooth", dashArray: [0, 0, 4, 4] },
     fill: {
       type: "gradient",
       gradient: {
         shade: "dark",
-        gradientToColors: ["#fde047", "#fb923c"],
-        opacityFrom: 0.5,
-        opacityTo: 0.08,
+        gradientToColors: ["#06b6d4", "#38bdf8"],
+        opacityFrom: 0.4,
+        opacityTo: 0.05,
       },
     },
-    markers: {
-      size: 5,
-      strokeWidth: 2,
-      strokeColors: "#0b0b0b",
-      hover: { size: 7 },
-    },
+    markers: { size: 5, strokeWidth: 2, strokeColors: "#0b0b0b", hover: { size: 7 } },
     xaxis: {
       type: "category",
       categories,
-      axisBorder: { color: "#FFD700" },
-      axisTicks: { color: "#FFD700" },
-      labels: { style: { colors: "#FFD700" } },
+      axisBorder: { color: "#0ff" },
+      axisTicks: { color: "#0ff" },
+      labels: { style: { colors: "#0ff" } },
     },
     yaxis: [
-      {
-        title: { text: "Amount", style: { color: "#FFD700" } },
-        min: 0,
-        labels: { style: { colors: "#FFD700" } },
-      },
-      {
-        opposite: true,
-        title: { text: "Count", style: { color: "#FFD700" } },
-        min: 0,
-        labels: { style: { colors: "#FFD700" } },
-      },
+      { title: { text: "Amount", style: { color: "#0ff" } }, min: 0, labels: { style: { colors: "#0ff" } } },
+      { opposite: true, title: { text: "Count", style: { color: "#0ff" } }, min: 0, labels: { style: { colors: "#0ff" } } },
     ],
-    grid: {
-      borderColor: "#2a2a2a",
-      strokeDashArray: 4,
-    },
+    grid: { borderColor: "#111", strokeDashArray: 4 },
     tooltip: { theme: "dark" },
-    legend: {
-      position: "top",
-      labels: { colors: "#FFD700" },
-      onItemClick: { toggleDataSeries: true },
-    },
+    legend: { position: "top", labels: { colors: "#0ff" }, onItemClick: { toggleDataSeries: true } },
   };
 
   return (
-    <div className="relative rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-6 overflow-hidden">
-      {/* Ambient Glow */}
-      <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 via-red-500/20 to-transparent blur-3xl" />
-
+    <div className="relative rounded-2xl bg-white/5 backdrop-blur-2xl border border-cyan-400/20 shadow-[0_0_80px_rgba(56,189,248,0.15)] p-6 overflow-hidden transition-transform duration-300 hover:scale-[1.01] hover:shadow-[0_0_120px_rgba(56,189,248,0.3)]">
+      
+      {/* Neon ambient glow */}
+      
       <div className="relative space-y-4">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <h2 className="text-sm font-medium text-[#ffd700]">
+          <h2 className="text-sm font-semibold text-cyan-300 tracking-wider uppercase">
             Transactions Overview
           </h2>
 
           {/* Toggle */}
           <div className="flex rounded-lg overflow-hidden border border-white/10 bg-black/40">
-            <button
-              onClick={() => setToggle("Total")}
-              className={`px-4 py-1.5 text-xs font-medium transition
-                ${
-                  toggle === "Total"
-                    ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-black"
-                    : "text-[#ffd700] hover:bg-white/10"
-                }`}
-            >
-              Total
-            </button>
-            <button
-              onClick={() => setToggle("Today")}
-              className={`px-4 py-1.5 text-xs font-medium transition
-                ${
-                  toggle === "Today"
-                    ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-black"
-                    : "text-[#ffd700] hover:bg-white/10"
-                }`}
-            >
-              Today
-            </button>
+            {["Total", "Today"].map((type) => (
+              <button
+                key={type}
+                onClick={() => setToggle(type)}
+                className={`px-4 py-1.5 text-xs font-medium transition-all duration-300
+                  ${toggle === type
+                    ? "bg-gradient-to-r from-cyan-400 to-blue-500 text-black shadow-[0_0_15px_rgba(0,255,255,0.5)]"
+                    : "text-cyan-300 hover:bg-white/10 hover:shadow-[0_0_10px_rgba(0,255,255,0.2)]"} rounded-lg`}
+              >
+                {type}
+              </button>
+            ))}
           </div>
         </div>
 

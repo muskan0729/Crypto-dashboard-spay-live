@@ -32,7 +32,7 @@ export const Member = () => {
 
   const merchants = useMemo(
     () => dataOfMerchants?.data ?? [],
-    [dataOfMerchants]
+    [dataOfMerchants],
   );
 
   useEffect(() => {
@@ -65,22 +65,36 @@ export const Member = () => {
         payin: item.payin_status,
 
         payout: item.payout_status,
-        payincharge: <CryptoAmount amount={item.total_charge?.CRYPTO || 0} symbol="₹" />,
+        payincharge: (
+          <CryptoAmount amount={item.total_charge?.CRYPTO || 0} symbol="₹" />
+        ),
         //Number(item.total_charge?.CRYPTO || 0).toFixed(20),
-        payoutcharge: <CryptoAmount amount={item.total_charge?.payout || 0} symbol="₹" />,
+        payoutcharge: (
+          <CryptoAmount amount={item.total_charge?.payout || 0} symbol="₹" />
+        ),
         //Number(item.total_charge?.payout || 0).toFixed(20),
         //cryptocharge: Number(item.total_charge?.CRYPTO || 0).toFixed(2),
 
-        totalwalletpayin: <CryptoAmount amount={item.total_amount?.CRYPTO || 0} symbol="₹" />,
+        totalwalletpayin: (
+          <CryptoAmount amount={item.total_amount?.CRYPTO || 0} symbol="₹" />
+        ),
         //Number(item.total_amount?.CRYPTO || 0).toFixed(20),
-        totalwalletpayout: <CryptoAmount amount={item.total_amount?.payout || 0} symbol="₹" />,
+        totalwalletpayout: (
+          <CryptoAmount amount={item.total_amount?.payout || 0} symbol="₹" />
+        ),
         //Number(item.total_amount?.payout || 0).toFixed(20),
-        totalwallet: <CryptoAmount amount={item.total_payout || 0} symbol="₹" />,
+        totalwallet: (
+          <CryptoAmount amount={item.total_payout || 0} symbol="₹" />
+        ),
         //Number(item.total_payout || 0).toFixed(20),
         account: item.account_status,
 
-        walletpayin: <CryptoAmount amount={item.payin_wallet || 0} symbol="₹" />,
-        walletpayout: <CryptoAmount amount={item.payout_wallet || 0} symbol="₹" />,
+        walletpayin: (
+          <CryptoAmount amount={item.payin_wallet || 0} symbol="₹" />
+        ),
+        walletpayout: (
+          <CryptoAmount amount={item.payout_wallet || 0} symbol="₹" />
+        ),
         date:
           new Date(item.created_at).getDate() +
           " " +
@@ -153,7 +167,7 @@ export const Member = () => {
       {/* ---------------- Header (MATCHES SCHEME) ---------------- */}
       <div className="border  w-full relative bg-white/5 backdrop-blur-xl rounded-2xl shadow-xl flex flex-wrap gap-4 justify-between p-4">
         <div>
-          <h4 className="font-bold text-[#ffd700] text-xl">Member Manager</h4>
+          <h4 className="font-bold text-[#52eafd] text-xl">Member Manager</h4>
 
           <div className="flex flex-wrap items-center gap-4 mt-2">
             <div className="flex items-center gap-2 text-sm text-white">
@@ -167,7 +181,7 @@ export const Member = () => {
             </div>
 
             <Button
-              className="bg-white/10 border border-[#ffd700]/50 text-[#ffd700] font-semibold px-4 py-2 rounded-2xl shadow-md hover:bg-white/20 hover:border-[#ffd700] transition"
+              className="bg-white/10 border border-[#52eafd]/50 text-[#52eafd] font-semibold px-4 py-2 rounded-2xl shadow-md hover:bg-white/20 hover:border-[##52eafc] transition"
               onClick={() => navigate("/member-create")}
             >
               + ADD NEW

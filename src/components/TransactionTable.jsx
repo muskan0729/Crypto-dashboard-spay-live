@@ -1,4 +1,4 @@
-import React, { useState } from "react"; 
+import React, { useState } from "react";
 import CryptoAmount from "./CryptoAmounts";
 
 export default function TransactionTable({
@@ -33,7 +33,7 @@ export default function TransactionTable({
     startIndex + rowsPerPage
   );
 
-  // Status colors mapping
+  // Status colors
   const statusColors = {
     Success: "bg-green-500/20 text-green-400",
     Failed: "bg-red-500/20 text-red-400",
@@ -45,7 +45,6 @@ export default function TransactionTable({
     All: "bg-gray-700 text-white",
   };
 
-  // Glowing border class for dropdown based on selected filter
   const glowClass = {
     Success: "focus:ring-green-400",
     Failed: "focus:ring-red-400",
@@ -59,15 +58,15 @@ export default function TransactionTable({
 
   return (
     <div className="relative space-y-6">
-      {/* Ambient Glow */}
-      <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 via-red-500/10 to-transparent blur-3xl pointer-events-none" />
+      {/* Neon Ambient Glow */}
 
-      <div className="flex items-center justify-between w-full gap-4">
-        <h2 className="text-sm font-medium text-[#ffd700]">
+      {/* Header & Filter */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h2 className="text-sm font-semibold text-cyan-300 tracking-wide uppercase">
           Recent Transactions
         </h2>
 
-        {/* Status Dropdown with glow effect */}
+        {/* Status Dropdown */}
         <select
           value={statusFilter}
           onChange={handleStatusChange}
@@ -85,14 +84,14 @@ export default function TransactionTable({
         </select>
       </div>
 
-      {/* Transactions */}
+      {/* Transactions List */}
       <div className="relative space-y-4">
         {currentTransactions.map((tx) => (
           <div
             key={tx.txn}
-            className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-4 transition hover:bg-white/10"
+            className="relative rounded-2xl bg-white/5 backdrop-blur-xl border border-cyan-400/20 shadow-[0_0_30px_rgba(56,189,248,0.2)] p-4 transition-transform duration-300 hover:scale-[1.01] hover:shadow-[0_0_60px_rgba(56,189,248,0.4)]"
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-[#ffd700]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-cyan-300">
               {/* SQ & Type */}
               <div className="space-y-1">
                 <div>
@@ -113,10 +112,7 @@ export default function TransactionTable({
                 </div>
                 <div>
                   TXN:{" "}
-                  <span
-                    title={tx.txn}
-                    className="cursor-pointer text-white"
-                  >
+                  <span title={tx.txn} className="cursor-pointer text-white">
                     {tx.trimmedTxn}
                   </span>
                 </div>
@@ -146,7 +142,7 @@ export default function TransactionTable({
           </div>
         ))}
 
-        {/* No Transactions Found */}
+        {/* No transactions */}
         {currentTransactions.length === 0 && (
           <div className="text-center text-white/80 py-8">
             No transactions found for "{statusFilter}"
@@ -156,10 +152,10 @@ export default function TransactionTable({
 
       {/* Pagination */}
       <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
-        <div className="flex items-center gap-2 text-xs text-[#ffd700]">
+        <div className="flex items-center gap-2 text-xs text-cyan-300">
           <span>Rows per page</span>
           <select
-            className="bg-black/60 backdrop-blur border border-white/40 rounded-lg px-2 py-1 text-[#ffd700] focus:outline-none"
+            className="bg-black/60 backdrop-blur border border-cyan-400/20 rounded-lg px-2 py-1 text-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"
             value={rowsPerPage}
             onChange={handleRowsPerPageChange}
           >
@@ -171,23 +167,23 @@ export default function TransactionTable({
           </select>
         </div>
 
-        <div className="flex items-center gap-3 text-xs">
+        <div className="flex items-center gap-3 text-xs text-cyan-300">
           <button
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
-            className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-[#ffd700] hover:bg-white/10 disabled:opacity-40 disabled:cursor-not-allowed transition"
+            className="px-3 py-1 rounded-lg bg-white/5 border border-cyan-400/20 hover:shadow-[0_0_20px_rgba(56,189,248,0.3)] transition disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Prev
           </button>
 
-          <span className="text-[#ffd700]">
+          <span>
             Page {currentPage} of {totalPages}
           </span>
 
           <button
             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages}
-            className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-[#ffd700] hover:bg-white/10 disabled:opacity-40 disabled:cursor-not-allowed transition"
+            className="px-3 py-1 rounded-lg bg-white/5 border border-cyan-400/20 hover:shadow-[0_0_20px_rgba(56,189,248,0.3)] transition disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Next
           </button>

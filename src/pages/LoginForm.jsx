@@ -19,7 +19,6 @@ function LoginForm() {
     e.preventDefault();
     try {
       const response = await login(formData);
-
       if (response) {
         localStorage.setItem("token", response.token);
         localStorage.setItem("email", response.user.email);
@@ -33,61 +32,78 @@ function LoginForm() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6 bg-black/75 overflow-hidden">
-      {/* Warm Gradient Glow Background */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-600/30 via-orange-500/20 to-yellow-400/10 -z-10"></div>
+    <section className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
+      {/* ========= BACKGROUND LAYERS ========= */}
 
-      {/* Optional Background Image Overlay */}
+      {/* Base dark */}
+      <div className="absolute inset-0 bg-[#020617] -z-40"></div>
+
+      {/* Background image (STRONG & VISIBLE) */}
       <div
-        className="absolute inset-0 bg-center bg-cover opacity-10 -z-10"
+        className="absolute inset-0 bg-center bg-cover opacity-60 saturate-125 contrast-110 -z-30"
         style={{ backgroundImage: `url(${paymentGatewayBg})` }}
       ></div>
 
-      {/* Outer Glow */}
-      <div className="absolute w-[420px] h-[420px] bg-gradient-to-br from-red-500/30 via-orange-400/20 to-yellow-300/10 blur-3xl rounded-full -z-10"></div>
+      {/* Dark cinematic overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#020617]/80 via-[#020617]/60 to-[#020617]/90 -z-20"></div>
 
-      {/* Login Card */}
-      <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-black/5 backdrop-blur-xl shadow-xl p-8">
+      {/* Neon blue glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.22),_transparent_65%)] -z-10"></div>
+
+      {/* Floating glow orb */}
+      <div className="absolute w-[520px] h-[520px] bg-gradient-to-br from-cyan-500/30 via-blue-600/20 to-transparent blur-3xl rounded-full top-[-120px] right-[-120px] -z-10"></div>
+
+      {/* ========= LOGIN CARD ========= */}
+
+      <div className="relative w-full max-w-md rounded-2xl border border-cyan-400/20 bg-white/5 backdrop-blur-2xl shadow-[0_0_80px_rgba(56,189,248,0.18)] p-8">
+        {/* Soft inner glow */}
+        <div className="absolute inset-0 rounded-2xl ring-1 ring-white/10 pointer-events-none"></div>
+
         {/* Logo */}
-        <div className="flex justify-center mb-6">
-          <div className="rounded-xl bg-black/40 backdrop-blur-md px-6 py-3 border border-black/10">
-            <img className="w-28" src={logo} alt="logo" />
+        <div className="flex justify-center mb-8 relative z-10">
+          <div className="rounded-xl bg-black/50 backdrop-blur-md  border-white/10 shadow-xl">
+            <img
+              className="w-28 drop-shadow-[0_0_12px_rgba(56,189,248,0.6)]"
+              src={logo}
+              alt="logo"
+            />
           </div>
         </div>
 
         {/* Heading */}
-        <h1 className="text-2xl font-semibold mb-6 text-center text-[#FFD700]">
-          Sign in to your account
+        <h1 className="text-2xl font-semibold mb-8 text-center text-cyan-300 tracking-wide">
+          Secure Login
         </h1>
 
-        {/* Form */}
+        {/* ========= FORM ========= */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email */}
           <div className="relative">
             <input
               type="email"
               name="email"
-              id="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Email"
+              placeholder=" "
               required
-              className={`peer w-full rounded-xl bg-black/40 backdrop-blur-md
-                px-4 pt-5 pb-2 text-sm text-white
-                border focus:outline-none placeholder-transparent
-                ${
-                  error?.errors.email
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-white/10 focus:border-[#FFD700]"
-                }`}
+              className="peer w-full rounded-xl bg-black/55 backdrop-blur-md
+                px-4 pt-6 pb-2 text-sm text-white caret-cyan-400
+                border border-white/10
+                focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30
+                focus:outline-none transition-all
+                [-webkit-autofill]:bg-black/55
+                [-webkit-autofill]:text-white
+                [-webkit-autofill]:shadow-[0_0_0_30px_rgba(0,0,0,0.55)_inset"
             />
             <label
-              htmlFor="email"
-              className="absolute left-4 top-1.5 z-10 text-xs text-[#FFD700] bg-black/70 px-2 rounded"
+              className="absolute left-4 top-4 text-sm text-gray-400 transition-all
+              peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm
+              peer-focus:top-1.5 peer-focus:text-xs peer-focus:text-cyan-300
+              peer-valid:top-1.5 peer-valid:text-xs peer-valid:text-cyan-300"
             >
-              Email
+              Email address
             </label>
-            {error?.errors.email && (
+            {error?.errors?.email && (
               <p className="mt-1 text-xs text-red-500">{error.errors.email}</p>
             )}
           </div>
@@ -97,58 +113,59 @@ function LoginForm() {
             <input
               type={showPassword ? "text" : "password"}
               name="password"
-              id="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Password"
+              placeholder=" "
               required
-              className={`peer w-full rounded-xl bg-black/40 backdrop-blur-md
-                px-4 pt-5 pb-2 text-sm text-white
-                border focus:outline-none placeholder-transparent
-                ${
-                  error?.errors.password
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-white/10 focus:border-[#FFD700]"
-                }`}
+              className="peer w-full rounded-xl bg-black/55 backdrop-blur-md
+                px-4 pt-6 pb-2 text-sm text-white caret-cyan-400
+                border border-white/10
+                focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30
+                focus:outline-none transition-all
+                [-webkit-autofill]:bg-black/55
+                [-webkit-autofill]:text-white
+                [-webkit-autofill]:shadow-[0_0_0_30px_rgba(0,0,0,0.55)_inset"
             />
             <label
-              htmlFor="password"
-              className="absolute left-4 top-1.5 z-10 text-xs text-[#FFD700] bg-black/70 px-2 rounded transition-all"
+              className="absolute left-4 top-4 text-sm text-gray-400 transition-all
+              peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm
+              peer-focus:top-1.5 peer-focus:text-xs peer-focus:text-cyan-300
+              peer-valid:top-1.5 peer-valid:text-xs peer-valid:text-cyan-300"
             >
               Password
             </label>
 
-            {/* Toggle Password */}
             <button
               type="button"
-              className="absolute right-3 top-3 text-gray-400 hover:text-white transition"
+              className="absolute right-3 top-4 text-cyan-300 hover:text-white transition"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? "🙈" : "👁️"}
             </button>
 
-            {error?.errors.password && (
+            {error?.errors?.password && (
               <p className="mt-1 text-xs text-red-500">
                 {error.errors.password}
               </p>
             )}
           </div>
 
-          {/* Submit Button */}
+          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
-            className="inline-flex items-center justify-center w-full h-10 gap-2 px-4 rounded-xl text-sm font-medium text-black
-              bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400
-              hover:from-red-600 hover:via-orange-500 hover:to-yellow-500
-              shadow-lg shadow-yellow-400/25 transition-all
+            className="relative w-full h-11 rounded-xl text-sm font-semibold text-white
+              bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-400
+              hover:scale-[1.02]
+              hover:shadow-[0_0_40px_rgba(56,189,248,0.55)]
+              transition-all duration-300
               disabled:pointer-events-none disabled:opacity-50"
           >
             {loading ? (
-              <>
-                <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></span>
+              <span className="flex items-center justify-center gap-2">
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                 Signing in...
-              </>
+              </span>
             ) : (
               "Sign in"
             )}

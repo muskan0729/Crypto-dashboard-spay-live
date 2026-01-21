@@ -14,14 +14,10 @@ export const Sidebar = ({ open, setOpen }) => {
     setActiveDropdown((prev) => (prev === name ? null : name));
   };
 
-  // -----------------------------------------
-  // MENU CONFIG WITH CRYPTO ROLE SUPPORT
-  // -----------------------------------------
+  // Menu configuration
   const menu = [
-    // DASHBOARD (visible to all)
     { label: "Dashboard", icon: "fa-chart-pie", link: "/krypto-dashboard" },
 
-    // ---------------------- ADMIN MENUS ----------------------
     ...(role === "admin"
       ? [
           {
@@ -51,8 +47,6 @@ export const Sidebar = ({ open, setOpen }) => {
             dropdown: "bank",
             items: [{ label: "Bank", link: "/onboard-bank" }],
           },
-
-          // ADMIN transaction history
           {
             label: "Transaction History",
             icon: "fa-clock-rotate-left",
@@ -62,8 +56,6 @@ export const Sidebar = ({ open, setOpen }) => {
               { label: "Payout Statement", link: "/payout-statement" },
             ],
           },
-
-          // ADMIN account statement
           {
             label: "Account Statement",
             icon: "fa-layer-group",
@@ -79,15 +71,8 @@ export const Sidebar = ({ open, setOpen }) => {
         ]
       : []),
 
-    // ---------------------- USER MENUS ----------------------
     ...(role === "user"
       ? [
-          // {
-          //   label: "Payout",
-          //   icon: "fa-credit-card",
-          //   dropdown: "payout",
-          //   items: [{ label: "Request", link: "/payout-request" }],
-          // },
           {
             label: "Payin",
             icon: "fa-money-bill-transfer",
@@ -133,7 +118,6 @@ export const Sidebar = ({ open, setOpen }) => {
         ]
       : []),
 
-    // ---------------------- CRYPTO ROLE ----------------------
     ...(role === "crypto"
       ? [
           {
@@ -145,7 +129,6 @@ export const Sidebar = ({ open, setOpen }) => {
         ]
       : []),
 
-    // ---------------------- COMPLAINTS (all roles) ----------------------
     {
       label: "Complaints",
       icon: "fa-comment",
@@ -156,46 +139,48 @@ export const Sidebar = ({ open, setOpen }) => {
 
   return (
     <>
-      {/* Overlay */}
+      {/* Overlay for mobile */}
       <div
         className={`fixed inset-0 z-30 md:hidden transition-opacity duration-300
-      bg-gradient-to-br from-red-900/60 to-yellow-800/40 backdrop-blur-sm
-      ${open ? "opacity-100 visible" : "opacity-0 invisible"}`}
+        bg-black/50 backdrop-blur-sm
+        ${open ? "opacity-100 visible" : "opacity-0 invisible"}`}
         onClick={() => setOpen(false)}
       />
 
       {/* Sidebar */}
-      <div
+      <aside
         className={`fixed top-0 left-0 h-full w-64 p-4 flex flex-col z-40
-      bg-gradient-to-br from-red-500/10 via-yellow-400/5 to-transparent
-      backdrop-blur-xl border-r border-white/10
-      
-      transform transition-transform duration-300 ease-in-out
-      md:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
+        bg-white/5 backdrop-blur-xl border-r border-cyan-400/20
+        shadow-[0_0_30px_rgba(0,255,255,0.2)]
+        transform transition-transform duration-300 ease-in-out
+        md:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
-        {/* Glow Layer */}
-        <div className="absolute inset-0 bg-gradient-to-b from-red-500/10 via-yellow-400/5 to-transparent pointer-events-none"></div>
+        {/* Glow background */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(0,255,255,0.05),_transparent_70%)] pointer-events-none rounded-2xl"></div>
 
-        {/* Close Button (Mobile) */}
+        {/* Mobile close button */}
         <button
-          className="absolute top-4 right-4 md:hidden text-yellow-300 hover:text-red-400 transition"
+          className="absolute top-4 right-4 md:hidden text-cyan-300 hover:text-white transition"
           onClick={() => setOpen(false)}
         >
           <i className="fa-solid fa-xmark text-xl"></i>
         </button>
 
-        {/* Logo */}
-        <div className="relative flex justify-center items-center w-25 h-25 rounded-full  overflow-hidden bg-white shadow-md ml-15 mb-5">
-          <Link to="/krypto-dashboard">
-            <img
-              src={Logo}
-              className="w-full h-full object-cover"
-              alt="Spay Logo"
-            />
-          </Link>
-        </div>
+{/* Logo */}
+<div className="relative flex justify-center items-center w-full mt-6 mb-6">
+  <div className="w-24 overflow-hidden bg-white/10 shadow-lg flex justify-center items-center">
+    <Link to="/krypto-dashboard">
+      <img
+        src={Logo}
+        className="w-full h-full object-contain"
+        alt="Spay Logo"
+      />
+    </Link>
+  </div>
+</div>
 
-        {/* MENU */}
+
+        {/* Menu */}
         <ul className="relative space-y-2 font-medium flex-1 overflow-y-auto custom-scrollbar">
           {menu.map((item, i) => {
             const isParentActive =
@@ -203,38 +188,34 @@ export const Sidebar = ({ open, setOpen }) => {
 
             return (
               <li key={i}>
-                {/* SIMPLE MENU */}
                 {!item.dropdown ? (
+                  // Single link
                   <Link
                     to={item.link}
-                    className={`flex items-center w-full p-3 rounded-xl transition-all duration-300
-                  ${
-                    currentPath === item.link
-                      ? "bg-gradient-to-r from-red-500/40 to-yellow-400/40 text-white shadow-md"
-                      : "text-gray-100 hover:bg-gradient-to-r hover:from-red-500/20 hover:to-yellow-400/20"
-                  }`}
+                    className={`relative flex items-center w-full p-3 rounded-xl transition-all duration-300 transform
+                      text-gray-100 hover:bg-cyan-400/10  hover:scale-105`}
                   >
                     <i
-                      className={`fa-solid ${item.icon} mr-3 text-yellow-300`}
+                      className={`fa-solid ${item.icon} mr-3 text-cyan-300`}
                     ></i>
-                    <span>{item.label}</span>
+                    <span className="uppercase tracking-wide">
+                      {item.label}
+                    </span>
                   </Link>
                 ) : (
                   <>
-                    {/* DROPDOWN BUTTON */}
+                    {/* Dropdown button */}
                     <button
-                      className={`flex items-center w-full p-3 rounded-xl transition-all duration-300
-                    ${
-                      isParentActive
-                        ? "bg-gradient-to-r from-red-500/40 to-yellow-400/40 text-white shadow-md"
-                        : "text-gray-100 hover:bg-gradient-to-r hover:from-red-500/20 hover:to-yellow-400/20"
-                    }`}
+                      className={`relative flex items-center w-full p-3 rounded-xl transition-all duration-300 transform
+                        text-gray-100 hover:bg-cyan-400/10 hover:scale-105`}
                       onClick={() => toggleDropdown(item.dropdown)}
                     >
                       <i
-                        className={`fa-solid ${item.icon} mr-3 text-yellow-300`}
+                        className={`fa-solid ${item.icon} mr-3 text-cyan-300`}
                       ></i>
-                      <span>{item.label}</span>
+                      <span className="uppercase tracking-wide">
+                        {item.label}
+                      </span>
 
                       <svg
                         className={`w-3 h-3 ml-auto transition-transform duration-300 ${
@@ -251,14 +232,10 @@ export const Sidebar = ({ open, setOpen }) => {
                       </svg>
                     </button>
 
-                    {/* DROPDOWN MENU */}
+                    {/* Dropdown items */}
                     <div
                       className={`ml-4 mt-1 rounded-lg overflow-hidden transition-all duration-300
-                    ${
-                      activeDropdown === item.dropdown
-                        ? "max-h-40 opacity-100"
-                        : "max-h-0 opacity-0"
-                    }`}
+                        ${activeDropdown === item.dropdown ? "max-h-64 opacity-100" : "max-h-0 opacity-0"}`}
                     >
                       {item.items.map((sub, j) => {
                         const isActive = currentPath === sub.link;
@@ -266,14 +243,14 @@ export const Sidebar = ({ open, setOpen }) => {
                         return (
                           <Link key={j} to={sub.link}>
                             <div
-                              className={`flex items-center gap-2 p-2 rounded-lg transition-all duration-300
-                            ${
-                              isActive
-                                ? "bg-gradient-to-r from-red-500/40 to-yellow-400/40 text-white shadow-sm"
-                                : "text-gray-200 hover:bg-gradient-to-r hover:from-red-500/20 hover:to-yellow-400/20"
-                            }`}
+                              className={`relative flex items-center gap-2 p-2 rounded-lg transition-all duration-300 transform
+                                ${
+                                  isActive
+                                    ? `bg-cyan-500/20 text-cyan-300  before:absolute before:-inset-1 before:rounded-lg before:bg-cyan-400/10 before:blur-lg`
+                                    : "text-gray-200 hover:bg-cyan-400/10  hover:scale-105"
+                                }`}
                             >
-                              <i className="fa-solid fa-circle text-[6px] text-yellow-300"></i>
+                              <i className="fa-solid fa-circle text-[6px] text-cyan-300"></i>
                               {sub.label}
                             </div>
                           </Link>
@@ -286,7 +263,7 @@ export const Sidebar = ({ open, setOpen }) => {
             );
           })}
         </ul>
-      </div>
+      </aside>
     </>
   );
 };
