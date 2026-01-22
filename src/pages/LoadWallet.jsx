@@ -96,7 +96,7 @@ const LoadWallet = () => {
             setModalType("load");
             setShowModal(true);
           }}
-          className="bg-[#FFD700] hover:bg-yellow-500 text-black text-sm font-medium px-4 py-1.5 rounded-xl shadow-md transition"
+          className="bg-[#53eafd] hover:bg-yellow-500 text-black text-sm font-medium px-4 py-1.5 rounded-xl shadow-md transition"
         >
           Load Wallet
         </Button>
@@ -106,7 +106,7 @@ const LoadWallet = () => {
             setModalType("reverse");
             setShowModal(true);
           }}
-          className="bg-[#FFB700] hover:bg-yellow-600 text-black text-sm font-medium px-4 py-1.5 rounded-xl shadow-md transition"
+          className="bg-[#53eafd] hover:bg-yellow-600 text-black text-sm font-medium px-4 py-1.5 rounded-xl shadow-md transition"
         >
           Reverse Top-up
         </Button>
@@ -122,7 +122,7 @@ const LoadWallet = () => {
 
       {/* Header Card */}
       <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-6 flex justify-between items-center">
-        <h4 className="font-bold text-[#FFD700] text-xl sm:text-2xl">
+        <h4 className="font-bold text-[#53eafd] text-xl sm:text-2xl">
           Load Wallet
         </h4>
       </div>
@@ -180,13 +180,13 @@ const LoadWallet = () => {
               <div className="relative flex items-center justify-between">
                 <h3
                   className="
-            text-[#FFD700]
+            text-[#53eafd]
             font-semibold tracking-wide text-lg
             drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]
           "
                 >
                   {modalType === "load" ? "Load Wallet" : "Reverse Topup"}
-                  <span className="ml-2 text-[#FFD700]/70 font-normal">
+                  <span className="ml-2 text-[#53eafd]/70 font-normal">
                     — {selectedUser?.name}
                   </span>
                 </h3>

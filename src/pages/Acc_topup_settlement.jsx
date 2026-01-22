@@ -80,7 +80,7 @@ const Acc_topup_settlement = () => {
       <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl flex justify-between items-center p-4">
         {/* Ambient Glow */}
         <div className="absolute -z-10 w-40 h-40 top-[-1rem] left-[-1rem] bg-gradient-to-r from-red-500/30 via-orange-400/20 to-yellow-400/20 blur-[120px] rounded-full"></div>
-        <h4 className="font-bold text-[#ffd700] text-xl z-10">
+        <h4 className="font-bold text-[#53eafd] text-xl z-10">
           Topup Settlement Statement
         </h4>
       </div>

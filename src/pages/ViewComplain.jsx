@@ -221,13 +221,13 @@ export const ViewComplain = () => {
       <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-5">
         <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 blur-2xl" />
         <div className="relative flex justify-between items-center">
-          <h4 className="text-xl font-bold text-[#ffd700]">View Complaint</h4>
+          <h4 className="text-xl font-bold text-[#53eafd]">View Complaint</h4>
           <Button
             onClick={() => {
               setEditData(null);
               setShowModal(true);
             }}
-            className="bg-[#ffd700] hover:bg-yellow-400 text-black font-semibold px-4 py-2 rounded-lg"
+            className="bg-[#53eafd] hover:bg-yellow-400 text-black font-semibold px-4 py-2 rounded-lg"
           >
             Raise Complaint
           </Button>
