@@ -353,16 +353,6 @@ export const MemberOnboardForm = () => {
     <div className="min-h-screen bg-gradient-to-b from-[#0b0f22] via-[#000814] to-black py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
 
-        {/* Header */}
-        <div className={`${glassCard} p-8 text-center`}>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-wider text-white drop-shadow-lg">
-            Add New Merchant
-          </h1>
-          <p className="mt-3 text-gray-400 tracking-wide">
-            Secure • Fast • Cyber-Finance Dashboard
-          </p>
-        </div>
-
         {/* Stepper */}
         <div className={glassCard}>
           <div className="p-6">
@@ -825,13 +815,13 @@ export const MemberOnboardForm = () => {
                     </button>
                   )}
 
-                  <button
+                  {/* <button
                     type="button"
                     onClick={() => setShowConfirmModal(true)}
                     className={`w-full sm:w-auto px-10 py-3.5 ${btnSecondary}`}
                   >
                     Cancel & Exit
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </form>

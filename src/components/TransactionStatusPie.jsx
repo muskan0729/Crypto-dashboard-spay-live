@@ -75,7 +75,7 @@ export default function TransactionStatusPie({
         className="relative rounded-2xl bg-black/60 backdrop-blur-xl border border-cyan-900/40 shadow-2xl p-4 overflow-y-auto"
         style={{ height: `${height}px` }}
       >
-        <div className="flex items-center justify-between mb-4 sticky top-0 bg-black/70 py-2 z-10 border-b border-cyan-900/30">
+        <div className="flex items-center justify-between rounded-2 p-4 sticky top-0 bg-[#0c1014] py-2 z-10 border-b border-cyan-900/30">
           <h3 className="text-sm font-semibold text-cyan-300 tracking-wide">
             Transaction Status
           </h3>

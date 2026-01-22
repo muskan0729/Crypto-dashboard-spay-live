@@ -227,7 +227,7 @@ export const ViewComplain = () => {
               setEditData(null);
               setShowModal(true);
             }}
-            className="bg-[#53eafd] hover:bg-yellow-400 text-black font-semibold px-4 py-2 rounded-lg"
+            className="bg-[#53eafd]  text-black font-semibold px-4 py-2 rounded-lg"
           >
             Raise Complaint
           </Button>
@@ -235,88 +235,142 @@ export const ViewComplain = () => {
       </div>
 
       {/* Table */}
-      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-4">
-        <Table
-          columns={complainColumns}
-          data={complainsWithModifications}
-          showStatusFilter={false}
-          endPoint="/delete-ticket"
-          setData={setTicketData}
-        />
+      <div
+        className="
+    relative
+    bg-white/5 backdrop-blur-2xl
+    border border-cyan-400/20
+    rounded-2xl
+    shadow-[0_0_50px_-15px_rgba(34,211,238,0.35)]
+    p-4
+    transition-all
+  "
+      >
+        {complainsWithModifications?.length > 0 ? (
+          <Table
+            columns={complainColumns}
+            data={complainsWithModifications}
+            showStatusFilter={false}
+            endPoint="/delete-ticket"
+            setData={setTicketData}
+          />
+        ) : (
+          <div
+            className="
+        flex flex-col items-center justify-center
+        min-h-[220px]
+        text-center
+        rounded-xl
+        bg-black/30
+        border border-cyan-400/10
+        backdrop-blur-xl
+      "
+          >
+            {/* Glow */}
+            <div
+              className="
+          absolute
+          w-40 h-40
+          bg-cyan-500/20
+          blur-[90px]
+          rounded-full
+        "
+            />
+
+            <p
+              className="
+          relative
+          text-cyan-300
+          text-sm
+          font-medium
+          tracking-widest
+          uppercase
+          drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]
+        "
+            >
+              No Data Found
+            </p>
+
+            <span className="relative mt-2 text-xs text-cyan-100/50 tracking-wide">
+              Waiting for records to appear
+            </span>
+          </div>
+        )}
       </div>
+
 
       {/* All modals remain functionally identical – styling preserved */}
       {showModal && (
-    <div
-  className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
-  onClick={() => setShowModal(false)}
->
-  <div
-    className="relative w-full max-w-3xl mx-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
-    onClick={(e) => e.stopPropagation()}
-  >
-    {/* Header */}
-    <div className="relative flex justify-between items-center px-6 py-4">
-      {/* Gradient Glow Behind Header */}
-      <div className="absolute inset-0  blur-2xl opacity-70 rounded-t-2xl" />
-      <h2 className="relative text-xl font-bold text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.4)]">
-        Complaint Form
-      </h2>
-      <button
-        onClick={() => setShowModal(false)}
-        className="relative w-9 h-9 flex items-center justify-center rounded-full bg-black/30 border border-white/10 text-white transition-all hover:bg-red-500 hover:text-black hover:scale-105 active:scale-95"
-      >
-        X
-      </button>
-    </div>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="relative w-full max-w-3xl mx-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="relative flex justify-between items-center px-6 py-4">
+              {/* Gradient Glow Behind Header */}
+              <div className="absolute inset-0  blur-2xl opacity-70 rounded-t-2xl" />
+              <h2 className="relative text-xl font-bold text-[#53eafd] drop-shadow-[0_0_8px_rgba(255,215,0,0.4)]">
+                Complaint Form
+              </h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="relative w-9 h-9 flex items-center justify-center rounded-full bg-black/30 border border-white/10 text-white transition-all hover:bg-red-500 hover:text-black hover:scale-105 active:scale-95"
+              >
+                X
+              </button>
+            </div>
 
-    {/* Divider */}
-    <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            {/* Divider */}
+            <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-    {/* Form */}
-    <form onSubmit={handleSubmit} className="relative p-6 space-y-4">
-      {["user_id", "subject", "assigned_to"].map((field) => (
-        <input
-          key={field}
-          name={field}
-          value={ticketFormData[field]}
-          onChange={handleChange}
-          placeholder={field.replace("_", " ").toUpperCase()}
-          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition"
-        />
-      ))}
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="relative p-6 space-y-4">
+              {["user_id", "subject", "assigned_to"].map((field) => (
+                <input
+                  key={field}
+                  name={field}
+                  value={ticketFormData[field]}
+                  onChange={handleChange}
+                  placeholder={field.replace("_", " ").toUpperCase()}
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#53eafd] transition"
+                />
+              ))}
 
-      <textarea
-        name="description"
-        rows={4}
-        value={ticketFormData.description}
-        onChange={handleChange}
-        placeholder="DESCRIPTION"
-        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition"
-      />
+              <textarea
+                name="description"
+                rows={4}
+                value={ticketFormData.description}
+                onChange={handleChange}
+                placeholder="DESCRIPTION"
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition"
+              />
 
-      <input
-        type="file"
-        name="attachment"
-        onChange={handleChange}
-        className="w-full text-white file:bg-[#FFD700] file:text-black file:px-4 file:py-2 file:rounded-md file:border-none hover:file:bg-yellow-400 transition"
-      />
+              <input
+                type="file"
+                name="attachment"
+                onChange={handleChange}
+                className="w-full text-white file:bg-[#53eafd] file:text-black file:px-4 file:py-2 file:rounded-md file:border-none transition"
+              />
 
-      <Button
-        type="submit"
-        className="w-full bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-black font-semibold py-2 rounded-2xl shadow-md hover:opacity-90 hover:shadow-lg transition"
-      >
-        {editData
-          ? updating
-            ? "Updating..."
-            : "Update"
-          : creating
-          ? "Submitting..."
-          : "Submit"}
-      </Button>
-    </form>
-  </div>
-</div>
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-400 text-black font-semibold py-2 rounded-2xl shadow-md hover:opacity-90 hover:shadow-lg transition"
+              >
+                {editData
+                  ? updating
+                    ? "Updating..."
+                    : "Update"
+                  : creating
+                    ? "Submitting..."
+                    : "Submit"}
+              </Button>
+            </form>
+          </div>
+        </div>
 
       )}
     </div>

@@ -23,8 +23,8 @@ export default function TransactionTable({
     statusFilter === "All"
       ? transactions
       : transactions.filter(
-          (tx) => tx.status.toLowerCase() === statusFilter.toLowerCase()
-        );
+        (tx) => tx.status.toLowerCase() === statusFilter.toLowerCase()
+      );
 
   const totalPages = Math.ceil(filteredTransactions.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
@@ -32,6 +32,8 @@ export default function TransactionTable({
     startIndex,
     startIndex + rowsPerPage
   );
+
+console.log(currentTransactions);
 
   // Status colors
   const statusColors = {
@@ -131,9 +133,8 @@ export default function TransactionTable({
               {/* Status */}
               <div className="flex items-center justify-start lg:justify-end">
                 <span
-                  className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                    statusColors[tx.status] || "bg-yellow-500/20 text-yellow-400"
-                  }`}
+                  className={`text-xs font-semibold px-3 py-1 rounded-full ${statusColors[tx.status] || "bg-yellow-500/20 text-yellow-400"
+                    }`}
                 >
                   {tx.status}
                 </span>

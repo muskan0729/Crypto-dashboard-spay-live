@@ -167,8 +167,8 @@ export const SchemeModal = ({
 
     <div className="relative flex items-center justify-between">
       <h3 className="
-        text-[#FFD700] text-lg font-semibold tracking-wide
-        drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]
+        text-[#53eafd] text-lg font-semibold tracking-wide
+        drop-shadow-[#53eafd]
       ">
         {editData ? "Edit Scheme" : "Add New Scheme"}
       </h3>
@@ -198,7 +198,7 @@ export const SchemeModal = ({
 
     {/* Scheme Name */}
     <div>
-      <label className="block mb-2 text-sm font-medium text-[#FFD700]">
+      <label className="block mb-2 text-sm font-medium text-[#53eafd]">
         Scheme Name
       </label>
       <input
@@ -208,12 +208,12 @@ export const SchemeModal = ({
         placeholder="Enter Scheme Name"
         className="
           w-full px-4 py-2
-          bg-black/30 text-[#FFD700]
+          bg-black/30 text-[#53eafd]
           border border-white/10
           rounded-xl
-          placeholder:text-[#FFD700]/40
+          placeholder:text-[#53eafd]/40
           focus:outline-none
-          focus:ring-2 focus:ring-yellow-400/50
+          focus:ring-2 focus:ring-white-400/50
           transition
         "
       />
@@ -240,8 +240,8 @@ export const SchemeModal = ({
                   border-b-2 transition-all duration-200
                   ${
                     activeTab === tab
-                      ? "border-[#FFD700] text-[#FFD700]"
-                      : "border-transparent text-white/50 hover:text-[#FFD700]"
+                      ? "border-[#53eafd] text-[#53eafd]"
+                      : "border-transparent text-white/50 hover:text-[#53eafd]"
                   }
                 `}
               >
@@ -257,7 +257,7 @@ export const SchemeModal = ({
     {/* Table */}
     <div className="overflow-hidden rounded-xl border border-white/10 bg-black/20">
       <table className="w-full text-sm text-left">
-        <thead className="bg-black/40 text-[#FFD700] uppercase text-xs tracking-wider">
+        <thead className="bg-black/40 text-[#53eafd] uppercase text-xs tracking-wider">
           <tr>
             <th className="px-6 py-3">Operator</th>
             <th className="px-6 py-3">Type</th>
@@ -277,10 +277,10 @@ export const SchemeModal = ({
                   onChange={(e) => setPayin(p => ({ ...p, type: e.target.value }))}
                   className="
                     w-full px-4 py-2
-                    bg-black/40 text-[#FFD700]
+                    bg-black/40 text-[#53eafd]
                     border border-white/10
                     rounded-xl
-                    focus:ring-2 focus:ring-yellow-400/40
+                    focus:ring-2                     
                   "
                 >
                   <option value="flat">Flat</option>
@@ -294,7 +294,7 @@ export const SchemeModal = ({
                   onChange={(e) => setPayin(p => ({ ...p, amount: e.target.value }))}
                   className="
                     w-full px-3 py-2
-                    bg-black/30 text-[#FFD700]
+                    bg-black/30 text-[#53eafd]
                     border border-white/10
                     rounded-lg
                   "
@@ -317,7 +317,7 @@ export const SchemeModal = ({
                         below700: { ...p.below700, type: e.target.value },
                       }))
                     }
-                    className="w-full px-4 py-2 bg-black/40 text-[#FFD700] rounded-xl border border-white/10"
+                    className="w-full px-4 py-2 bg-black/40 text-[#53eafd] rounded-xl border border-white/10"
                   >
                     <option value="flat">Flat</option>
                     <option value="percent">Percent</option>
@@ -333,7 +333,7 @@ export const SchemeModal = ({
                         below700: { ...p.below700, amount: e.target.value },
                       }))
                     }
-                    className="w-full px-3 py-2 bg-black/30 text-[#FFD700] rounded-lg border border-white/10"
+                    className="w-full px-3 py-2 bg-black/30 text-[#53eafd] rounded-lg border border-white/10"
                   />
                 </td>
               </tr>
@@ -349,7 +349,7 @@ export const SchemeModal = ({
                         above700: { ...p.above700, type: e.target.value },
                       }))
                     }
-                    className="w-full px-4 py-2 bg-black/40 text-[#FFD700] rounded-xl border border-white/10"
+                    className="w-full px-4 py-2 bg-black/40 text-[#53eafd] rounded-xl border border-white/10"
                   >
                     <option value="flat">Flat</option>
                     <option value="percent">Percent</option>
@@ -365,7 +365,7 @@ export const SchemeModal = ({
                         above700: { ...p.above700, amount: e.target.value },
                       }))
                     }
-                    className="w-full px-3 py-2 bg-black/30 text-[#FFD700] rounded-lg border border-white/10"
+                    className="w-full px-3 py-2 bg-black/30 text-[#53eafd] rounded-lg border border-white/10"
                   />
                 </td>
               </tr>
@@ -386,7 +386,7 @@ export const SchemeModal = ({
                               type: e.target.value,
                             }))
                           }
-                          className="w-full px-4 py-2 text-[#ffd700] bg-black/40 border border-white/10 rounded-xl"
+                          className="w-full px-4 py-2 text-[#53eafd] bg-black/40 border border-white/10 rounded-xl"
                         >
                           <option value="flat">Flat</option>
                           <option value="percent">Percent</option>
@@ -403,7 +403,7 @@ export const SchemeModal = ({
                               amount: parseFloat(e.target.value) || 0,
                             }))
                           }
-                          className="w-full px-2 py-1 text-[#ffd700] bg-black/20 border border-white/10 rounded-md"
+                          className="w-full px-2 py-1 text-[#53eafd] bg-black/20 border border-white/10 rounded-md"
                         />
                       </td>
                     </tr>
@@ -421,7 +421,7 @@ export const SchemeModal = ({
                               type: e.target.value,
                             }))
                           }
-                          className="w-full px-4 py-2 text-[#ffd700] bg-black/40 border border-white/10 rounded-xl"
+                          className="w-full px-4 py-2 text-[#53eafd] bg-black/40 border border-white/10 rounded-xl"
                         >
                           <option value="flat">Flat</option>
                           <option value="percent">Percent</option>
@@ -438,7 +438,7 @@ export const SchemeModal = ({
                               amount: parseFloat(e.target.value) || 0,
                             }))
                           }
-                          className="w-full px-2 py-1 text-[#ffd700] bg-black/20 border border-white/10 rounded-md"
+                          className="w-full px-2 py-1 text-[#53eafd] bg-black/20 border border-white/10 rounded-md"
                         />
                       </td>
                     </tr>
@@ -449,7 +449,7 @@ export const SchemeModal = ({
             <tr>
               <td className="px-6 py-4 text-white/70">Goods and Service Tax</td>
               <td className="px-6 py-4">
-                <select className="w-full px-4 py-2 bg-black/40 text-[#FFD700] rounded-xl border border-white/10">
+                <select className="w-full px-4 py-2 bg-black/40 text-[#53eafd] rounded-xl border border-white/10">
                   <option value="flat">Flat</option>
                   <option value="percent">Percent</option>
                 </select>
@@ -459,7 +459,7 @@ export const SchemeModal = ({
                   type="number"
                   value={percentage}
                   onChange={(e) => setPercentage(e.target.value)}
-                  className="w-full px-3 py-2 bg-black/30 text-[#FFD700] rounded-lg border border-white/10"
+                  className="w-full px-3 py-2 bg-black/30 text-[#53eafd] rounded-lg border border-white/10"
                 />
               </td>
             </tr>
@@ -476,7 +476,7 @@ export const SchemeModal = ({
         disabled={creating || updating}
         className="
           px-8 py-2.5
-          bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400
+          bg-[#53eafd]
           text-black font-semibold
           rounded-xl
           shadow-lg
