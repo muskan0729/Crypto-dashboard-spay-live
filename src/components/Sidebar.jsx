@@ -192,8 +192,8 @@ export const Sidebar = ({ open, setOpen }) => {
                   // Single link
                   <Link
                     to={item.link}
-                    className={`relative flex items-center w-full p-3 rounded-xl transition-all duration-300 transform
-                      text-gray-100 hover:bg-cyan-400/10  hover:scale-105`}
+                    className={`relative flex items-center w-full rounded-xl transition-all duration-300 transform
+                      text-gray-100 hover:bg-cyan-400/10  `}
                   >
                     <i
                       className={`fa-solid ${item.icon} mr-3 text-cyan-300`}
@@ -206,8 +206,8 @@ export const Sidebar = ({ open, setOpen }) => {
                   <>
                     {/* Dropdown button */}
                     <button
-                      className={`relative flex items-center w-full p-3 rounded-xl transition-all duration-300 transform
-                        text-gray-100 hover:bg-cyan-400/10 hover:scale-105`}
+                      className={`relative flex items-center w-full p-1 rounded-xl transition-all duration-300 transform
+                        text-gray-100 hover:bg-cyan-400/10 `}
                       onClick={() => toggleDropdown(item.dropdown)}
                     >
                       <i

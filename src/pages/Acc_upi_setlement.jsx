@@ -79,7 +79,7 @@ const Acc_upi_setlement = () => {
  {/* Ambient Glow */}
           <div className="absolute top-20 left-1/2 -translate-x-1/2  bg-gradient-to-r from-[#ff4d4d]/30 to-[#ffb84d]/30 blur-3xl rounded-full"></div>
 
-        <h4 className="font-bold text-[#ffd700] text-lg sm:text-xl">
+        <h4 className="font-bold text-[#53eafd] text-lg sm:text-xl">
           Payin Settlement Statement
         </h4>
       </div>

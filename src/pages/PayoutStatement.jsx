@@ -115,7 +115,7 @@ const PayoutStatement = () => {
       {/* Header */}
       <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-5 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 blur-2xl" />
-        <h4 className="relative font-bold text-[#ffd700] text-xl">
+        <h4 className="relative font-bold text-[#53eafd] text-xl">
           Payout Statement
         </h4>
       </div>

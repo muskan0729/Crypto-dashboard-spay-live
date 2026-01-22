@@ -47,9 +47,17 @@ const PayinSettlement = () => {
           setSelectedUser(row);
           setShowModal(true);
         }}
-        className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 
-                   text-black text-sm font-semibold px-4 py-1.5 rounded-xl 
-                   shadow-lg hover:opacity-90 transition"
+        className="
+          px-4 py-1.5 rounded-xl
+          text-sm font-medium tracking-wide text-cyan-300
+          bg-cyan-400/10 border border-cyan-400/30
+          shadow-[0_0_12px_rgba(34,211,238,0.35)]
+          transition-all duration-300 ease-out
+          hover:scale-105
+          hover:bg-cyan-400/20
+          hover:shadow-[0_0_22px_rgba(34,211,238,0.6)]
+          active:scale-95
+        "
       >
         Payin Settlement
       </Button>
@@ -72,108 +80,88 @@ const PayinSettlement = () => {
     try {
       const res = await payinSettlement(payload);
       if (res) {
-        toast.success("Settlement done successfully!!");
+        toast.success("Settlement done successfully!");
         refetch();
         setPayinFormData({ payin_wallet: "", remark: "" });
         setShowModal(false);
       }
-    } catch (err) {
-      console.log(err);
+    } catch {
       toast.error("Something went wrong!");
     }
   };
 
   return (
-    <div className="bg-black min-h-screen p-6 space-y-6">
-      {/* Header */}
-      <div className="relative overflow-hidden bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl px-6 py-4">
-        <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 blur-2xl" />
-        <h4 className="relative font-bold text-[#ffd700] text-2xl">
-          Payin Settlement
-        </h4>
+    <div className="min-h-screen bg-[#050B14] relative overflow-hidden p-6">
+      {/* Cinematic background */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-blue-500/5" />
+        <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-cyan-400/10 rounded-full blur-[140px]" />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-[120px]" />
       </div>
 
-      {/* Table */}
-      {loading ? (
-        <TableSkeleton />
-      ) : (
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-4">
-          <Table
-            columns={membercolumn}
-            data={tableDataWithActions}
-            showDeleteColumn={false}
-            showDateFilter={false}
-            showStatusFilter={false}
-            className="rounded-xl overflow-hidden border border-white/10"
-            paginationClassName="flex justify-end gap-2 mt-4"
-            previousClassName="bg-gradient-to-r from-yellow-400 to-orange-400 
-                               text-black px-3 py-1 rounded-md shadow cursor-pointer"
-            nextClassName="bg-gradient-to-r from-orange-400 to-red-400 
-                           text-black px-3 py-1 rounded-md shadow cursor-pointer"
-          />
+      <div className="relative space-y-6">
+        {/* Header */}
+        <div className="relative overflow-hidden rounded-2xl border border-cyan-400/20 
+                        bg-white/5 backdrop-blur-2xl px-6 py-4
+                        shadow-[0_0_40px_-10px_rgba(34,211,238,0.25)]">
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 via-blue-500/10 to-transparent blur-2xl" />
+          <h4 className="relative text-xl font-semibold tracking-wider text-cyan-300">
+            Payin Settlement
+          </h4>
         </div>
-      )}
+
+        {/* Table */}
+        {loading ? (
+          <TableSkeleton />
+        ) : (
+          <div className="relative rounded-2xl border border-white/10 bg-white/5 
+                          backdrop-blur-2xl p-4
+                          shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04),0_20px_60px_-20px_rgba(0,255,255,0.25)]">
+            <Table
+              columns={membercolumn}
+              data={tableDataWithActions}
+              showDeleteColumn={false}
+              showDateFilter={false}
+              showStatusFilter={false}
+              className="rounded-xl overflow-hidden border border-cyan-400/10"
+              paginationClassName="flex justify-end gap-2 mt-4"
+              previousClassName="px-3 py-1 rounded-lg text-cyan-300 bg-cyan-400/10
+                                 border border-cyan-400/20 hover:bg-cyan-400/20
+                                 hover:shadow-[0_0_12px_rgba(34,211,238,0.5)]
+                                 transition-all"
+              nextClassName="px-3 py-1 rounded-lg text-cyan-300 bg-blue-500/10
+                             border border-blue-400/20 hover:bg-blue-500/20
+                             hover:shadow-[0_0_12px_rgba(59,130,246,0.5)]
+                             transition-all"
+            />
+          </div>
+        )}
+      </div>
 
       {/* Modal */}
       {showModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center 
-                     bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center
+                     bg-[#050B14]/80 backdrop-blur-md"
           onClick={() => setShowModal(false)}
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative bg-white/5 backdrop-blur-xl border border-white/10 
-                       rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden"
+            className="relative w-full max-w-md mx-4 overflow-hidden
+                       rounded-2xl border border-cyan-400/20
+                       bg-white/5 backdrop-blur-2xl
+                       shadow-[0_0_60px_-15px_rgba(34,211,238,0.4)]"
           >
             {/* Modal Header */}
-            <div className="relative px-6 py-4 overflow-hidden rounded-t-2xl">
-              {/* Soft animated glow */}
-              <div
-                className="
-      absolute inset-0
-     
-      blur-2xl opacity-80
-    "
-              />
-
-              {/* Content */}
-              <div className="relative flex items-center justify-between">
-                <h3
-                  className="
-        text-[#FFD700]
-        font-semibold tracking-wide
-        text-lg
-        drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]
-      "
-                >
-                  Payin Settlement
-                  <span className="ml-2 text-[#FFD700]/80 font-normal">
-                    — {selectedUser?.name}
-                  </span>
-                </h3>
-
-                <Button
-                  onClick={() => setShowModal(false)}
-                  className="
-        w-9 h-9
-        flex items-center justify-center
-        rounded-full
-        bg-black/30
-        border border-white/10
-        text-white
-        transition-all duration-200
-        hover:bg-red-500 hover:scale-105
-        hover:shadow-lg hover:shadow-red-500/40
-        active:scale-95
-      "
-                >
-                  ✕
-                </Button>
-              </div>
-
-              {/* Bottom divider */}
-              <div className="mt-4 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+            <div className="px-6 py-4">
+              <h3 className="text-cyan-300 font-semibold tracking-widest text-lg
+                             drop-shadow-[0_0_10px_rgba(34,211,238,0.45)]">
+                Payin Settlement
+                <span className="ml-2 text-cyan-300/70 font-normal">
+                  — {selectedUser?.name}
+                </span>
+              </h3>
+              <div className="mt-4 h-px bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent" />
             </div>
 
             {/* Modal Body */}
@@ -187,9 +175,16 @@ const PayinSettlement = () => {
                   name="payin_wallet"
                   value={payinFormData.payin_wallet}
                   onChange={handleChange}
-                  className="w-full bg-black/30 text-white border border-white/20 
-                             rounded-xl px-3 py-2 focus:outline-none 
-                             focus:ring-2 focus:ring-yellow-400"
+                  className="
+                    w-full rounded-xl px-3 py-2
+                    bg-black/30 text-cyan-100
+                    border border-white/20
+                    transition-all duration-300
+                    focus:outline-none
+                    focus:border-cyan-400
+                    focus:ring-2 focus:ring-cyan-400/40
+                    focus:shadow-[0_0_15px_rgba(34,211,238,0.5)]
+                  "
                 />
               </div>
 
@@ -202,17 +197,31 @@ const PayinSettlement = () => {
                   name="remark"
                   value={payinFormData.remark}
                   onChange={handleChange}
-                  className="w-full bg-black/30 text-white border border-white/20 
-                             rounded-xl px-3 py-2 focus:outline-none 
-                             focus:ring-2 focus:ring-yellow-400"
+                  className="
+                    w-full rounded-xl px-3 py-2
+                    bg-black/30 text-cyan-100
+                    border border-white/20
+                    transition-all duration-300
+                    focus:outline-none
+                    focus:border-cyan-400
+                    focus:ring-2 focus:ring-cyan-400/40
+                    focus:shadow-[0_0_15px_rgba(34,211,238,0.5)]
+                  "
                 />
               </div>
 
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 
-                           text-black font-semibold py-2 rounded-xl shadow-lg 
-                           hover:opacity-90 transition"
+                className="
+                  w-full py-2 rounded-xl
+                  font-semibold tracking-wide text-[#050B14]
+                  bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500
+                  shadow-[0_0_25px_rgba(34,211,238,0.6)]
+                  transition-all duration-300
+                  hover:scale-[1.02]
+                  hover:shadow-[0_0_40px_rgba(34,211,238,0.85)]
+                  active:scale-95
+                "
               >
                 Submit
               </Button>
