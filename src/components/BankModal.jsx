@@ -67,7 +67,7 @@ export const BankModal = ({
               {/* Gradient Glow */}
               <div className="absolute inset-0 " />
 
-              <h4 className="relative text-lg font-bold text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]">
+              <h4 className="relative text-lg font-bold text-[#53eafd] drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]">
                 {activeTab === "payin" ? "Add Payin Bank" : "Add Payout Bank"}
               </h4>
 
@@ -106,25 +106,25 @@ export const BankModal = ({
                     placeholder=" "
                     required
                     className={`
-              block w-full py-2.5 px-0 text-sm text-[#FFD700]
+              block w-full py-2.5 px-0 text-sm text-[#53eafd]
               bg-black/20 border-0 border-b-2 rounded-md
               appearance-none focus:outline-none focus:ring-0
               peer transition-colors
               ${
                 error?.error
                   ? "border-red-500 focus:border-red-500"
-                  : "border-[#FFD700]/50 focus:border-[#FFD700]"
+                  : "border-[#53eafd]/50 focus:border-[#53eafd]"
               }
             `}
                   />
                   <label
                     htmlFor="floating_bank"
                     className="
-              absolute text-sm text-[#FFD700]/70 duration-300
+              absolute text-sm text-[#53eafd]/70 duration-300
               transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
               peer-focus:scale-75 peer-focus:-translate-y-6
               peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
-              peer-focus:text-[#FFD700]
+              peer-focus:text-[#53eafd]
             "
                   >
                     Bank Name
@@ -136,10 +136,10 @@ export const BankModal = ({
 
                 {/* Bank Type */}
                 <div className="relative w-full">
-                  <label className="block text-sm font-medium text-[#FFD700]/70 mb-1">
+                  <label className="block text-sm font-medium text-[#53eafd]/70 mb-1">
                     Bank Type
                   </label>
-                  <div className="w-full border border-[#FFD700]/50 rounded-md p-2 text-sm bg-black/20 text-[#FFD700]">
+                  <div className="w-full border border-[#53eafd]/50 rounded-md p-2 text-sm bg-black/20 text-[#53eafd]">
                     {activeTab === "payin" ? "Payin" : "Payout"}
                   </div>
                 </div>
@@ -153,7 +153,7 @@ export const BankModal = ({
                   className={`
             w-full sm:w-auto px-5 py-2.5 text-sm font-medium
             rounded-2xl
-            bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400
+bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-400
             text-black shadow-md
             transition-all duration-200
             hover:opacity-90 hover:shadow-lg

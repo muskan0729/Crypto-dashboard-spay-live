@@ -12,74 +12,78 @@ export const ConfirmModal = ({
       {showConfirmModal && (
         <div
           className="
-    fixed inset-0 z-50
-    flex items-center justify-center
-    bg-black/80 backdrop-blur-sm
-  "
+            fixed inset-0 z-50
+            flex items-center justify-center
+            bg-black/70
+            backdrop-blur-xl
+            transition-all
+          "
           onClick={() => handleConfirmModal(false)}
         >
           <div
             onClick={(e) => e.stopPropagation()}
             className="
-      relative
-      w-full max-w-lg mx-4
-      bg-white/5 backdrop-blur-xl
-      border border-white/10
-      rounded-2xl
-      shadow-2xl
-      overflow-hidden
-      transition-all
-    "
+              relative w-full max-w-lg mx-4
+              bg-white/5 backdrop-blur-sm
+              border border-cyan-400/20
+              rounded-2xl
+              overflow-hidden
+              shadow-[0_0_60px_-10px_rgba(34,211,238,0.35)]
+              transition-all duration-300
+            "
           >
             {/* Header */}
             <div className="relative px-6 py-4">
-              {/* Glow */}
-              <div
-                className="
-          absolute inset-0
-        
-          blur-2xl opacity-80
-        "
-              />
+              {/* Neon glow layer */}
+              <div className="
+                absolute inset-0
+                bg-gradient-to-r from-cyan-500/20 via-blue-500/10 to-cyan-500/20
+                blur-xl
+                rounded-2xl
+                -z-10
+              "/>
 
               <div className="relative flex items-center justify-between">
-                <h3
-                  className="
-            text-lg font-semibold tracking-wide
-            text-[#FFD700]
-            drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]
-          "
-                >
+                <h3 className="
+                  text-lg font-bold tracking-wide
+                  text-cyan-300
+                  drop-shadow-[0_0_12px_rgba(34,211,238,0.6)]
+                ">
                   {heading}
                 </h3>
 
                 <Button
                   onClick={() => handleConfirmModal(false)}
                   className="
-            w-9 h-9
-            flex items-center justify-center
-            rounded-full
-            bg-black/30
-            border border-white/10
-            text-white
-            transition-all duration-200
-            hover:bg-red-500
-            hover:scale-105
-            hover:shadow-lg hover:shadow-red-500/40
-            active:scale-95
-          "
+                    w-9 h-9 flex items-center justify-center
+                    rounded-full
+                    bg-black/40
+                    border border-cyan-400/30
+                    text-cyan-300
+                    transition-all duration-200
+                    hover:bg-cyan-400/20
+                    hover:scale-110
+                    hover:shadow-[0_0_20px_rgba(34,211,238,0.7)]
+                    active:scale-95
+                  "
                 >
                   <i className="fa-solid fa-xmark" />
                 </Button>
               </div>
 
               {/* Divider */}
-              <div className="mt-4 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+              <div className="mt-4 h-px bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent" />
             </div>
 
             {/* Body */}
             <div className="p-6">
-              <p className="text-sm leading-relaxed text-white/70">{body}</p>
+              <p className="
+                text-sm leading-relaxed text-cyan-100/70
+                tracking-wide
+                drop-shadow-[0_0_4px_rgba(34,211,238,0.3)]
+              ">
+                {body}
+              </p>
             </div>
 
             {/* Actions */}
@@ -88,16 +92,15 @@ export const ConfirmModal = ({
                 type="button"
                 onClick={() => handleConfirmModal(false)}
                 className="
-          px-5 py-2
-          text-sm font-medium
-          rounded-xl
-          bg-black/30
-          border border-white/10
-          text-white/70
-          transition
-          hover:bg-black/50
-          hover:text-white
-        "
+                  px-5 py-2 text-sm font-medium tracking-wide
+                  rounded-xl
+                  bg-black/40 border border-cyan-400/20
+                  text-cyan-100/70
+                  transition-all duration-200
+                  hover:bg-black/60 hover:text-cyan-200
+                  hover:shadow-[0_0_15px_rgba(34,211,238,0.3)]
+                  active:scale-95
+                "
               >
                 No
               </Button>
@@ -106,17 +109,15 @@ export const ConfirmModal = ({
                 onClick={action}
                 type="button"
                 className="
-          px-6 py-2
-          text-sm font-semibold
-          rounded-xl
-          bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400
-          text-black
-          shadow-lg
-          transition-all duration-200
-          hover:opacity-90
-          hover:shadow-yellow-400/40
-          active:scale-95
-        "
+                  px-6 py-2 text-sm font-semibold tracking-wide
+                  rounded-xl
+                  bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400
+                  text-black
+                  shadow-[0_0_40px_rgba(34,211,238,0.6)]
+                  transition-all duration-300
+                  hover:scale-105 hover:shadow-[0_0_60px_rgba(34,211,238,0.85)]
+                  active:scale-95
+                "
               >
                 Yes
               </Button>

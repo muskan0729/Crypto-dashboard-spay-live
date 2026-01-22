@@ -120,16 +120,21 @@ const PayoutStatement = () => {
         </h4>
       </div>
 
-      {/* Table */}
-      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-4">
-        {loading ? (
-          <TableSkeleton />
-        ) : error ? (
-          <div className="text-center py-6 text-red-400">
-            Error: {error}
-          </div>
-        ) : (
-          <Table
+
+
+<div
+  className="
+    relative
+    bg-white/5 backdrop-blur-2xl
+    border border-cyan-400/20
+    rounded-2xl
+    shadow-[0_0_50px_-15px_rgba(34,211,238,0.35)]
+    p-4
+    transition-all
+  "
+>
+  {payoutData?.length > 0 ? (
+    <Table
             columns={upiColumn}
             data={payoutData}
             showStatusFilter={true}
@@ -141,8 +146,62 @@ const PayoutStatement = () => {
             className="rounded-xl overflow-hidden"
             requiredExport={true}
           />
+  ) : (
+    <div
+      className="
+        flex flex-col items-center justify-center
+        min-h-[220px]
+        text-center
+        rounded-xl
+        bg-black/30
+        border border-cyan-400/10
+        backdrop-blur-xl
+      "
+    >
+      {/* Glow */}
+      <div
+        className="
+          absolute
+          w-40 h-40
+          bg-cyan-500/20
+          blur-[90px]
+          rounded-full
+        "
+      />
+
+      <p
+        className="
+          relative
+          text-cyan-300
+          text-sm
+          font-medium
+          tracking-widest
+          uppercase
+          drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]
+        "
+      >
+        No Data Found
+      </p>
+
+      <span className="relative mt-2 text-xs text-cyan-100/50 tracking-wide">
+        Waiting for records to appear
+      </span>
+    </div>
+  )}
+</div>
+
+      {/* Table
+      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-4">
+        {loading ? (
+          <TableSkeleton />
+        ) : error ? (
+          <div className="text-center py-6 text-red-400">
+            Error: {error}
+          </div>
+        ) : (
+          
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

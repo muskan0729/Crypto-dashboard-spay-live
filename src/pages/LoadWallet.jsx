@@ -96,7 +96,7 @@ const LoadWallet = () => {
             setModalType("load");
             setShowModal(true);
           }}
-          className="bg-[#53eafd] hover:bg-yellow-500 text-black text-sm font-medium px-4 py-1.5 rounded-xl shadow-md transition"
+          className="bg-[#53eafd]  text-black text-sm font-medium px-4 py-1.5 rounded-xl shadow-md transition"
         >
           Load Wallet
         </Button>
@@ -106,7 +106,7 @@ const LoadWallet = () => {
             setModalType("reverse");
             setShowModal(true);
           }}
-          className="bg-[#53eafd] hover:bg-yellow-600 text-black text-sm font-medium px-4 py-1.5 rounded-xl shadow-md transition"
+          className="bg-[#53eafd]  text-black text-sm font-medium px-4 py-1.5 rounded-xl shadow-md transition"
         >
           Reverse Top-up
         </Button>
@@ -274,7 +274,7 @@ const LoadWallet = () => {
                 type="submit"
                 className="
           w-full
-          bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400
+          bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-400
           text-black font-semibold
           py-2.5 rounded-xl
           shadow-lg
