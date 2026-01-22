@@ -89,7 +89,7 @@ const CryptoStatement = () => {
 
       {/* Header Card */}
       <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl p-6 flex justify-between items-center">
-        <h4 className="font-bold text-[#ffd700] text-xl sm:text-2xl">Crypto Statement</h4>
+        <h4 className="font-bold text-[#53eafd] text-xl sm:text-2xl">Crypto Statement</h4>
       </div>
 
       {/* Table Section */}

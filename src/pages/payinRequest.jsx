@@ -17,36 +17,11 @@ export const PayinRequest = () => {
   //const intervalRef = useRef(null);
 
   const { execute: executePayin, loading } = usePost("/GLIDE/create-glide-widget-url");
-  //const { execute: executeCheckStatus } = usePost("/AP/payin/checkstatus");
-
+ 
   useEffect(() => {
     const uniqueOrderId = `DSB${Date.now()}${Math.floor(Math.random() * 1000)}`;
     setPayerOrderId(uniqueOrderId);
   }, []);
-
-  // useEffect(() => {
-  //   if (orderId) {
-  //     intervalRef.current = setInterval(checkPaymentStatus, 5000);
-  //   }
-  //   return () => clearInterval(intervalRef.current);
-  // }, [orderId]);
-
-  // useEffect(() => {
-  //   if (showSuccess || showFailed) {
-  //     const timer = setTimeout(() => {
-  //       setShowSuccess(false);
-  //       setShowFailed(false);
-  //       setQrUrl("");
-  //       setAmount("");
-  //       //setPayerName("");
-  //       setPayerMobile("");
-  //       setPayerEmail("");
-  //       const uniqueOrderId = `DSB${Date.now()}${Math.floor(Math.random() * 1000)}`;
-  //       setPayerOrderId(uniqueOrderId);
-  //     }, 5000);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [showSuccess, showFailed]);
 
   const handlePayinSubmit = async () => {
     if (Number(amount) < 0) {
@@ -82,34 +57,12 @@ export const PayinRequest = () => {
     }
   };
 
-  // const checkPaymentStatus = async () => {
-  //   try {
-  //     if (!orderId) return;
-  //     const formData = new FormData();
-  //     formData.append("orderid", orderId);
-  //     const statusData = await executeCheckStatus(formData);
-  //     if (statusData?.status === "SUCCESS") {
-  //       clearInterval(intervalRef.current);
-  //       setShowSuccess(true);
-  //       setShowFailed(false);
-  //       setQrUrl("");
-  //     } else if (statusData?.status === "FAILED") {
-  //       clearInterval(intervalRef.current);
-  //       setShowFailed(true);
-  //       setShowSuccess(false);
-  //       setQrUrl("");
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
   return (
     <div className="bg-black min-h-screen p-6 space-y-6">
       {/* Header */}
       <div className="relative overflow-hidden bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl px-6 py-4">
         <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 blur-2xl" />
-        <h4 className="relative text-[#ffd700] font-bold text-2xl">
+        <h4 className="relative text-[#53eafd] font-bold text-2xl">
           PayIn Request
         </h4>
       </div>

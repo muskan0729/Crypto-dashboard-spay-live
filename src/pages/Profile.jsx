@@ -116,189 +116,188 @@ export const Profile = () => {
     "absolute left-3 top-2 text-xs text-[#ffd700] transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-white/40 peer-focus:top-2 peer-focus:text-xs peer-focus:text-[#ffd700]";
 
   return (
-    <div className="min-h-screen bg-black p-4 md:p-6 md:flex gap-6">
-      {/* Sidebar */}
-      <div className="w-full md:w-64 space-y-2">
-        <div
-          className={tabClass("profile")}
-          onClick={() => setActiveTab("profile")}
-        >
-          <i className="fa-solid fa-user" /> Profile Info
-        </div>
-        <div
-          className={tabClass("director")}
-          onClick={() => setActiveTab("director")}
-        >
-          <i className="fa-solid fa-people-roof" /> Directors Info
-        </div>
-        <div
-          className={tabClass("company")}
-          onClick={() => setActiveTab("company")}
-        >
-          <i className="fa-solid fa-building" /> Company Info
-        </div>
-        <div
-          className={tabClass("account")}
-          onClick={() => setActiveTab("account")}
-        >
-          <i className="fa-solid fa-folder-closed" /> Account Details
-        </div>
-        <div
-          className={tabClass("password")}
-          onClick={() => setActiveTab("password")}
-        >
-          <i className="fa-solid fa-rotate" /> Change Password
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="flex-1">
-        {loading ? (
-          <ProfileSkeleton />
-        ) : (
-          <>
-            {/* PROFILE */}
-            {activeTab === "profile" && (
-              <div className={cardClass}>
-                <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 blur-2xl" />
-                <h3 className="relative text-xl font-bold text-[#ffd700]">
-                  Profile Information
-                </h3>
-
-                <form className="relative grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[
-                    ["name", "Name"],
-                    ["email", "Email"],
-                    ["mobile_no", "Phone Number"],
-                    ["address", "Address"],
-                    ["city", "City"],
-                    ["district", "District"],
-                    ["state", "State"],
-                    ["pin_code", "Pin Code"],
-                  ].map(([field, label]) => (
-                    <div key={field} className="relative">
-                      <input
-                        name={field}
-                        value={userData?.[field] || ""}
-                        onChange={
-                          role === "admin" ? handleInputChange : undefined
-                        }
-                        disabled={role !== "admin"}
-                        className={`${inputClass} peer ${
-                          role !== "admin" ? "opacity-70" : ""
-                        }`}
-                        placeholder=" "
-                      />
-                      <label className={labelClass}>{label}</label>
-                    </div>
-                  ))}
-                </form>
-
-                {role === "admin" && (
-                  <Button
-                    onClick={handleUpdate}
-                    className="mt-4 bg-[#ffd700] hover:bg-yellow-400 text-black font-semibold px-6 py-2 rounded-lg"
-                  >
-                    {profileLoading ? "Updating..." : "Update"}
-                  </Button>
-                )}
-              </div>
-            )}
-
-            {activeTab === "director" && (
-              <div className={cardClass}>
-                <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 via-yellow-500/10 to-red-500/10 blur-2xl" />
-                <h3 className="relative text-xl font-bold text-[#ffd700] capitalize">
-                  {activeTab.replace("_", " ")}
-                </h3>
-                {/* Existing JSX preserved */}
-                   {[
-                    ["name", "Name"],
-                    ["email", "Email"],
-                    ["mobile_no", "Phone Number"],
-                    ["address", "Address"],
-                    ["city", "City"],
-                    ["district", "District"],
-                    ["state", "State"],
-                    ["pin_code", "Pin Code"],
-                  ].map(([field, label]) => (
-                    <div key={field} className="relative">
-                      <input
-                        name={field}
-                        value={userData?.[field] || ""}
-                        onChange={
-                          role === "admin" ? handleInputChange : undefined
-                        }
-                        disabled={role !== "admin"}
-                        className={`${inputClass} peer ${
-                          role !== "admin" ? "opacity-70" : ""
-                        }`}
-                        placeholder=" "
-                      />
-                      <label className={labelClass}>{label}</label>
-                    </div>
-                  ))}
-              </div>
-            )}
-
-            {
-              activeTab === "company" && <div>
-                
-              </div>
-            }
-
-            {/* DIRECTOR / COMPANY / ACCOUNT / PASSWORD */}
-            {// activeTab === "director" ||
-            (
-              activeTab === "account" ||
-              activeTab === "password") && (
-              <div className={cardClass}>
-                <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 via-yellow-500/10 to-red-500/10 blur-2xl" />
-                <h3 className="relative text-xl font-bold text-[#ffd700] capitalize">
-                  {activeTab.replace("_", " ")}
-                </h3>
-
-                {/* Existing JSX preserved */}
-                {activeTab === "password" && (
-                  <form
-                    onSubmit={handleChangePassword}
-                    className="relative grid md:grid-cols-2 gap-4"
-                  >
-                    {["old_password", "new_password"].map((field) => (
-                      <div key={field} className="relative">
-                        <input
-                          type="password"
-                          name={field}
-                          value={passwordFormData[field]}
-                          onChange={(e) =>
-                            setPasswordFormData({
-                              ...passwordFormData,
-                              [e.target.name]: e.target.value,
-                            })
-                          }
-                          className={`${inputClass} peer`}
-                          placeholder=" "
-                        />
-                        <label className={labelClass}>
-                          {field === "old_password"
-                            ? "Old Password"
-                            : "New Password"}
-                        </label>
-                      </div>
-                    ))}
-                    <Button
-                      type="submit"
-                      className="md:col-span-2 bg-[#ffd700] hover:bg-yellow-400 text-black font-semibold px-6 py-2 rounded-lg"
-                    >
-                      {passwordLoading ? "Changing..." : "Change Password"}
-                    </Button>
-                  </form>
-                )}
-              </div>
-            )}
-          </>
-        )}
-      </div>
+   <div className="min-h-screen bg-black p-4 md:p-6 md:flex gap-6">
+  {/* Sidebar */}
+  <div className="w-full md:w-64 space-y-2">
+    <div
+      className={tabClass("profile")}
+      onClick={() => setActiveTab("profile")}
+    >
+      <i className="fa-solid fa-user" /> Profile Info
     </div>
+    <div
+      className={tabClass("director")}
+      onClick={() => setActiveTab("director")}
+    >
+      <i className="fa-solid fa-people-roof" /> Directors Info
+    </div>
+    <div
+      className={tabClass("company")}
+      onClick={() => setActiveTab("company")}
+    >
+      <i className="fa-solid fa-building" /> Company Info
+    </div>
+    <div
+      className={tabClass("account")}
+      onClick={() => setActiveTab("account")}
+    >
+      <i className="fa-solid fa-folder-closed" /> Account Details
+    </div>
+  </div>
+
+  {/* Content */}
+  <div className="flex-1">
+    {loading ? (
+      <ProfileSkeleton />
+    ) : (
+      <>
+        {/* PROFILE TAB */}
+        {activeTab === "profile" && (
+          <div className="space-y-6">
+            <h2 className="text-lg font-semibold text-[#ffd700] drop-shadow-[0_0_8px_rgba(255,215,0,0.4)]">
+              Profile Information
+            </h2>
+
+            <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-6 grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
+              <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-radial from-[#ffd700]/30 via-[#ff6b00]/20 to-transparent blur-3xl pointer-events-none" />
+
+              {[
+                ["name", "Name"],
+                ["email", "Email"],
+                ["mobile_no", "Phone Number"],
+                ["address", "Address"],
+                ["city", "City"],
+                ["district", "District"],
+                ["state", "State"],
+                ["pin_code", "Pin Code"],
+              ].map(([field, label]) => (
+                <div key={field} className="flex flex-col gap-1">
+                  <span className="text-xs text-white/60">{label}</span>
+                  <span className="text-sm text-white font-medium">
+                    {userData?.[field] || "-"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* DIRECTOR TAB */}
+        {activeTab === "director" && (
+          <div className="space-y-6">
+            <h2 className="text-lg font-semibold text-[#ffd700] drop-shadow-[0_0_8px_rgba(255,215,0,0.4)]">
+              Director Information
+            </h2>
+
+            <div className="space-y-4">
+              {userData?.director_info?.map((d, index) => (
+                <div
+                  key={index}
+                  className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-hidden"
+                >
+                  <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-radial from-[#ffd700]/30 via-[#ff6b00]/20 to-transparent blur-3xl pointer-events-none" />
+
+                  <div className="flex flex-col gap-1">
+                    <span className="text-xs text-white/60">Director Name</span>
+                    <span className="text-sm text-white font-medium">
+                      {d.director_name || "-"}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <span className="text-xs text-white/60">Gender</span>
+                    <span className="text-sm text-white font-medium">
+                      {d.director_gender || "-"}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <span className="text-xs text-white/60">PAN Number</span>
+                    <span className="text-sm text-white font-medium">
+                      {d.director_pan_no || "-"}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <span className="text-xs text-white/60">Date of Birth</span>
+                    <span className="text-sm text-white font-medium">
+                      {d.director_dob || "-"}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col gap-1 sm:col-span-2">
+                    <span className="text-xs text-white/60">Aadhar Number</span>
+                    <span className="text-sm text-white font-medium">
+                      {d.director_aadhar_no || "-"}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* COMPANY TAB */}
+        {activeTab === "company" && (
+          <div className="space-y-6">
+            <h2 className="text-lg font-semibold text-[#ffd700] drop-shadow-[0_0_8px_rgba(255,215,0,0.4)]">
+              Company Information
+            </h2>
+
+            <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-hidden">
+              <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-radial from-[#ffd700]/30 via-[#ff6b00]/20 to-transparent blur-3xl pointer-events-none" />
+
+              {[
+                ["company_type", "Company Type"],
+                ["company_pan_no", "Company PAN No"],
+                ["company_gst_no", "Company GST No"],
+                ["cin_llpin", "CIN LLPIN"],
+                ["date_of_incorporation", "Date of Incorporation"],
+                ["website_url", "Website URL"],
+              ].map(([key, label]) => (
+                <div key={key} className="flex flex-col gap-1">
+                  <span className="text-xs text-white/60">{label}</span>
+                  <span className="text-sm text-white font-medium">
+                    {userData?.[key] || "-"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ACCOUNT TAB */}
+        {activeTab === "account" && (
+          <div className="space-y-6">
+            <h2 className="text-lg font-semibold text-[#ffd700] drop-shadow-[0_0_8px_rgba(255,215,0,0.4)]">
+              Account Information
+            </h2>
+
+            <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-hidden">
+              <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-radial from-[#ffd700]/30 via-[#ff6b00]/20 to-transparent blur-3xl pointer-events-none" />
+
+              {[
+                ["account_holder_name", "Account Holder Name"],
+                ["bank_account_no", "Bank Account No"],
+                ["ifsc_code", "IFSC Code"],
+              ].map(([key, label]) => (
+                <div key={key} className="flex flex-col gap-1">
+                  <span className="text-xs text-white/60">{label}</span>
+                  <span className="text-sm text-white font-medium">
+                    {userData?.[key] || "-"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* PASSWORD TAB */}
+      
+      </>
+    )}
+  </div>
+</div>
+
   );
 };

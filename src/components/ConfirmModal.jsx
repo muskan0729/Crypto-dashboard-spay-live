@@ -1,89 +1,129 @@
 import Button from "./Button";
 
-export const ConfirmModal = ({showConfirmModal, handleConfirmModal, action, heading, body}) => {
+export const ConfirmModal = ({
+  showConfirmModal,
+  handleConfirmModal,
+  action,
+  heading,
+  body,
+}) => {
   return (
-   <div>
-  {showConfirmModal && (
-    <div
-      className="fixed inset-0 flex items-center justify-center 
-                 bg-black/70 backdrop-blur-md z-50"
-      onClick={() => handleConfirmModal(false)}
-    >
-      <div
-        className="w-full max-w-lg mx-4 
-                   rounded-xl 
-                   bg-gradient-to-b from-black via-[#0b0b0b] to-black
-                   border border-[#d4af37]/40
-                   shadow-[0_0_30px_rgba(212,175,55,0.25)]
-                   transform transition-all scale-100"
-        onClick={(e) => e.stopPropagation()}
-      >
-
-        {/* Header */}
+    <div>
+      {showConfirmModal && (
         <div
-          className="flex items-center justify-between px-6 py-4 
-                     rounded-t-xl 
-                     bg-gradient-to-r from-[#1a1a1a] to-black
-                     border-b border-[#d4af37]/40"
+          className="
+    fixed inset-0 z-50
+    flex items-center justify-center
+    bg-black/80 backdrop-blur-sm
+  "
+          onClick={() => handleConfirmModal(false)}
         >
-          <h3 className="text-lg font-semibold text-[#d4af37] tracking-wide">
-            {heading}
-          </h3>
-
-          <Button
-            onClick={() => handleConfirmModal(false)}
-            className="flex items-center justify-center 
-                       w-8 h-8 rounded-full 
-                       bg-black border border-[#d4af37]
-                       text-[#d4af37]
-                       hover:bg-[#d4af37] hover:text-black
-                       transition"
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="
+      relative
+      w-full max-w-lg mx-4
+      bg-white/5 backdrop-blur-xl
+      border border-white/10
+      rounded-2xl
+      shadow-2xl
+      overflow-hidden
+      transition-all
+    "
           >
-            <i className="fa-solid fa-xmark"></i>
-          </Button>
+            {/* Header */}
+            <div className="relative px-6 py-4">
+              {/* Glow */}
+              <div
+                className="
+          absolute inset-0
+        
+          blur-2xl opacity-80
+        "
+              />
+
+              <div className="relative flex items-center justify-between">
+                <h3
+                  className="
+            text-lg font-semibold tracking-wide
+            text-[#FFD700]
+            drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]
+          "
+                >
+                  {heading}
+                </h3>
+
+                <Button
+                  onClick={() => handleConfirmModal(false)}
+                  className="
+            w-9 h-9
+            flex items-center justify-center
+            rounded-full
+            bg-black/30
+            border border-white/10
+            text-white
+            transition-all duration-200
+            hover:bg-red-500
+            hover:scale-105
+            hover:shadow-lg hover:shadow-red-500/40
+            active:scale-95
+          "
+                >
+                  <i className="fa-solid fa-xmark" />
+                </Button>
+              </div>
+
+              {/* Divider */}
+              <div className="mt-4 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+            </div>
+
+            {/* Body */}
+            <div className="p-6">
+              <p className="text-sm leading-relaxed text-white/70">{body}</p>
+            </div>
+
+            {/* Actions */}
+            <div className="flex justify-end gap-3 px-6 pb-6">
+              <Button
+                type="button"
+                onClick={() => handleConfirmModal(false)}
+                className="
+          px-5 py-2
+          text-sm font-medium
+          rounded-xl
+          bg-black/30
+          border border-white/10
+          text-white/70
+          transition
+          hover:bg-black/50
+          hover:text-white
+        "
+              >
+                No
+              </Button>
+
+              <Button
+                onClick={action}
+                type="button"
+                className="
+          px-6 py-2
+          text-sm font-semibold
+          rounded-xl
+          bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400
+          text-black
+          shadow-lg
+          transition-all duration-200
+          hover:opacity-90
+          hover:shadow-yellow-400/40
+          active:scale-95
+        "
+              >
+                Yes
+              </Button>
+            </div>
+          </div>
         </div>
-
-        {/* Body */}
-        <div className="p-6">
-          <p className="text-gray-300 text-sm leading-relaxed">
-            {body}
-          </p>
-        </div>
-
-        {/* Actions */}
-        <div className="flex justify-end gap-3 px-6 pb-6">
-          <Button
-            type="button"
-            onClick={() => handleConfirmModal(false)}
-            className="px-5 py-2 text-sm font-medium 
-                       rounded-lg 
-                       border border-[#d4af37]/40
-                       text-[#d4af37]
-                       bg-black
-                       hover:bg-[#1a1a1a]
-                       transition"
-          >
-            No
-          </Button>
-
-          <Button
-            onClick={action}
-            type="button"
-            className="px-6 py-2 text-sm font-semibold 
-                       rounded-lg 
-                       bg-gradient-to-r from-[#d4af37] to-[#b8962e]
-                       text-black
-                       hover:opacity-90
-                       transition"
-          >
-            Yes
-          </Button>
-        </div>
-
-      </div>
+      )}
     </div>
-  )}
-</div>
-
   );
 };

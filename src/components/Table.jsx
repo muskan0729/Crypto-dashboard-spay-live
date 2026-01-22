@@ -23,7 +23,6 @@ const Table = ({
   requiredExport = false,
 }) => {
   const toast = useToast();
-
   const [search, setSearch] = useState("");
   const [recordId, setRecordId] = useState(null);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
@@ -35,7 +34,7 @@ const Table = ({
   const [selectData, setSelectData] = useState([]);
   const [selectedMerchant, setSelectedMerchant] = useState(null);
 
-  /* ---------------- Merchant Select ---------------- */
+  // Prepare merchant select data
   useEffect(() => {
     const dataForSelect = Array.from(
       new Map(
@@ -48,20 +47,17 @@ const Table = ({
     setSelectData(dataForSelect);
   }, [data]);
 
-  /* ---------------- Reset Page ---------------- */
+  // Reset page on filters/search
   useEffect(() => {
     setCurrentPage(1);
   }, [search, statusFilter, startDate, endDate, selectedMerchant]);
 
-  /* ---------------- Delete ---------------- */
+  // Delete record
   const handleConfirmModal = (id) => {
     setRecordId(id);
     setShowConfirmModal(true);
   };
-
-  const modifiedEndpoint =
-    endPoint && recordId ? `${endPoint}/${recordId}` : null;
-
+  const modifiedEndpoint = endPoint && recordId ? `${endPoint}/${recordId}` : null;
   const { execute: deleteRecord } = usePost(modifiedEndpoint || "");
 
   const handleDelete = async (e) => {
@@ -82,7 +78,7 @@ const Table = ({
     }
   };
 
-  /* ---------------- Filtering ---------------- */
+  // Filter data
   const filteredData = useMemo(() => {
     return data?.filter((row) => {
       const matchesSearch = Object.values(row).some((val) =>
@@ -119,16 +115,22 @@ const Table = ({
   };
 
   return (
-    <div className="w-full space-y-6 text-white">
+    <div className="w-full space-y-6 text-white font-sans">
       {/* ---------------- Filters ---------------- */}
-      <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-4 flex flex-wrap gap-3 items-end">
+      <div className="relative z-10 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_0_40px_rgba(0,255,255,0.2)] p-4 flex flex-wrap gap-3 items-end transition-transform duration-200 hover:scale-[1.01] hover:shadow-[0_0_50px_rgba(0,255,255,0.3)]">
         {showSearch && (
           <input
             type="text"
             placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="h-[44px] w-full sm:w-64 px-4 rounded-xl bg-black/40 border border-white/10 text-sm outline-none focus:ring-1 focus:ring-[#ffd700]"
+            className="
+              h-[44px] w-full sm:w-64 px-4 rounded-xl
+              bg-black/40 border border-white/10
+              text-sm text-white placeholder-white/50
+              outline-none focus:ring-1 focus:ring-cyan-400
+              transition-all duration-200
+            "
           />
         )}
 
@@ -149,13 +151,13 @@ const Table = ({
               selected={startDate}
               onChange={setStartDate}
               placeholderText="Start Date"
-              className="h-[44px] px-4 rounded-xl bg-black/40 border border-white/10 text-sm"
+              className="h-[44px] px-4 rounded-xl bg-black/40 border border-white/10 text-sm text-white"
             />
             <DatePicker
               selected={endDate}
               onChange={setEndDate}
               placeholderText="End Date"
-              className="h-[44px] px-4 rounded-xl bg-black/40 border border-white/10 text-sm"
+              className="h-[44px] px-4 rounded-xl bg-black/40 border border-white/10 text-sm text-white"
             />
           </div>
         )}
@@ -164,7 +166,7 @@ const Table = ({
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="h-[44px] px-4 rounded-xl bg-black/40 border border-white/10 text-sm"
+            className="h-[44px] px-4 rounded-xl bg-black/40 border border-white/10 text-sm text-white"
           >
             <option value="all">All Status</option>
             {statusList?.map((item, i) => (
@@ -178,7 +180,7 @@ const Table = ({
         {requiredExport && (
           <button
             onClick={exportToXL}
-            className="h-[44px] px-6 rounded-xl bg-[#ffd700]/20 border border-[#ffd700]/50 text-[#ffd700] font-semibold hover:bg-[#ffd700]/40 transition"
+            className="h-[44px] px-6 rounded-xl bg-cyan-500/20 border border-cyan-400/50 text-cyan-400 font-semibold hover:bg-cyan-500/40 transition-all duration-200"
           >
             Export
           </button>
@@ -191,12 +193,12 @@ const Table = ({
           paginatedData.map((row) => (
             <div
               key={row.id}
-              className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 space-y-2 shadow-lg"
+              className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-2xl p-4 space-y-2 shadow-[0_0_20px_rgba(0,255,255,0.2)] transition-transform duration-200 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(0,255,255,0.3)]"
             >
               {columns.map((col, i) => (
                 <div key={i} className="flex justify-between gap-3 text-sm">
-                  <span className="text-slate-400">{col.header}</span>
-                  <span className="text-slate-200 text-right">
+                  <span className="text-slate-400 tracking-wider">{col.header}</span>
+                  <span className="text-white text-right">
                     {col.Cell
                       ? col.Cell({ value: row[col.accessor], row })
                       : row[col.accessor]}
@@ -213,20 +215,20 @@ const Table = ({
       </div>
 
       {/* ---------------- Desktop Table ---------------- */}
-      <div className="hidden z-[-10] lg:block w-full overflow-x-auto rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-xl">
+      <div className="hidden lg:block w-full overflow-x-auto rounded-2xl border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_0_40px_rgba(0,255,255,0.2)]">
         <table className="w-full min-w-max whitespace-nowrap table-auto">
-          <thead className="bg-black/80 ">
+          <thead className="bg-black/90">
             <tr>
               {columns.map((col) => (
                 <th
                   key={col.accessor}
-                  className="px-2 py-1 text-xs font-semibold text-[#ffd700] text-left"
+                  className="px-3 py-2 text-xs font-semibold text-cyan-400 text-left tracking-wider"
                 >
                   {col.header}
                 </th>
               ))}
               {showDeleteColumn && (
-                <th className="px-2 py-2 text-xs font-semibold text-[#ffd700] text-left">
+                <th className="px-3 py-2 text-xs font-semibold text-cyan-400 text-left tracking-wider">
                   Action
                 </th>
               )}
@@ -237,21 +239,22 @@ const Table = ({
             {paginatedData?.map((row, i) => (
               <tr
                 key={row.id}
-                className={`transition ${i % 2 === 0 ? "bg-white/5" : "bg-white/10"
-                  } hover:bg-white/20`}
+                className={`transition-transform duration-200 
+                  ${i % 2 === 0 ? "bg-white/5" : "bg-white/10"} 
+                  hover:bg-white/20 hover:shadow-[0_0_15px_rgba(0,255,255,0.2)] hover:scale-[1.01]`}
               >
                 {columns.map((col) => (
-                  <td key={col.accessor} className="px-2 py-3 text-xs">
+                  <td key={col.accessor} className="px-3 py-3 text-xs text-white">
                     {col.Cell
                       ? col.Cell({ value: row[col.accessor], row })
                       : row[col.accessor]}
                   </td>
                 ))}
                 {showDeleteColumn && (
-                  <td className="px-2 py-3">
+                  <td className="px-3 py-3">
                     <button
                       onClick={() => handleConfirmModal(row.id)}
-                      className="text-red-400 hover:text-red-300 transition"
+                      className="text-red-400 hover:text-red-300 transition-all duration-200"
                     >
                       Delete
                     </button>
@@ -265,11 +268,11 @@ const Table = ({
 
       {/* ---------------- Pagination ---------------- */}
       {showPagination && (
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-4">
           <select
             value={entriesPerPage}
             onChange={(e) => setEntriesPerPage(Number(e.target.value))}
-            className="bg-black/40 border border-white/10 px-3 py-2 rounded-xl"
+            className="bg-black/40 border border-white/10 px-3 py-2 rounded-xl text-white"
           >
             {[10, 50, 100].map((n) => (
               <option key={n}>{n}</option>
@@ -279,7 +282,7 @@ const Table = ({
           <div className="flex gap-2">
             <button
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20"
+              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition-all duration-200"
             >
               Prev
             </button>
@@ -291,7 +294,7 @@ const Table = ({
                     : p
                 )
               }
-              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20"
+              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition-all duration-200"
             >
               Next
             </button>

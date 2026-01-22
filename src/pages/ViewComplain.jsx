@@ -221,13 +221,13 @@ export const ViewComplain = () => {
       <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-5">
         <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 blur-2xl" />
         <div className="relative flex justify-between items-center">
-          <h4 className="text-xl font-bold text-[#ffd700]">View Complaint</h4>
+          <h4 className="text-xl font-bold text-[#53eafd]">View Complaint</h4>
           <Button
             onClick={() => {
               setEditData(null);
               setShowModal(true);
             }}
-            className="bg-[#ffd700] hover:bg-yellow-400 text-black font-semibold px-4 py-2 rounded-lg"
+            className="bg-[#53eafd] hover:bg-yellow-400 text-black font-semibold px-4 py-2 rounded-lg"
           >
             Raise Complaint
           </Button>
@@ -247,52 +247,77 @@ export const ViewComplain = () => {
 
       {/* All modals remain functionally identical – styling preserved */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl max-w-3xl w-full p-6">
-            <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 blur-2xl" />
-            <form onSubmit={handleSubmit} className="relative space-y-4">
-              {["user_id", "subject", "assigned_to"].map((field) => (
-                <input
-                  key={field}
-                  name={field}
-                  value={ticketFormData[field]}
-                  onChange={handleChange}
-                  placeholder={field.replace("_", " ").toUpperCase()}
-                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-[#ffd700]"
-                />
-              ))}
+    <div
+  className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+  onClick={() => setShowModal(false)}
+>
+  <div
+    className="relative w-full max-w-3xl mx-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+    onClick={(e) => e.stopPropagation()}
+  >
+    {/* Header */}
+    <div className="relative flex justify-between items-center px-6 py-4">
+      {/* Gradient Glow Behind Header */}
+      <div className="absolute inset-0  blur-2xl opacity-70 rounded-t-2xl" />
+      <h2 className="relative text-xl font-bold text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.4)]">
+        Complaint Form
+      </h2>
+      <button
+        onClick={() => setShowModal(false)}
+        className="relative w-9 h-9 flex items-center justify-center rounded-full bg-black/30 border border-white/10 text-white transition-all hover:bg-red-500 hover:text-black hover:scale-105 active:scale-95"
+      >
+        X
+      </button>
+    </div>
 
-              <textarea
-                name="description"
-                rows={4}
-                value={ticketFormData.description}
-                onChange={handleChange}
-                placeholder="DESCRIPTION"
-                className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-[#ffd700]"
-              />
+    {/* Divider */}
+    <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-              <input
-                type="file"
-                name="attachment"
-                onChange={handleChange}
-                className="w-full text-white file:bg-[#ffd700] file:text-black file:px-4 file:py-2 file:rounded-md"
-              />
+    {/* Form */}
+    <form onSubmit={handleSubmit} className="relative p-6 space-y-4">
+      {["user_id", "subject", "assigned_to"].map((field) => (
+        <input
+          key={field}
+          name={field}
+          value={ticketFormData[field]}
+          onChange={handleChange}
+          placeholder={field.replace("_", " ").toUpperCase()}
+          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition"
+        />
+      ))}
 
-              <Button
-                type="submit"
-                className="w-full bg-[#ffd700] hover:bg-yellow-400 text-black font-semibold py-2 rounded-lg"
-              >
-                {editData
-                  ? updating
-                    ? "Updating..."
-                    : "Update"
-                  : creating
-                  ? "Submitting..."
-                  : "Submit"}
-              </Button>
-            </form>
-          </div>
-        </div>
+      <textarea
+        name="description"
+        rows={4}
+        value={ticketFormData.description}
+        onChange={handleChange}
+        placeholder="DESCRIPTION"
+        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition"
+      />
+
+      <input
+        type="file"
+        name="attachment"
+        onChange={handleChange}
+        className="w-full text-white file:bg-[#FFD700] file:text-black file:px-4 file:py-2 file:rounded-md file:border-none hover:file:bg-yellow-400 transition"
+      />
+
+      <Button
+        type="submit"
+        className="w-full bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-black font-semibold py-2 rounded-2xl shadow-md hover:opacity-90 hover:shadow-lg transition"
+      >
+        {editData
+          ? updating
+            ? "Updating..."
+            : "Update"
+          : creating
+          ? "Submitting..."
+          : "Submit"}
+      </Button>
+    </form>
+  </div>
+</div>
+
       )}
     </div>
   );
