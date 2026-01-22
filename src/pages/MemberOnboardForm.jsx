@@ -71,7 +71,10 @@ export const MemberOnboardForm = () => {
       "bank_account_no", "ifsc_code", "website_url", "company_type",
       "date_of_incorporation", "company_pan_no_doc", "company_gst_no_doc", "cancel_cheque_doc"
     ],
-    3: ["director_name", "director_pan_no", "director_aadhar_no", "director_gender", "director_dob"],
+    3: [
+      "director_name", "director_pan_no", "director_aadhar_no", "director_gender", 
+      "director_dob", "user_pan_doc", "user_addhar_doc"
+    ],
     4: ["payin_at_onboard", "payout_at_onboard", "scheme_id"],
   };
 
@@ -141,23 +144,23 @@ export const MemberOnboardForm = () => {
     return null;
   };
 
+  const validateValue = (value, field) => {
+    const rules = validationRules[field];
+    if (value instanceof File || rules?.allowedTypes || rules?.maxSize) {
+      return validateFileValue(value, rules);
+    }
+    if (!value || (typeof value === "string" && value.trim() === "")) {
+      return "This field is required.";
+    }
+    if (rules?.pattern && typeof value === "string" && !rules.pattern.test(value.trim())) {
+      return rules.message || "Invalid format";
+    }
+    return null;
+  };
+
   const validateStep = () => {
     const requiredFields = stepRequiredFields[currentStep];
     const newErrors = {};
-
-    const validateValue = (value, field) => {
-      const rules = validationRules[field];
-      if (value instanceof File || rules?.allowedTypes || rules?.maxSize) {
-        return validateFileValue(value, rules);
-      }
-      if (!value || (typeof value === "string" && value.trim() === "")) {
-        return "This field is required.";
-      }
-      if (rules?.pattern && typeof value === "string" && !rules.pattern.test(value.trim())) {
-        return rules.message || "Invalid format";
-      }
-      return null;
-    };
 
     if (currentStep === 3) {
       memberFormData.director_info.forEach((director, idx) => {
@@ -174,6 +177,12 @@ export const MemberOnboardForm = () => {
         const error = validateValue(memberFormData[field], field);
         if (error) newErrors[field] = error;
       });
+    }
+
+    // Conditional validation for credentials_id in step 4
+    if (currentStep === 4 && memberFormData.payin_at_onboard === "Airpay") {
+      const credError = validateValue(memberFormData.credentials_id, "credentials_id");
+      if (credError) newErrors.credentials_id = credError;
     }
 
     setErrors(newErrors);
@@ -207,8 +216,11 @@ export const MemberOnboardForm = () => {
   };
   const handleNext = () => {
     setIsSubmitted(true);
-    if (validateStep()) {
-      if (currentStep < 4) setCurrentStep(currentStep + 1);
+    const isValid = validateStep();
+    if (isValid && currentStep < 4) {
+      setCurrentStep(currentStep + 1);
+      setErrors({});
+      setIsSubmitted(false);
     }
   };
 
@@ -389,7 +401,7 @@ export const MemberOnboardForm = () => {
                         type={field.type}
                         name={field.id}
                         id={field.id}
-                        className={`${inputBase} ${errors[field.id] ? "border-red-600" : ""}`}
+                        className={`${inputBase} ${isSubmitted && errors[field.id] ? "border-red-600" : ""}`}
                         placeholder=" "
                         value={memberFormData[field.id] ?? ""}
                         onChange={handleChange}
@@ -397,7 +409,7 @@ export const MemberOnboardForm = () => {
                       <label htmlFor={field.id} className={labelBase}>
                         {field.label} <span className="text-red-400">*</span>
                       </label>
-                      {errors[field.id] && <span className={errorText}>{errors[field.id]}</span>}
+                      {isSubmitted && errors[field.id] && <span className={errorText}>{errors[field.id]}</span>}
                     </div>
                   ))}
 
@@ -406,7 +418,7 @@ export const MemberOnboardForm = () => {
                       name="address"
                       id="address"
                       rows={4}
-                      className={`${inputBase} resize-none ${errors.address ? "border-red-600" : ""}`}
+                      className={`${inputBase} resize-none ${isSubmitted && errors.address ? "border-red-600" : ""}`}
                       placeholder=" "
                       value={memberFormData.address}
                       onChange={handleChange}
@@ -414,7 +426,7 @@ export const MemberOnboardForm = () => {
                     <label htmlFor="address" className={labelBase}>
                       Full Address <span className="text-red-400">*</span>
                     </label>
-                    {errors.address && <span className={errorText}>{errors.address}</span>}
+                    {isSubmitted && errors.address && <span className={errorText}>{errors.address}</span>}
                   </div>
                 </div>
               )}
@@ -435,7 +447,7 @@ export const MemberOnboardForm = () => {
                         type={field.type}
                         name={field.id}
                         id={field.id}
-                        className={`${inputBase} ${errors[field.id] ? "border-red-600" : ""}`}
+                        className={`${inputBase} ${isSubmitted && errors[field.id] ? "border-red-600" : ""}`}
                         placeholder=" "
                         value={memberFormData[field.id] ?? ""}
                         onChange={handleChange}
@@ -443,7 +455,7 @@ export const MemberOnboardForm = () => {
                       <label htmlFor={field.id} className={labelBase}>
                         {field.label} <span className="text-red-400">*</span>
                       </label>
-                      {errors[field.id] && <span className={errorText}>{errors[field.id]}</span>}
+                      {isSubmitted && errors[field.id] && <span className={errorText}>{errors[field.id]}</span>}
                     </div>
                   ))}
 
@@ -451,7 +463,7 @@ export const MemberOnboardForm = () => {
                     <select
                       name="company_type"
                       id="company_type"
-                      className={`${selectBase} ${errors.company_type ? "border-red-600" : ""}`}
+                      className={`${selectBase} ${isSubmitted && errors.company_type ? "border-red-600" : ""}`}
                       value={memberFormData.company_type}
                       onChange={handleChange}
                     >
@@ -472,23 +484,54 @@ export const MemberOnboardForm = () => {
                     <label htmlFor="company_type" className={labelBase}>
                       Company Type <span className="text-red-400">*</span>
                     </label>
-                    {errors.company_type && <span className={errorText}>{errors.company_type}</span>}
+                    {isSubmitted && errors.company_type && <span className={errorText}>{errors.company_type}</span>}
                   </div>
 
-                  <div className="relative">
-                    <input
-                      type="date"
-                      name="date_of_incorporation"
-                      id="date_of_incorporation"
-                      className={`${inputBase} ${errors.date_of_incorporation ? "border-red-600" : ""} cursor-pointer w-full h-12 appearance-none`}
-                      value={memberFormData.date_of_incorporation}
-                      onChange={handleChange}
-                    />
-                    <label htmlFor="date_of_incorporation" className={labelBase}>
-                      Date of Incorporation <span className="text-red-400">*</span>
-                    </label>
-                    {errors.date_of_incorporation && <span className={errorText}>{errors.date_of_incorporation}</span>}
-                  </div>
+                 <div 
+  className="relative group cursor-pointer"
+  onClick={() => {
+    // Find the real input and trigger it
+    const input = document.getElementById("date_of_incorporation");
+    if (input) {
+      input.focus();
+      // Some browsers need this extra nudge to open the picker
+      input.showPicker?.();   // modern browsers (Chrome 114+, Edge, etc.)
+    }
+  }}
+>
+  <input
+    type="date"
+    name="date_of_incorporation"
+    id="date_of_incorporation"
+    className={`
+      ${inputBase} 
+      ${isSubmitted && errors.date_of_incorporation ? "border-red-600" : ""} 
+      w-full h-12 
+      appearance-none
+      cursor-pointer
+      peer
+    `}
+    value={memberFormData.date_of_incorporation}
+    onChange={handleChange}
+  />
+
+  <label 
+    htmlFor="date_of_incorporation" 
+    className={`
+      ${labelBase}
+      peer-focus:text-blue-500
+      peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+      peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:bg-white peer-focus:px-1
+      transition-all duration-200
+    `}
+  >
+    Date of Incorporation <span className="text-red-400">*</span>
+  </label>
+
+  {isSubmitted && errors.date_of_incorporation && (
+    <span className={errorText}>{errors.date_of_incorporation}</span>
+  )}
+</div>
 
                   {[
                     { name: "company_pan_no_doc", label: "PAN Document" },
@@ -526,41 +569,78 @@ export const MemberOnboardForm = () => {
                           { name: "director_aadhar_no", label: "Aadhaar Number", type: "text" },
                           { name: "director_dob", label: "Date of Birth", type: "date" },
                         ].map((field) => (
-                          <div key={field.name} className="relative">
-                            {field.type === "date" ? (
-                              <input
-                                type="date"
-                                name={field.name}
-                                id={`${field.name}-${index}`}
-                                className={`${inputBase} ${errors.director?.[index]?.[field.name] ? "border-red-600" : ""} cursor-pointer w-full h-12 appearance-none`}
-                                value={director[field.name] ?? ""}
-                                onChange={(e) => handleDirectorChange(index, e)}
-                              />
-                            ) : (
-                              <input
-                                type={field.type}
-                                name={field.name}
-                                id={`${field.name}-${index}`}
-                                className={`${inputBase} ${errors.director?.[index]?.[field.name] ? "border-red-600" : ""}`}
-                                value={director[field.name] ?? ""}
-                                onChange={(e) => handleDirectorChange(index, e)}
-                                placeholder=" "
-                              />
-                            )}
-                            <label htmlFor={`${field.name}-${index}`} className={labelBase}>
-                              {field.label} <span className="text-red-400">*</span>
-                            </label>
-                            {errors.director?.[index]?.[field.name] && (
-                              <span className={errorText}>{errors.director[index][field.name]}</span>
-                            )}
-                          </div>
+                         <div 
+  key={field.name} 
+  className="relative cursor-pointer group"
+  onClick={() => {
+    const input = document.getElementById(`${field.name}-${index}`);
+    if (input) {
+      input.focus();
+      // Open native date picker (works in modern Chrome/Edge/Safari)
+      input.showPicker?.();
+    }
+  }}
+>
+  {field.type === "date" ? (
+    <input
+      type="date"
+      name={field.name}
+      id={`${field.name}-${index}`}
+      className={`
+        ${inputBase} 
+        ${isSubmitted && errors.director?.[index]?.[field.name] ? "border-red-600" : ""} 
+        cursor-pointer 
+        w-full 
+        h-12 
+        appearance-none
+        peer
+        text-slate-200
+        focus:text-slate-50
+      `}
+      value={director[field.name] ?? ""}
+      onChange={(e) => handleDirectorChange(index, e)}
+    />
+  ) : (
+    <input
+      type={field.type}
+      name={field.name}
+      id={`${field.name}-${index}`}
+      className={`${inputBase} ${isSubmitted && errors.director?.[index]?.[field.name] ? "border-red-600" : ""}`}
+      value={director[field.name] ?? ""}
+      onChange={(e) => handleDirectorChange(index, e)}
+      placeholder=" "
+    />
+  )}
+
+  <label 
+    htmlFor={`${field.name}-${index}`} 
+    className={`
+      ${labelBase}
+      peer-focus:text-blue-400
+      peer-placeholder-shown:scale-100 
+      peer-placeholder-shown:translate-y-0
+      peer-focus:scale-75 
+      peer-focus:-translate-y-3 
+      peer-focus:bg-[#0f172a] 
+      peer-focus:px-1
+      transition-all duration-200
+      pointer-events-none
+    `}
+  >
+    {field.label} <span className="text-red-400">*</span>
+  </label>
+
+  {isSubmitted && errors.director?.[index]?.[field.name] && (
+    <span className={errorText}>{errors.director[index][field.name]}</span>
+  )}
+</div>
                         ))}
 
                         <div className="relative">
                           <select
                             name="director_gender"
                             id={`director_gender-${index}`}
-                            className={`${selectBase} ${errors.director?.[index]?.director_gender ? "border-red-600" : ""}`}
+                            className={`${selectBase} ${isSubmitted && errors.director?.[index]?.director_gender ? "border-red-600" : ""}`}
                             value={director.director_gender}
                             onChange={(e) => handleDirectorChange(index, e)}
                           >
@@ -571,7 +651,7 @@ export const MemberOnboardForm = () => {
                           <label htmlFor={`director_gender-${index}`} className={labelBase}>
                             Gender <span className="text-red-400">*</span>
                           </label>
-                          {errors.director?.[index]?.director_gender && (
+                          {isSubmitted && errors.director?.[index]?.director_gender && (
                             <span className={errorText}>{errors.director[index].director_gender}</span>
                           )}
                         </div>
@@ -630,7 +710,7 @@ export const MemberOnboardForm = () => {
                     <select
                       name="payin_at_onboard"
                       id="payin_at_onboard"
-                      className={`${selectBase} ${errors.payin_at_onboard ? "border-red-600" : ""}`}
+                      className={`${selectBase} ${isSubmitted && errors.payin_at_onboard ? "border-red-600" : ""}`}
                       value={memberFormData.payin_at_onboard}
                       onChange={handleChange}
                     >
@@ -644,7 +724,7 @@ export const MemberOnboardForm = () => {
                     <label htmlFor="payin_at_onboard" className={labelBase}>
                       Payin at Onboard <span className="text-red-400">*</span>
                     </label>
-                    {errors.payin_at_onboard && <span className={errorText}>{errors.payin_at_onboard}</span>}
+                    {isSubmitted && errors.payin_at_onboard && <span className={errorText}>{errors.payin_at_onboard}</span>}
                   </div>
 
                   {memberFormData.payin_at_onboard === "Airpay" && (
@@ -652,7 +732,7 @@ export const MemberOnboardForm = () => {
                       <select
                         name="credentials_id"
                         id="airpay_mid"
-                        className={selectBase}
+                        className={`${selectBase} ${isSubmitted && errors.credentials_id ? "border-red-600" : ""}`}
                         value={memberFormData.credentials_id}
                         onChange={handleChange}
                       >
@@ -664,6 +744,7 @@ export const MemberOnboardForm = () => {
                         ))}
                       </select>
                       <label htmlFor="airpay_mid" className={labelBase}>Airpay MID</label>
+                      {isSubmitted && errors.credentials_id && <span className={errorText}>{errors.credentials_id}</span>}
                     </div>
                   )}
 
@@ -671,7 +752,7 @@ export const MemberOnboardForm = () => {
                     <select
                       name="payout_at_onboard"
                       id="payout_at_onboard"
-                      className={`${selectBase} ${errors.payout_at_onboard ? "border-red-600" : ""}`}
+                      className={`${selectBase} ${isSubmitted && errors.payout_at_onboard ? "border-red-600" : ""}`}
                       value={memberFormData.payout_at_onboard}
                       onChange={handleChange}
                     >
@@ -685,14 +766,14 @@ export const MemberOnboardForm = () => {
                     <label htmlFor="payout_at_onboard" className={labelBase}>
                       Payout at Onboard <span className="text-red-400">*</span>
                     </label>
-                    {errors.payout_at_onboard && <span className={errorText}>{errors.payout_at_onboard}</span>}
+                    {isSubmitted && errors.payout_at_onboard && <span className={errorText}>{errors.payout_at_onboard}</span>}
                   </div>
 
                   <div className="relative">
                     <select
                       name="scheme_id"
                       id="scheme_id"
-                      className={`${selectBase} ${errors.scheme_id ? "border-red-600" : ""}`}
+                      className={`${selectBase} ${isSubmitted && errors.scheme_id ? "border-red-600" : ""}`}
                       value={memberFormData.scheme_id}
                       onChange={handleChange}
                     >
@@ -706,7 +787,7 @@ export const MemberOnboardForm = () => {
                     <label htmlFor="scheme_id" className={labelBase}>
                       Scheme <span className="text-red-400">*</span>
                     </label>
-                    {errors.scheme_id && <span className={errorText}>{errors.scheme_id}</span>}
+                    {isSubmitted && errors.scheme_id && <span className={errorText}>{errors.scheme_id}</span>}
                   </div>
                 </div>
               )}
@@ -786,4 +867,4 @@ export const MemberOnboardForm = () => {
       />
     </div>
   );
-};
+}; 

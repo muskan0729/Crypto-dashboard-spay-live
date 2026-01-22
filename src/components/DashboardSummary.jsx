@@ -20,12 +20,12 @@ export default function DashboardSummary({
       </div>
 
       {/* MAIN GRID: Pie Chart Left, 2x2 Boxes Right */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 min-h-[24rem]">
         {/* LEFT COLUMN: Pie Chart */}
         <div className="col-span-1">
-          <div className="relative rounded-2xl bg-white/5 backdrop-blur-2xl border border-cyan-400/20 shadow-[0_0_60px_rgba(56,189,248,0.15)] p-6 overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_90px_rgba(56,189,248,0.3)] h-full">
+          <div className="relative rounded-2xl bg-white/5 backdrop-blur-2xl border border-cyan-400/20 shadow-[0_0_60px_rgba(56,189,248,0.15)] p-4 overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_90px_rgba(56,189,248,0.3)] h-full">
             <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(56,189,248,0.1),_transparent_70%)] blur-3xl" />
-            <h4 className="mb-4 text-sm font-medium text-cyan-300 tracking-wide uppercase">
+            <h4 className="mb-3 text-sm font-medium text-cyan-300 tracking-wide uppercase">
               Transaction Status
             </h4>
             <TransactionStatusPie statusCounts={donutChart} />
@@ -33,47 +33,51 @@ export default function DashboardSummary({
         </div>
 
         {/* RIGHT COLUMN: 2x2 Boxes */}
-        <div className="col-span-2 grid grid-cols-2 grid-rows-2 gap-6">
+        <div className="col-span-2 grid grid-cols-2 grid-rows-2 gap-4">
           {/* BOX 1: Total Pay-IN */}
-          <div className="relative rounded-2xl bg-white/5 backdrop-blur-2xl border border-cyan-400/20 shadow-[0_0_60px_rgba(56,189,248,0.15)] p-6 flex flex-col justify-center transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_90px_rgba(56,189,248,0.3)] h-60">
-            <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(56,189,248,0.08),_transparent_70%)] blur-3xl" />
-            <h5 className="mb-2 text-sm font-medium text-cyan-300 tracking-wide uppercase">
+          <div className="relative rounded-2xl bg-white/5 backdrop-blur-2xl border border-green-400/20 shadow-[0_0_60px_rgba(34,197,94,0.15)] p-4 flex flex-col justify-center items-center transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_90px_rgba(34,197,94,0.3)] h-40">
+            <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(34,197,94,0.08),_transparent_70%)] blur-3xl" />
+            <div className="text-3xl mb-2 text-green-400"></div>
+            <h5 className="mb-1 text-xs font-medium text-green-300 tracking-wide uppercase text-center">
               Total Pay-IN
             </h5>
-            <h6 className="text-3xl font-bold text-white">
+            <h6 className="text-2xl font-bold text-white text-center">
               <CryptoAmount amount={normalCards.totalPayIn} symbol="₹" />
             </h6>
           </div>
 
           {/* BOX 2: Today Pay-IN */}
-          <div className="relative rounded-2xl bg-white/5 backdrop-blur-2xl border border-cyan-400/20 shadow-[0_0_60px_rgba(56,189,248,0.15)] p-6 flex flex-col justify-center transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_90px_rgba(56,189,248,0.3)] h-60">
-            <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(56,189,248,0.08),_transparent_70%)] blur-3xl" />
-            <h5 className="mb-2 text-sm font-medium text-cyan-300 tracking-wide uppercase">
+          <div className="relative rounded-2xl bg-white/5 backdrop-blur-2xl border border-green-400/20 shadow-[0_0_60px_rgba(34,197,94,0.15)] p-4 flex flex-col justify-center items-center transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_90px_rgba(34,197,94,0.3)] h-40">
+            <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(34,197,94,0.08),_transparent_70%)] blur-3xl" />
+            <div className="text-3xl mb-2 text-green-400"></div>
+            <h5 className="mb-1 text-xs font-medium text-green-300 tracking-wide uppercase text-center">
               Today Pay-IN
             </h5>
-            <h6 className="text-3xl font-bold text-white">
+            <h6 className="text-2xl font-bold text-white text-center">
               <CryptoAmount amount={normalCards.todayPayIn} symbol="₹" />
             </h6>
           </div>
 
           {/* BOX 3: Total Pay-OUT */}
-          <div className="relative rounded-2xl bg-white/5 backdrop-blur-2xl border border-cyan-400/20 shadow-[0_0_60px_rgba(56,189,248,0.15)] p-6 flex flex-col justify-center transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_90px_rgba(56,189,248,0.3)] h-60">
-            <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(56,189,248,0.08),_transparent_70%)] blur-3xl" />
-            <h5 className="mb-2 text-sm font-medium text-cyan-300 tracking-wide uppercase">
+          <div className="relative rounded-2xl bg-white/5 backdrop-blur-2xl border border-red-400/20 shadow-[0_0_60px_rgba(248,113,113,0.15)] p-4 flex flex-col justify-center items-center transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_90px_rgba(248,113,113,0.3)] h-40">
+            <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(248,113,113,0.08),_transparent_70%)] blur-3xl" />
+            <div className="text-3xl mb-2 text-red-400"></div>
+            <h5 className="mb-1 text-xs font-medium text-red-300 tracking-wide uppercase text-center">
               Total Pay-OUT
             </h5>
-            <h6 className="text-3xl font-bold text-white">
+            <h6 className="text-2xl font-bold text-white text-center">
               <CryptoAmount amount={normalCards.totalPayOut} symbol="₹" />
             </h6>
           </div>
 
           {/* BOX 4: Today Pay-OUT */}
-          <div className="relative rounded-2xl bg-white/5 backdrop-blur-2xl border border-cyan-400/20 shadow-[0_0_60px_rgba(56,189,248,0.15)] p-6 flex flex-col justify-center transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_90px_rgba(56,189,248,0.3)] h-60">
-            <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(56,189,248,0.08),_transparent_70%)] blur-3xl" />
-            <h5 className="mb-2 text-sm font-medium text-cyan-300 tracking-wide uppercase">
+          <div className="relative rounded-2xl bg-white/5 backdrop-blur-2xl border border-red-400/20 shadow-[0_0_60px_rgba(248,113,113,0.15)] p-4 flex flex-col justify-center items-center transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_90px_rgba(248,113,113,0.3)] h-40">
+            <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(248,113,113,0.08),_transparent_70%)] blur-3xl" />
+            <div className="text-3xl mb-2 text-red-400"></div>
+            <h5 className="mb-1 text-xs font-medium text-red-300 tracking-wide uppercase text-center">
               Today Pay-OUT
             </h5>
-            <h6 className="text-3xl font-bold text-white">
+            <h6 className="text-2xl font-bold text-white text-center">
               <CryptoAmount amount={normalCards.todayPayOut} symbol="₹" />
             </h6>
           </div>
