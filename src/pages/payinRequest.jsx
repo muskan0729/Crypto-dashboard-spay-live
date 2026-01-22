@@ -110,7 +110,7 @@ export const PayinRequest = () => {
       <div className="relative overflow-hidden bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl px-6 py-4">
         <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 blur-2xl" />
         <h4 className="relative text-[#ffd700] font-bold text-2xl">
-          Load Wallet
+          PayIn Request
         </h4>
       </div>
 
