@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"; 
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { usePost } from "../hooks/usePost";
 import useAutoFetch from "../hooks/useAutoFetch";
@@ -63,10 +63,11 @@ export const Header = ({ onMenuClick }) => {
   return (
     <nav className="relative w-full z-30">
       {/* Cinematic Glow Overlay */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-black/70 via-[#0a0a0a]/70 to-black/70 backdrop-blur-sm" />
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-r  backdrop-blur-sm" />
 
       <div className="relative flex items-center justify-between px-4 py-3
-                      bg-black/80 backdrop-blur-xl border-b border-cyan-500/20 shadow-[0_0_20px_rgba(0,255,255,0.2)]
+                      from-[#020617]/80 via-[#020B2A]/60 to-[#020617]/80
+ shadow-[0_0_20px_rgba(0,255,255,0.2)]
                       rounded-b-2xl transition-all duration-300">
         {/* LEFT */}
         <div className="flex items-center gap-4">

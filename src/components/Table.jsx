@@ -117,7 +117,7 @@ const Table = ({
   return (
     <div className="w-full space-y-6 text-white font-sans">
       {/* ---------------- Filters ---------------- */}
-      <div className="relative z-10 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_0_40px_rgba(0,255,255,0.2)] p-4 flex flex-wrap gap-3 items-end transition-transform duration-200 hover:scale-[1.01] hover:shadow-[0_0_50px_rgba(0,255,255,0.3)]">
+      <div className="relative z-10 bg-white/5  border border-white/10 rounded-2xl  p-4 flex flex-wrap gap-3 items-end transition-transform duration-200 hover:scale-[1.01] hover:shadow-[0_0_50px_rgba(0,255,255,0.3)]">
         {showSearch && (
           <input
             type="text"

@@ -20,113 +20,113 @@ export const Sidebar = ({ open, setOpen }) => {
 
     ...(role === "admin"
       ? [
-          {
-            label: "Scheme Manager",
-            icon: "fa-money-check",
-            dropdown: "scheme",
-            items: [{ label: "Scheme", link: "/scheme" }],
-          },
-          {
-            label: "Member",
-            icon: "fa-user-group",
-            dropdown: "member",
-            items: [{ label: "Merchant Onboarding", link: "/member-list" }],
-          },
-          {
-            label: "Fund",
-            icon: "fa-piggy-bank",
-            dropdown: "fund",
-            items: [
-              { label: "Load Wallet", link: "/load-wallet" },
-              { label: "Payin Settlement", link: "/payin-settlement" },
-            ],
-          },
-          {
-            label: "Onboard Bank",
-            icon: "fa-building-columns",
-            dropdown: "bank",
-            items: [{ label: "Bank", link: "/onboard-bank" }],
-          },
-          {
-            label: "Transaction History",
-            icon: "fa-clock-rotate-left",
-            dropdown: "txn",
-            items: [
-              { label: "Crypto Statement", link: "/crypto-statement" },
-              { label: "Payout Statement", link: "/payout-statement" },
-            ],
-          },
-          {
-            label: "Account Statement",
-            icon: "fa-layer-group",
-            dropdown: "account",
-            items: [
-              { label: "Topup Statement", link: "/topup-statement" },
-              {
-                label: "Settlement Payin Statement",
-                link: "/settlement-payin-statement",
-              },
-            ],
-          },
-        ]
+        {
+          label: "Scheme Manager",
+          icon: "fa-money-check",
+          dropdown: "scheme",
+          items: [{ label: "Scheme", link: "/scheme" }],
+        },
+        {
+          label: "Member",
+          icon: "fa-user-group",
+          dropdown: "member",
+          items: [{ label: "Merchant Onboarding", link: "/member-list" }],
+        },
+        {
+          label: "Fund",
+          icon: "fa-piggy-bank",
+          dropdown: "fund",
+          items: [
+            { label: "Load Wallet", link: "/load-wallet" },
+            { label: "Payin Settlement", link: "/payin-settlement" },
+          ],
+        },
+        {
+          label: "Onboard Bank",
+          icon: "fa-building-columns",
+          dropdown: "bank",
+          items: [{ label: "Bank", link: "/onboard-bank" }],
+        },
+        {
+          label: "Transaction History",
+          icon: "fa-clock-rotate-left",
+          dropdown: "txn",
+          items: [
+            { label: "Crypto Statement", link: "/crypto-statement" },
+            { label: "Payout Statement", link: "/payout-statement" },
+          ],
+        },
+        {
+          label: "Account Statement",
+          icon: "fa-layer-group",
+          dropdown: "account",
+          items: [
+            { label: "Topup Statement", link: "/topup-statement" },
+            {
+              label: "Settlement Payin Statement",
+              link: "/settlement-payin-statement",
+            },
+          ],
+        },
+      ]
       : []),
 
     ...(role === "user"
       ? [
-          {
-            label: "Payin",
-            icon: "fa-money-bill-transfer",
-            dropdown: "payin",
-            items: [{ label: "Request", link: "/payin-request" }],
-          },
-          {
-            label: "Transaction History",
-            icon: "fa-clock-rotate-left",
-            dropdown: "txn",
-            items: [
-              { label: "PayIn Statement", link: "/crypto-statement" },
-              { label: "Payout Statement", link: "/payout-statement" },
-            ],
-          },
-          {
-            label: "Account Statement",
-            icon: "fa-layer-group",
-            dropdown: "account",
-            items: [
-              { label: "Topup Statement", link: "/topup-statement" },
-              {
-                label: "Settlement Payin Statement",
-                link: "/settlement-payin-statement",
-              },
-            ],
-          },
-          {
-            label: "Api Settings",
-            icon: "fa-gears",
-            dropdown: "api",
-            items: [{ label: "Callback & Token", link: "/api-settings" }],
-          },
-          {
-            label: "API Documents",
-            icon: "fa-money-check",
-            dropdown: "apidoc",
-            items: [
-              { label: "Payin Documents", link: "/payin-doc" },
-              { label: "Payout Documents", link: "/payout-doc" },
-            ],
-          },
-        ]
+        {
+          label: "Payin",
+          icon: "fa-money-bill-transfer",
+          dropdown: "payin",
+          items: [{ label: "Request", link: "/payin-request" }],
+        },
+        {
+          label: "Transaction History",
+          icon: "fa-clock-rotate-left",
+          dropdown: "txn",
+          items: [
+            { label: "PayIn Statement", link: "/crypto-statement" },
+            { label: "Payout Statement", link: "/payout-statement" },
+          ],
+        },
+        {
+          label: "Account Statement",
+          icon: "fa-layer-group",
+          dropdown: "account",
+          items: [
+            { label: "Topup Statement", link: "/topup-statement" },
+            {
+              label: "Settlement Payin Statement",
+              link: "/settlement-payin-statement",
+            },
+          ],
+        },
+        {
+          label: "Api Settings",
+          icon: "fa-gears",
+          dropdown: "api",
+          items: [{ label: "Callback & Token", link: "/api-settings" }],
+        },
+        {
+          label: "API Documents",
+          icon: "fa-money-check",
+          dropdown: "apidoc",
+          items: [
+            { label: "Payin Documents", link: "/payin-doc" },
+            { label: "Payout Documents", link: "/payout-doc" },
+          ],
+        },
+      ]
       : []),
 
     ...(role === "crypto"
       ? [
-          {
-            label: "Transaction History",
-            icon: "fa-clock-rotate-left",
-            dropdown: "txn",
-            items: [{ label: "Crypto Statement", link: "/crypto-statement" }],
-          },
-        ]
+        {
+          label: "Transaction History",
+          icon: "fa-clock-rotate-left",
+          dropdown: "txn",
+          items: [{ label: "Crypto Statement", link: "/crypto-statement" }],
+        },
+      ]
       : []),
 
     {
@@ -149,7 +149,7 @@ export const Sidebar = ({ open, setOpen }) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 p-4 flex flex-col z-40
+        className={`fixed top-0 left-0 h-full w-70 p-4 flex flex-col z-40
         bg-white/5 backdrop-blur-xl border-r border-cyan-400/20
         shadow-[0_0_30px_rgba(0,255,255,0.2)]
         transform transition-transform duration-300 ease-in-out
@@ -163,22 +163,21 @@ export const Sidebar = ({ open, setOpen }) => {
           className="absolute top-4 right-4 md:hidden text-cyan-300 hover:text-white transition"
           onClick={() => setOpen(false)}
         >
-          <i className="fa-solid fa-xmark text-xl"></i>
+          <i className="fa-solid fa-xmark text-lg"></i>
         </button>
 
-{/* Logo */}
-<div className="relative flex justify-center items-center w-full mt-6 mb-6">
-  <div className="w-24 overflow-hidden bg-white/10 shadow-lg flex justify-center items-center">
-    <Link to="/krypto-dashboard">
-      <img
-        src={Logo}
-        className="w-full h-full object-contain"
-        alt="Spay Logo"
-      />
-    </Link>
-  </div>
-</div>
-
+        {/* Logo */}
+        <div className="relative flex justify-center items-center w-full mt-5 mb-5">
+          <div className="w-24 overflow-hidden bg-white/10 shadow-lg flex justify-center items-center">
+            <Link to="/krypto-dashboard">
+              <img
+                src={Logo}
+                className="w-full h-full object-contain"
+                alt="Spay Logo"
+              />
+            </Link>
+          </div>
+        </div>
 
         {/* Menu */}
         <ul className="relative space-y-2 font-medium flex-1 overflow-y-auto custom-scrollbar">
@@ -218,9 +217,8 @@ export const Sidebar = ({ open, setOpen }) => {
                       </span>
 
                       <svg
-                        className={`w-3 h-3 ml-auto transition-transform duration-300 ${
-                          activeDropdown === item.dropdown ? "rotate-180" : ""
-                        }`}
+                        className={`w-3 h-3 ml-auto transition-transform duration-300 ${activeDropdown === item.dropdown ? "rotate-180" : ""
+                          }`}
                         fill="none"
                         viewBox="0 0 10 6"
                       >
@@ -244,10 +242,9 @@ export const Sidebar = ({ open, setOpen }) => {
                           <Link key={j} to={sub.link}>
                             <div
                               className={`relative flex items-center gap-2 p-2 rounded-lg transition-all duration-300 transform
-                                ${
-                                  isActive
-                                    ? `bg-cyan-500/20 text-cyan-300  before:absolute before:-inset-1 before:rounded-lg before:bg-cyan-400/10 before:blur-lg`
-                                    : "text-gray-200 hover:bg-cyan-400/10  hover:scale-105"
+                                ${isActive
+                                  ? `bg-cyan-500/20 text-cyan-300  before:absolute before:-inset-1 before:rounded-lg before:bg-cyan-400/10 before:blur-lg`
+                                  : "text-gray-200 hover:bg-cyan-400/10  hover:scale-105"
                                 }`}
                             >
                               <i className="fa-solid fa-circle text-[6px] text-cyan-300"></i>

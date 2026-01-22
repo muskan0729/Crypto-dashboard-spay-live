@@ -1,9 +1,9 @@
 import React from "react";
 
 export const Stepper = ({ currentStep }) => {
-  const activeText = "text-[#FFD700]";
+  const activeText = "text-[#53eafd]";
   const inactiveText = "text-gray-500";
-  const activeBorder = "border-[#FFD700]";
+  const activeBorder = "border-[#53eafd]";
   const inactiveBorder = "border-gray-500";
 
   return (
